@@ -291,7 +291,7 @@ mysql -e "FLUSH PRIVILEGES;"
 
 systemctl restart mysql
 
-mysql -u$MYSQL_USR -p$MYSQL_PASS -e "$MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME"
+mysql -u$MYSQL_USR -p$MYSQL_PASS -e $MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME
 
 # Set MySQL root password in /root/.my.cnf
 cp /$TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
@@ -492,33 +492,7 @@ sudo git clone "$INSTALL_URL" "/$TEMP_DIR"
 #################################################
 
 # Install MySQL packages
-export DEBIAN_FRONTEND=noninteractive
-apt-get install -y mysql-server mysql-client libmysqlclient-dev
-mkdir -p /etc/mysql/conf.d
-mkdir -p /var/lib/mysqltmp
-chown mysql:mysql /var/lib/mysqltmp
-
-# Set some basic security stuff within MYSQL
-mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
-mysql -e "DROP USER ''@'localhost'"
-mysql -e "DROP USER ''@'$(hostname)'"
-mysql -e "DROP DATABASE test"
-mysql -e "CREATE DATABASE $MYSQL_DB;"
-mysql -e "GRANT ALL ON $MYSQL_USR.* TO $MYSQL_DB@localhost IDENTIFIED BY '$MYSQL_PASS';"
-mysql -e "FLUSH PRIVILEGES"
-mysql -e $MYSQL_DB < "/$TEMP_DIR/db/$MYSQL_SCHEME;"
-mysql -e "FLUSH PRIVILEGES"
-
-# Set MySQL root password in /root/.my.cnf
-cp /$TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
-sed -i "s/\$mysqlrootpassword/$MYSQL_PASS/g" /root/.my.cnf
-sed -i "s/\$mysqlrootusername/$MYSQL_USR/g" /root/.my.cnf
-
-# Restart MySQL to apply changes
-rm -f /var/lib/mysql/ib_logfile0
-rm -f /var/lib/mysql/ib_logfile1
-systemctl enable mysql
-systemctl restart mysql
+mysql -u$MYSQL_USR -p$MYSQL_PASS -e $MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME
 
 ;;
 
