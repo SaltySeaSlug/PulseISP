@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/site/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/site/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/phpunit-mock-objects" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-token-stream" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/site/vendor/phpspec/prophecy" />
+      <path value="$PROJECT_DIR$/site/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/site/vendor/mpdf/mpdf" />
+      <path value="$PROJECT_DIR$/site/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/site/vendor/composer" />
+      <path value="$PROJECT_DIR$/site/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/site/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/site/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/site/vendor/almasaeed2010/adminlte" />
+      <path value="$PROJECT_DIR$/site/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/resource-operations" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/site/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/site/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/site/vendor/mikey179/vfsstream" />
+      <path value="$PROJECT_DIR$/site/vendor/doctrine/instantiator" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="5.3.0" />
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/site/vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
+</project>

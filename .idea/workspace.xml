@@ -19,17 +19,61 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ffe9ab6-5474-478e-8846-e8c4390d8e0f" name="Default Changelist" comment="Init" />
+    <list default="true" id="4ffe9ab6-5474-478e-8846-e8c4390d8e0f" name="Default Changelist" comment="Init">
+      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/site/database.php.template" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/PulseISP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PulseISP.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/install.sh" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/site/composer.json</pharConfigPath>
     <execution />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/site/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/site/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/phpunit-mock-objects" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-token-stream" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/site/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/site/vendor/phpspec/prophecy" />
+      <path value="$PROJECT_DIR$/site/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/site/vendor/mpdf/mpdf" />
+      <path value="$PROJECT_DIR$/site/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/site/vendor/composer" />
+      <path value="$PROJECT_DIR$/site/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/site/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/site/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/site/vendor/almasaeed2010/adminlte" />
+      <path value="$PROJECT_DIR$/site/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/resource-operations" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/site/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/site/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/site/vendor/setasign/fpdi" />
+      <path value="$PROJECT_DIR$/site/vendor/mikey179/vfsstream" />
+      <path value="$PROJECT_DIR$/site/vendor/doctrine/instantiator" />
+    </include_path>
   </component>
   <component name="ProjectId" id="1mjMnNK4Sec4FMon0NUrKqLOoQx" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -38,10 +82,18 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/site" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PHP Projects\PulseISP\templates\site" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -53,6 +105,7 @@
       <updated>1610002715171</updated>
       <workItem from="1610002716377" duration="133000" />
       <workItem from="1610002869295" duration="22481000" />
+      <workItem from="1610086444401" duration="1677000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1610028645631</created>
@@ -84,12 +137,21 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Init" />
     <option name="LAST_COMMIT_MESSAGE" value="Init" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="770" y="404" key="#Composer" timestamp="1610086457842">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="770" y="404" key="#Composer/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610086457842" />
+    <state x="715" y="348" key="#Notifications" timestamp="1610087093727">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="715" y="348" key="#Notifications/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610087093727" />
     <state x="784" y="444" key="Github.CreateGistDialog" timestamp="1610026794650">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>

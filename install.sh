@@ -278,6 +278,7 @@ mysql -e "DROP DATABASE test;"
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;";
+mysql -e "FLUSH PRIVILEGES;"
 
 RESULT=`mysql --skip-column-names -e "SHOW DATABASES LIKE '$MYSQL_DB'"`
 if [ "$RESULT" == "$MYSQL_DB" ]; then
@@ -287,11 +288,7 @@ else
   exit 1
 fi
 
-mysql -e "FLUSH PRIVILEGES;"
-
 systemctl restart mysql
-
-mysql -u$MYSQL_USR -p$MYSQL_PASS -e "$MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME"
 
 # Set MySQL root password in /root/.my.cnf
 cp /$TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
@@ -394,12 +391,19 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 # PulseISP Installation Tasks
 #################################################
 
-cp -fr /$TEMP_DIR/site/ ${WWW_PATH:?}
+# Import Database
+mysql -u$MYSQL_USR -p$MYSQL_PASS -e "$MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME;"
+systemctl restart mysql
 
+# Copy web GUI to Apache public folder
+cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
+cp /$TEMP_DIR/templates/site/database.php.template /${WWW_PATH:?}/application/config/database.php
+sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" /${WWW_PATH:?}/application/config/database.php
+sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" /${WWW_PATH:?}/application/config/database.php
+sed -i "s/\$mysqldatabase/$MYSQL_DB/g" /${WWW_PATH:?}/application/config/database.php
 
 
 systemctl restart apache2
-
 
 
 # Set MySQL root password in /root/.my.cnf
@@ -494,7 +498,7 @@ echo
 3 ) echo "Selected: Test"
 #----------------------------------------------------------------------- DOWNLOADING
 sudo apt-get install git
-sudo git clone "$INSTALL_URL" "/$TEMP_DIR"
+#sudo git clone "$INSTALL_URL" "/$TEMP_DIR"
 #################################################
 # MySQL Server Package Installation Tasks
 #################################################
