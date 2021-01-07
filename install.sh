@@ -269,11 +269,12 @@ mkdir -p /var/lib/mysqltmp
 chown mysql:mysql /var/lib/mysqltmp
 
 # Set some info before we secure
-mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
+#mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 mysql -e "DROP USER ''@'localhost';"
 mysql -e "DROP USER ''@'$(hostname)';"
 mysql -e "DROP DATABASE test;"
-mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
+#mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;";
@@ -286,7 +287,6 @@ else
   exit 1
 fi
 
-mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 mysql -e "FLUSH PRIVILEGES;"
 
 systemctl restart mysql
@@ -401,6 +401,14 @@ cp -fr /$TEMP_DIR/site/ ${WWW_PATH:?}
 systemctl restart apache2
 
 
+
+# Set MySQL root password in /root/.my.cnf
+cp /$TEMP_DIR/templates/ubuntu/misc/misc.template /root/.misc.cnf
+sed -i "s/\$radiususer/$MYSQL_RAD_USER/g" /root/.misc.cnf
+sed -i "s/\$radiuspassword/$MYSQL_RAD_PASS/g" /root/.misc.cnf
+sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
+
+
 #################################################
 # Setup Report
 #################################################
@@ -492,33 +500,7 @@ sudo git clone "$INSTALL_URL" "/$TEMP_DIR"
 #################################################
 
 # Install MySQL packages
-export DEBIAN_FRONTEND=noninteractive
-apt-get install -y mysql-server mysql-client libmysqlclient-dev
-mkdir -p /etc/mysql/conf.d
-mkdir -p /var/lib/mysqltmp
-chown mysql:mysql /var/lib/mysqltmp
-
-# Set some basic security stuff within MYSQL
-mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
-mysql -e "DROP USER ''@'localhost'"
-mysql -e "DROP USER ''@'$(hostname)'"
-mysql -e "DROP DATABASE test"
-mysql -e "CREATE DATABASE $MYSQL_DB;"
-mysql -e "GRANT ALL ON $MYSQL_USR.* TO $MYSQL_DB@localhost IDENTIFIED BY '$MYSQL_PASS';"
-mysql -e "FLUSH PRIVILEGES"
-mysql -e $MYSQL_DB < "/$TEMP_DIR/db/$MYSQL_SCHEME;"
-mysql -e "FLUSH PRIVILEGES"
-
-# Set MySQL root password in /root/.my.cnf
-cp /$TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
-sed -i "s/\$mysqlrootpassword/$MYSQL_PASS/g" /root/.my.cnf
-sed -i "s/\$mysqlrootusername/$MYSQL_USR/g" /root/.my.cnf
-
-# Restart MySQL to apply changes
-rm -f /var/lib/mysql/ib_logfile0
-rm -f /var/lib/mysql/ib_logfile1
-systemctl enable mysql
-systemctl restart mysql
+mysql -uroot -p7wRRl9arWvNwioDV -e pulseisp_db < /temp/db/import_db.sql
 
 ;;
 

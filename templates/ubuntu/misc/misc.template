@@ -1,0 +1,4 @@
+[client]
+user=$radiususer
+password=$radiuspassword
+freeradius=$freeradiussecret
