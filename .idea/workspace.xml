@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4ffe9ab6-5474-478e-8846-e8c4390d8e0f" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="ProjectId" id="1mjMnNK4Sec4FMon0NUrKqLOoQx" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4ffe9ab6-5474-478e-8846-e8c4390d8e0f" name="Default Changelist" comment="" />
+      <created>1610002715171</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1610002715171</updated>
+      <workItem from="1610002716377" duration="133000" />
+      <workItem from="1610002869295" duration="19622000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="784" y="444" key="Github.CreateGistDialog" timestamp="1610026794650">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="784" y="444" key="Github.CreateGistDialog/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610026794650" />
+    <state x="383" y="167" key="SettingsEditor" timestamp="1610026833209">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="383" y="167" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610026833209" />
+  </component>
+</project>
