@@ -15,14 +15,6 @@ clear
 USR_ROOT="root"
 USR_ROOT_PWD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
 
-MYSQL_USR="root"
-MYSQL_PASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
-MYSQL_DB="pulseisp_db"
-MYSQL_SCHEME="import_db.sql"
-MYSQL_RAD_USER="radius"
-MYSQL_RAD_PASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
-
-FREERADIUS_SECRET=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
 
 ## CONSOLE COLOURS ##
 ESC_SEQ="\x1b["
@@ -39,33 +31,8 @@ DIVIDER="$COL_BLUE +------------------------------------------------------------
 OS_VER=`cat /etc/issue |awk '{print $1}'`
 TEMP_DIR="temp"
 INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
-WWW_PATH="/var/www/html"
-WWW_USR="www-data"
-FREERADIUS_PATH="/etc/freeradius"
 
 
-# Apache variables
-timeout=30
-keep_alive=On
-keep_alive_requests=120
-keep_alive_timeout=5
-prefork_start_servers=4
-prefork_min_spare_servers=4
-prefork_max_spare_servers=9
-prefork_server_limit=`free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f"`
-prefork_max_clients=`free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f"`
-prefork_max_requests_per_child=1000
-prefork_listen_backlog=`free -m | grep "Mem:" | awk '{print $2/2/15*2}' | xargs printf "%.0f"`
-
-# PHP variables
-max_execution_time=30
-memory_limit=64M
-error_reporting='E_ALL \& ~E_NOTICE | E_DEPRECATED'
-post_max_size=8M
-upload_max_filesize=2M
-short_open_tag=On
-expose_php=Off
-session_save_path='/var/lib/php/sessions'
 
 
 
@@ -194,6 +161,32 @@ apt install -y cron openssh-server vim sysstat man-db wget rsync
 # Web Server Package Installation Tasks
 #################################################
 
+# Variables
+WWW_PATH="/var/www/html"
+
+# Apache variables
+timeout=30
+keep_alive=On
+keep_alive_requests=120
+keep_alive_timeout=5
+prefork_start_servers=4
+prefork_min_spare_servers=4
+prefork_max_spare_servers=9
+prefork_server_limit=`free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f"`
+prefork_max_clients=`free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f"`
+prefork_max_requests_per_child=1000
+prefork_listen_backlog=`free -m | grep "Mem:" | awk '{print $2/2/15*2}' | xargs printf "%.0f"`
+
+# PHP variables
+max_execution_time=30
+memory_limit=64M
+error_reporting='E_ALL \& ~E_NOTICE | E_DEPRECATED'
+post_max_size=8M
+upload_max_filesize=2M
+short_open_tag=On
+expose_php=Off
+session_save_path='/var/lib/php/sessions'
+
 # Install Apache and PHP packages
 apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils php-cli php-pear php-mysql php-gd php-dev php-curl php-opcache php-mail php-mail-mime php-db php-mbstring php-xml
 /usr/sbin/a2dismod mpm_event
@@ -206,6 +199,7 @@ PHP_VER=`php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/'`
 apt-get install php-fpm -y
 /usr/sbin/a2enmod proxy_fcgi setenvif
 /usr/sbin/a2enconf php"$PHP_VER"-fpm
+############################################################################################################## TEST CODE
 
 # Copy over templates
 mkdir /var/www/vhosts
@@ -262,6 +256,14 @@ sudo bash -c "echo -e '<?php\nphpinfo();\n?>' > $WWW_PATH/info.php"
 # MySQL Server Package Installation Tasks
 #################################################
 
+# MySQL Variables
+MYSQL_USR="root"
+MYSQL_PASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+MYSQL_DB="pulseisp_db"
+MYSQL_SCHEME="import_db.sql"
+MYSQL_RAD_USER="radius"
+MYSQL_RAD_PASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+
 # Install MySQL packages
 apt-get install -y mysql-server mysql-client libmysqlclient-dev
 mkdir -p /etc/mysql/conf.d
@@ -269,13 +271,13 @@ mkdir -p /var/lib/mysqltmp
 chown mysql:mysql /var/lib/mysqltmp
 
 # Set some info before we secure
-mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 mysql -e "DROP USER ''@'localhost'"
 mysql -e "DROP USER ''@'$(hostname)'"
 mysql -e "DROP DATABASE test"
 mysql -e "FLUSH PRIVILEGES;"
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
+mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 
 #mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 #mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
@@ -352,6 +354,10 @@ systemctl restart apache2
 # FreeRadius Installation Tasks
 #################################################
 
+# FreeRadius Variables
+FREERADIUS_PATH="/etc/freeradius"
+FREERADIUS_SECRET=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+
 apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
 
 # Copy over templates
@@ -382,6 +388,9 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 #################################################
 # PulseISP Installation Tasks
 #################################################
+
+# Variables
+WWW_USR="www-data"
 
 # Import Database
 mysql -u$MYSQL_USR -p$MYSQL_PASS -e "CREATE DATABASE $MYSQL_DB;";
@@ -494,7 +503,10 @@ cat /root/setup_report
 ;;
 2 ) echo "Selected: Update"
 #----------------------------------------------------------------------- DOWNLOADING
-echo -e "$COL_YELLOW Downloading package from Internet $COL_RESET"
+
+sed -n -e '/user/ s/.*: *//p' "/root/.misc.cnf"
+sed -n -e '/password/ s/.*: *//p' "/root/.misc.cnf"
+sed -n -e '/freeradius/ s/.*: *//p' "/root/.misc.cnf"
 echo
 ;;
 
