@@ -269,26 +269,16 @@ mkdir -p /var/lib/mysqltmp
 chown mysql:mysql /var/lib/mysqltmp
 
 # Set some info before we secure
-#mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-mysql -e "DROP USER ''@'localhost';"
-mysql -e "DROP USER ''@'$(hostname)';"
-mysql -e "DROP DATABASE test;"
-#mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
+mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
+mysql -e "DROP USER ''@'localhost'"
+mysql -e "DROP USER ''@'$(hostname)'"
+mysql -e "DROP DATABASE test"
+mysql -e "FLUSH PRIVILEGES;"
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
-mysql -e "CREATE DATABASE $MYSQL_DB;";
 
-mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
-
-mysql -e "FLUSH PRIVILEGES;"
-
-RESULT=`mysql --skip-column-names -e "SHOW DATABASES LIKE '$MYSQL_DB'"`
-if [ "$RESULT" == "$MYSQL_DB" ]; then
-  echo -e "$COL_GREEN -$DB database exist OK $COL_RESET"
-else
-  echo -e "$COL_RED -$DB database does not exist! Probably either mysql not accessible or wrong credentials provided. $COL_RESET"
-  exit 1
-fi
+#mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+#mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
 
 systemctl restart mysql
 
@@ -394,7 +384,18 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 #################################################
 
 # Import Database
+mysql -u$MYSQL_USR -p$MYSQL_PASS -e "CREATE DATABASE $MYSQL_DB;";
+
+RESULT=`mysql --skip-column-names -e "SHOW DATABASES LIKE '$MYSQL_DB'"`
+if [ "$RESULT" == "$MYSQL_DB" ]; then
+  echo -e "$COL_GREEN -$DB database exist OK $COL_RESET"
+else
+  echo -e "$COL_RED -$DB database does not exist! Probably either mysql not accessible or wrong credentials provided. $COL_RESET"
+  exit 1
+fi
+
 mysql -u$MYSQL_USR -p$MYSQL_PASS -e "$MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME;"
+
 systemctl restart mysql
 
 # Copy web GUI to Apache public folder
