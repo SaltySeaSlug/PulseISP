@@ -19,13 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ffe9ab6-5474-478e-8846-e8c4390d8e0f" name="Default Changelist" comment="Init">
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/site/database.php.template" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PulseISP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PulseISP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/install.sh" afterDir="false" />
-    </list>
+    <list default="true" id="4ffe9ab6-5474-478e-8846-e8c4390d8e0f" name="Default Changelist" comment="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,7 +99,7 @@
       <updated>1610002715171</updated>
       <workItem from="1610002716377" duration="133000" />
       <workItem from="1610002869295" duration="22481000" />
-      <workItem from="1610086444401" duration="1677000" />
+      <workItem from="1610086444401" duration="2042000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1610028645631</created>
@@ -121,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610029374812</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh">
+      <created>1610088324578</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1610088324578</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,7 +142,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Init" />
-    <option name="LAST_COMMIT_MESSAGE" value="Init" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh" />
   </component>
   <component name="WindowStateProjectService">
     <state x="770" y="404" key="#Composer" timestamp="1610086457842">
@@ -160,9 +162,9 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="383" y="167" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610026833209" />
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1610029366148">
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1610088300104">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610029366148" />
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610088300104" />
   </component>
 </project>
