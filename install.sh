@@ -269,7 +269,7 @@ mkdir -p /var/lib/mysqltmp
 chown mysql:mysql /var/lib/mysqltmp
 
 # Set some info before we secure
-mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
+
 #mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 mysql -e "DROP USER ''@'localhost';"
 mysql -e "DROP USER ''@'$(hostname)';"
@@ -278,6 +278,8 @@ mysql -e "DROP DATABASE test;"
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;";
+
+mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 mysql -e "FLUSH PRIVILEGES;"
 
 RESULT=`mysql --skip-column-names -e "SHOW DATABASES LIKE '$MYSQL_DB'"`
