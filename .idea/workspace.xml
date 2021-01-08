@@ -102,7 +102,7 @@
       <updated>1610002715171</updated>
       <workItem from="1610002716377" duration="133000" />
       <workItem from="1610002869295" duration="22481000" />
-      <workItem from="1610086444401" duration="6764000" />
+      <workItem from="1610086444401" duration="9377000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1610028645631</created>
@@ -160,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610090257193</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh">
+      <created>1610096199913</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1610096199913</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

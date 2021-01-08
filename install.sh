@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+clear
+
 ###################################################################
 # Script Name   : PulseISP Installer
 # Description   : Automated Installer for PulseISP
@@ -7,16 +9,22 @@
 # Email         : cockbainma@gmail.com
 ###################################################################
 
-clear
-
 #################################################
 # Variables
 #################################################
+
 USR_ROOT="root"
 USR_ROOT_PWD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+# Set default password for root user
+#echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd root
+OS_VER=`cat /etc/issue |awk '{print $1}'`
+TEMP_DIR="temp"
+INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
 
+#################################################
+# CONSOLE COLOURS
+#################################################
 
-## CONSOLE COLOURS ##
 ESC_SEQ="\x1b["
 COL_RESET=$ESC_SEQ"39;49;00m"
 COL_RED=$ESC_SEQ"31;01m"
@@ -27,30 +35,19 @@ COL_MAGENTA=$ESC_SEQ"35;01m"
 COL_CYAN=$ESC_SEQ"36;01m"
 DIVIDER="$COL_BLUE +-------------------------------------------------------------+ $COL_RESET"
 
-## DO NOT CHANGE ##
-OS_VER=`cat /etc/issue |awk '{print $1}'`
-TEMP_DIR="temp"
-INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
-
-
-
-
-
-
 clear
 
-
-
-
-
-
-###---------- MENU ----------###
+################################################################################################################### MENU
 echo -e "$DIVIDER"
 echo -e "$COL_BLUE |                     PulseISP Pre Check                      | $COL_RESET"
 echo -e "$DIVIDER"
 echo
 
-## VERIFY CURRENT USER IS ROOT
+#################################################
+# Pre system checks
+#################################################
+
+# Checking permissions
 echo -e "$COL_YELLOW Verifying user permissions. $COL_RESET"
 if [[ $EUID -ne 0 ]]; then
    echo -e "$COL_RED This script must be run as root. $COL_RESET"
@@ -59,7 +56,7 @@ else
     echo -e "$COL_GREEN OK. $COL_RESET"
 fi
 
-## CHECK AND VERIFY OS
+# Verify OS
 echo -e "$COL_YELLOW Checking OS distribution. $COL_RESET"
 if [[ $OS_VER == Ubuntu ]]; then
     echo -e "$COL_GREEN OK. $COL_RESET"
@@ -69,24 +66,23 @@ else
     exit 1
 fi
 
-## VERIFY TEMP DIRECTORY
+# Verify Temp Directory
 echo -e "$COL_YELLOW Verifying $TEMP_DIR directory. $COL_RESET"
 sleep 1
 if [ ! -d "/$TEMP_DIR" ]; then
-    echo -e "$COL_RED /$TEMP_DIR folder not found. Creating directory. $COL_RESET"
+    echo -e "$COL_RED /$TEMP_DIR folder not found. $COL_RESET"
+    echo -e "COL_MAGENTA Creating directory. $COL_RESET"
+    echo -e "$COL_GREEN OK. $COL_RESET"
     mkdir /$TEMP_DIR
 else
     echo -e "$COL_GREEN OK. $COL_RESET"
 fi
 cd /$TEMP_DIR || echo "Failure";
 
-## CLEAR TEMP DIRECTORY, IF ALREADY EXISTS
-echo -e "$COL_YELLOW Clearing $TEMP_DIR directory. $COL_RESET"
 rm -fr "/${TEMP_DIR:?}/"*
 rm -fr "/${TEMP_DIR:?}/".??*
-echo -e "$COL_GREEN OK. $COL_RESET"
 
-## VERIFY URL IS ACCESSIBLE
+# Verify Installation URL
 echo -e "$COL_YELLOW Checking if install url is accessible. $COL_RESET"
 cd /$TEMP_DIR || echo "Unable to access directory."
 
@@ -103,7 +99,7 @@ else
 fi
 rm -fr "/${TEMP_DIR:?}/".gitignore
 
-## VERIFY GIT IS INSTALLED
+# Verify GIT
 echo -e "$COL_YELLOW Checking if GIT is installed. $COL_RESET"
 if ! [ -x "$(command -v git)" ]; then
 	echo -e "$COL_RED Error: git is not installed. $COL_RESET" >&2
@@ -113,15 +109,12 @@ else
 fi
 echo
 
-# Set default password for root user
-#echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd root
-
 echo -e "$COL_YELLOW Pre-system check completed. $COL_RESET"
 sleep 2
 
 clear
 
-###---------- MENU ----------###
+################################################################################################################### MENU
 echo -e "$DIVIDER"
 echo -e "$COL_BLUE |                   Auto Installer PulseISP                   | $COL_RESET"
 echo -e "$DIVIDER"
@@ -145,7 +138,6 @@ echo
 # Clone repository to temp directory
 sudo git clone "$INSTALL_URL" "/$TEMP_DIR"
 
-
 #################################################
 # Base Package Installation Tasks
 #################################################
@@ -155,7 +147,6 @@ apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt auto
 
 # Install base packages
 apt install -y cron openssh-server vim sysstat man-db wget rsync
-
 
 #################################################
 # Web Server Package Installation Tasks
@@ -271,13 +262,20 @@ mkdir -p /var/lib/mysqltmp
 chown mysql:mysql /var/lib/mysqltmp
 
 # Set some info before we secure
-mysql -e "DROP USER ''@'localhost'"
-mysql -e "DROP USER ''@'$(hostname)'"
-mysql -e "DROP DATABASE test"
-mysql -e "FLUSH PRIVILEGES;"
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
-mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
+mysql -e "UPDATE mysql.user SET Password=PASSWORD('$MYSQL_PASS') WHERE User='$MYSQL_USR';"
+mysql -e "DELETE FROM mysql.user WHERE User='';"
+mysql -e "DELETE FROM mysql.user WHERE User='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+mysql -e "DROP DATABASE test;"
+mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
+mysql -e "FLUSH PRIVILEGES;"
+
+#mysql -e "DROP USER ''@'localhost'"
+#mysql -e "DROP USER ''@'$(hostname)'"
+#mysql -e "DROP DATABASE test"
+#mysql -e "FLUSH PRIVILEGES;"
+#mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 
 #mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 #mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
@@ -476,6 +474,7 @@ If you lose this setup report, the credentials can be found in:
 ${lightblue}Apache Server Status:${nc}  /root/.serverstatus
 ${lightblue}PHPMyAdmin:${nc}            /root/.phpmyadmin
 ${lightblue}MySQL Credentials:${nc}     /root/.my.cnf
+${lightblue}Misc Credentials:${nc}      /root/.misc.cnf
 
 ${txtbld}---------------------------------------------------------------
                  Nightly MySQL Backups
@@ -504,9 +503,22 @@ cat /root/setup_report
 2 ) echo "Selected: Update"
 #----------------------------------------------------------------------- DOWNLOADING
 
-sed -n -e '/user/ s/.*: *//p' "/root/.misc.cnf"
-sed -n -e '/password/ s/.*: *//p' "/root/.misc.cnf"
-sed -n -e '/freeradius/ s/.*: *//p' "/root/.misc.cnf"
+
+sed -n -e '/user/ s/.*= *//p' "/root/.serverstatus"
+sed -n -e '/password/ s/.*= *//p' "/root/.serverstatus"
+sed -n -e '/freeradius/ s/.*= *//p' "/root/.serverstatus"
+
+sed -n -e '/user/ s/.*= *//p' "/root/.phpmyadmin"
+sed -n -e '/password/ s/.*= *//p' "/root/.phpmyadmin"
+sed -n -e '/freeradius/ s/.*= *//p' "/root/.phpmyadmin"
+
+sed -n -e '/user/ s/.*= *//p' "/root/.my.cnf"
+sed -n -e '/password/ s/.*= *//p' "/root/.my.cnf"
+sed -n -e '/freeradius/ s/.*= *//p' "/root/.my.cnf"
+
+sed -n -e '/user/ s/.*= *//p' "/root/.misc.cnf"
+sed -n -e '/password/ s/.*= *//p' "/root/.misc.cnf"
+sed -n -e '/freeradius/ s/.*= *//p' "/root/.misc.cnf"
 echo
 ;;
 
