@@ -71,7 +71,7 @@ echo -e "$COL_YELLOW Verifying $TEMP_DIR directory. $COL_RESET"
 sleep 1
 if [ ! -d "/$TEMP_DIR" ]; then
     echo -e "$COL_RED /$TEMP_DIR folder not found. $COL_RESET"
-    echo -e "COL_MAGENTA Creating directory. $COL_RESET"
+    echo -e "$COL_MAGENTA Creating directory. $COL_RESET"
     echo -e "$COL_GREEN OK. $COL_RESET"
     mkdir /$TEMP_DIR
 else
@@ -264,7 +264,10 @@ chown mysql:mysql /var/lib/mysqltmp
 # Set some info before we secure
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
-mysql -e "UPDATE mysql.user SET Password=PASSWORD('$MYSQL_PASS') WHERE User='$MYSQL_USR';"
+mysql -e "CREATE DATABASE $MYSQL_DB;"
+
+## ISSUE HERE
+mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 mysql -e "DELETE FROM mysql.user WHERE User='';"
 mysql -e "DELETE FROM mysql.user WHERE User='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 mysql -e "DROP DATABASE test;"
@@ -275,7 +278,6 @@ mysql -e "FLUSH PRIVILEGES;"
 #mysql -e "DROP USER ''@'$(hostname)'"
 #mysql -e "DROP DATABASE test"
 #mysql -e "FLUSH PRIVILEGES;"
-#mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 
 #mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 #mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
@@ -391,7 +393,7 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 WWW_USR="www-data"
 
 # Import Database
-mysql -u$MYSQL_USR -p$MYSQL_PASS -e "CREATE DATABASE $MYSQL_DB;";
+#mysql -u$MYSQL_USR -p$MYSQL_PASS -e "CREATE DATABASE $MYSQL_DB;"
 
 RESULT=`mysql --skip-column-names -e "SHOW DATABASES LIKE '$MYSQL_DB'"`
 if [ "$RESULT" == "$MYSQL_DB" ]; then
