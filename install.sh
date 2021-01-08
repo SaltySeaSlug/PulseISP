@@ -184,13 +184,12 @@ apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils p
 /usr/sbin/a2enmod access_compat alias auth_basic authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex deflate dir env filter mime mpm_prefork negotiation rewrite setenvif socache_shmcb ssl status php7.4 mpm_prefork
 /usr/sbin/phpenmod opcache
 
-############################################################################################################## TEST CODE
+# Enable FPM
 PHP_VER=`php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/'`
 /usr/sbin/a2dismod php"$PHP_VER"
 apt-get install php-fpm -y
 /usr/sbin/a2enmod proxy_fcgi setenvif
 /usr/sbin/a2enconf php"$PHP_VER"-fpm
-############################################################################################################## TEST CODE
 
 # Copy over templates
 mkdir /var/www/vhosts
@@ -228,6 +227,7 @@ sed -i "s/\$post_max_size/$post_max_size/g" /etc/php/7.4/apache2/php.ini
 sed -i "s/\$upload_max_filesize/$upload_max_filesize/g" /etc/php/7.4/apache2/php.ini
 sed -i "s@\$session_save_path@$session_save_path@g" /etc/php/7.4/apache2/php.ini
 
+################################################################################################### WRITE TO CONFIG FILE
 # Secure /server-status behind htaccess
 srvstatus_htuser=serverinfo
 srvstatus_htpass=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
@@ -273,6 +273,7 @@ mysql -e "DELETE FROM mysql.user WHERE User='$MYSQL_USR' AND Host NOT IN ('local
 mysql -e "DROP DATABASE test;"
 mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
 mysql -e "FLUSH PRIVILEGES;"
+mysql $MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME
 
 #mysql -e "DROP USER ''@'localhost'"
 #mysql -e "DROP USER ''@'$(hostname)'"
@@ -284,6 +285,7 @@ mysql -e "FLUSH PRIVILEGES;"
 
 systemctl restart mysql
 
+################################################################################################### WRITE TO CONFIG FILE
 # Set MySQL root password in /root/.my.cnf
 cp /$TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
 sed -i "s/\$mysqlrootpassword/$MYSQL_PASS/g" /root/.my.cnf
@@ -334,6 +336,7 @@ apt-get install -y phpmyadmin
 # Copy over templates
 cp /$TEMP_DIR/templates/ubuntu/phpmyadmin/phpMyAdmin.conf.template /etc/phpmyadmin/phpMyAdmin.conf
 
+################################################################################################### WRITE TO CONFIG FILE
 # Setup PHPMyAdmin variables
 echo "$htuser $htpass" > /root/.phpmyadminpass
 
@@ -403,7 +406,7 @@ else
   exit 1
 fi
 
-mysql -u$MYSQL_USR -p$MYSQL_PASS -e "$MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME;"
+#mysql -u$MYSQL_USR -p$MYSQL_PASS -e "$MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME;"
 
 systemctl restart mysql
 
@@ -417,7 +420,7 @@ sed -i "s/\$mysqldatabase/$MYSQL_DB/g" /${WWW_PATH:?}/application/config/databas
 
 systemctl restart apache2
 
-
+################################################################################################### WRITE TO CONFIG FILE
 # Set MySQL root password in /root/.my.cnf
 cp /$TEMP_DIR/templates/ubuntu/misc/misc.template /root/.misc.cnf
 sed -i "s/\$radiususer/$MYSQL_RAD_USER/g" /root/.misc.cnf
