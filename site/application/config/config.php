@@ -25,9 +25,7 @@ ob_start();
 |
 */
 
-
-$url = (isset($_SERVER['HTTPS']) ? "https://" : "http://"); 
-
+$url = (isset($_SERVER['HTTPS']) ? "https://" : "http://");
 $url .= $_SERVER['HTTP_HOST']. str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 
 $config['base_url'] = $url;
@@ -230,7 +228,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 1;
+$config['log_threshold'] = 4;
 
 /*
 |--------------------------------------------------------------------------

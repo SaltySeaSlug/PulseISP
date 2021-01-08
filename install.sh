@@ -195,11 +195,11 @@ apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils p
 /usr/sbin/phpenmod opcache
 
 ######################################################################################################################## Enable FPM
-PHP_VER=`php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/'`
-/usr/sbin/a2dismod php"$PHP_VER"
-apt-get install php-fpm -y
-/usr/sbin/a2enmod proxy_fcgi setenvif
-/usr/sbin/a2enconf php"$PHP_VER"-fpm
+#PHP_VER=`php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/'`
+#/usr/sbin/a2dismod php"$PHP_VER"
+#apt-get install php-fpm -y
+#/usr/sbin/a2enmod proxy_fcgi setenvif
+#/usr/sbin/a2enconf php"$PHP_VER"-fpm
 
 ######################################################################################################################## Copy over templates
 mkdir /var/www/vhosts
@@ -275,15 +275,15 @@ chown mysql:mysql /var/lib/mysqltmp
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;"
+mysql $MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME
 
 ######################################################################################################################## ISSUE HERE
-#mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 mysql -e "DELETE FROM mysql.user WHERE User='';"
 mysql -e "DELETE FROM mysql.user WHERE User='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 mysql -e "DROP DATABASE test;"
 mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
+mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 mysql -e "FLUSH PRIVILEGES;"
-mysql $MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME
 
 #mysql -e "DROP USER ''@'localhost'"
 #mysql -e "DROP USER ''@'$(hostname)'"
@@ -406,27 +406,27 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 WWW_USR="www-data"
 
 ######################################################################################################################## Import Database
-#mysql -u$MYSQL_USR -p$MYSQL_PASS -e "CREATE DATABASE $MYSQL_DB;"
-
-RESULT=`mysql --skip-column-names -e "SHOW DATABASES LIKE '$MYSQL_DB'"`
-if [ "$RESULT" == "$MYSQL_DB" ]; then
-  echo -e "$COL_GREEN -$DB database exist OK $COL_RESET"
-else
-  echo -e "$COL_RED -$DB database does not exist! Probably either mysql not accessible or wrong credentials provided. $COL_RESET"
-  exit 1
-fi
-
-#mysql -u$MYSQL_USR -p$MYSQL_PASS -e "$MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME;"
-
-systemctl restart mysql
 
 ######################################################################################################################## Copy web GUI to Apache public folder
-cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
-cp /$TEMP_DIR/templates/site/database.php.template /${WWW_PATH:?}/application/config/database.php
-sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" /${WWW_PATH:?}/application/config/database.php
-sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" /${WWW_PATH:?}/application/config/database.php
-sed -i "s/\$mysqldatabase/$MYSQL_DB/g" /${WWW_PATH:?}/application/config/database.php
+apt-get install curl php-cli php-mbstring git unzip
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
+
+rm -fr "${WWW_PATH:?}/"*
+cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
+
+cd ${WWW_PATH:?}/
+composer install
+
+cp /$TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
+
+sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/database.php
+sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
+sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
+
+chown www-data:www-data /var/www/html/ -R
+chmod -R 0755 /var/www/html/
 
 systemctl restart apache2
 
