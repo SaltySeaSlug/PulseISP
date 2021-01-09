@@ -408,16 +408,16 @@ WWW_USR="www-data"
 ######################################################################################################################## Import Database
 
 ######################################################################################################################## Copy web GUI to Apache public folder
-apt-get install curl php-cli php-mbstring git unzip
+apt-get install -y curl php-cli php-mbstring git unzip
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 
 rm -fr "${WWW_PATH:?}/"*
-cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
+cp -fr /$TEMP_DIR/test/. ${WWW_PATH:?}/
 
 cd ${WWW_PATH:?}/
-composer install
+composer install -y
 
 cp /$TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
 
