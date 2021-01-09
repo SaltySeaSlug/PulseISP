@@ -195,7 +195,7 @@ apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils p
 /usr/sbin/phpenmod opcache
 
 ######################################################################################################################## Enable FPM
-PHP_VER=`php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/'`
+PHP_VER=$(php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/')
 /usr/sbin/a2dismod php"$PHP_VER"
 apt-get install php-fpm -y
 /usr/sbin/a2enmod proxy_fcgi setenvif
@@ -240,7 +240,7 @@ sed -i "s@\$session_save_path@$session_save_path@g" /etc/php/7.4/apache2/php.ini
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Secure /server-status behind htaccess
 srvstatus_htuser=serverinfo
-srvstatus_htpass=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+srvstatus_htpass=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 echo "$srvstatus_htuser $srvstatus_htpass" > /root/.serverstatus
 htpasswd -b -c /etc/apache2/status-htpasswd $srvstatus_htuser $srvstatus_htpass
 
@@ -259,11 +259,11 @@ sudo bash -c "echo -e '<?php\nphpinfo();\n?>' > $WWW_PATH/info.php"
 
 ######################################################################################################################## MySQL Variables
 MYSQL_USR="root"
-MYSQL_PASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+MYSQL_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 MYSQL_DB="pulseisp_db"
 MYSQL_SCHEME="import_db.sql"
 MYSQL_RAD_USER="radius"
-MYSQL_RAD_PASS=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+MYSQL_RAD_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
 ######################################################################################################################## Install MySQL packages
 apt-get install -y mysql-server mysql-client libmysqlclient-dev
@@ -337,7 +337,7 @@ echo "30 3 * * * root /usr/sbin/holland -q bk" > /etc/cron.d/holland
 
 ######################################################################################################################## PHPMyAdmin variables
 htuser=serverinfo
-htpass=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+htpass=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
 ######################################################################################################################## Install PHPMyAdmin package
 export DEBIAN_FRONTEND=noninteractive
@@ -369,7 +369,7 @@ systemctl restart apache2
 
 ######################################################################################################################## FreeRadius Variables
 FREERADIUS_PATH="/etc/freeradius"
-FREERADIUS_SECRET=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
 apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
 
@@ -417,7 +417,7 @@ rm -fr "${WWW_PATH:?}/"*
 cp -fr /$TEMP_DIR/test/. ${WWW_PATH:?}/
 
 cd ${WWW_PATH:?}/
-sudo -n composer install
+sudo composer -n install
 
 cp /$TEMP_DIR/templates/test/database.php.template $WWW_PATH/application/config/database.php
 
@@ -427,6 +427,10 @@ sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database
 
 chown www-data:www-data /var/www/html/ -R
 chmod -R 0755 /var/www/html/
+currentUser="$(whoami)"
+usermod -a -G www-data "${USER}"
+chgrp -R www-data /var/www
+chmod -R g+w /var/www
 
 systemctl restart apache2
 
