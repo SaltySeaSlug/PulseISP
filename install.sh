@@ -145,22 +145,26 @@ case $rmver in
 echo -e "$COL_CYAN Setup starting. $COL_RESET"
 echo
 
-######################################################################################################################## Clone repository to temp directory
-sudo git clone "$INSTALL_URL" "/$TEMP_DIR"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Base Package Installation Tasks $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
-########################################################################################################################
-# Base Package Installation Tasks
-########################################################################################################################
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Update System $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
-######################################################################################################################## Update system
 apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y
 
-######################################################################################################################## Install base packages
-apt install -y cron openssh-server vim sysstat man-db wget rsync
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Install base packages $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
-########################################################################################################################
-# Web Server Package Installation Tasks
-########################################################################################################################
+apt install -y cron openssh-server vim sysstat man-db wget rsync
+git clone "$INSTALL_URL" "/$TEMP_DIR"
+
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Web Server Package Installation Tasks $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
 ######################################################################################################################## Variables
 WWW_PATH="/var/www/html"
@@ -188,7 +192,10 @@ short_open_tag=On
 expose_php=Off
 session_save_path='/var/lib/php/sessions'
 
-######################################################################################################################## Install Apache and PHP packages
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Install Apache and PHP packages $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils php-cli php-pear php-mysql php-gd php-dev php-curl php-opcache php-mail php-mail-mime php-db php-mbstring php-xml
 /usr/sbin/a2dismod mpm_event
 /usr/sbin/a2enmod access_compat alias auth_basic authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex deflate dir env filter mime mpm_prefork negotiation rewrite setenvif socache_shmcb ssl status php7.4 mpm_prefork
@@ -201,7 +208,10 @@ apt-get install php-fpm -y
 /usr/sbin/a2enmod proxy_fcgi setenvif
 /usr/sbin/a2enconf php"$PHP_VER"-fpm
 
-######################################################################################################################## Copy over templates
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Copy over templates $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 mkdir /var/www/vhosts
 mkdir -p /var/lib/php/sessions
 chown root:www-data /var/lib/php/sessions
@@ -214,7 +224,10 @@ cp /$TEMP_DIR/templates/ubuntu/apache/ssl.conf.template  /etc/apache2/mods-avail
 cp /$TEMP_DIR/templates/ubuntu/apache/status.conf.template  /etc/apache2/mods-available/status.conf
 cp /$TEMP_DIR/templates/ubuntu/php/php.ini.template /etc/php/7.4/apache2/php.ini
 
-######################################################################################################################## Setup Apache variables
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Setup Apache Variables $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 sed -i "s/\$timeout/$timeout/g" /etc/apache2/apache2.conf
 sed -i "s/\$keep_alive_setting/$keep_alive/g" /etc/apache2/apache2.conf
 sed -i "s/\$keep_alive_requests/$keep_alive_requests/g" /etc/apache2/apache2.conf
@@ -227,7 +240,10 @@ sed -i "s/\$prefork_max_clients/$prefork_max_clients/g" /etc/apache2/mods-availa
 sed -i "s/\$prefork_max_requests_per_child/$prefork_max_requests_per_child/g" /etc/apache2/mods-available/mpm_prefork.conf
 sed -i "s/\$prefork_listen_backlog/$prefork_listen_backlog/g" /etc/apache2/mods-available/mpm_prefork.conf
 
-######################################################################################################################## Setup PHP variables
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Setup PHP Variables $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 sed -i "s/\$memory_limit/$memory_limit/g" /etc/php/7.4/apache2/php.ini
 sed -i "s/\$short_open_tag/$short_open_tag/g" /etc/php/7.4/apache2/php.ini
 sed -i "s/\$expose_php/$expose_php/g" /etc/php/7.4/apache2/php.ini
@@ -237,25 +253,33 @@ sed -i "s/\$post_max_size/$post_max_size/g" /etc/php/7.4/apache2/php.ini
 sed -i "s/\$upload_max_filesize/$upload_max_filesize/g" /etc/php/7.4/apache2/php.ini
 sed -i "s@\$session_save_path@$session_save_path@g" /etc/php/7.4/apache2/php.ini
 
-######################################################################################################################## WRITE TO CONFIG FILE
-######################################################################################################################## Secure /server-status behind htaccess
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Secure /server-status | Write to config file $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 srvstatus_htuser=serverinfo
 srvstatus_htpass=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 echo "$srvstatus_htuser $srvstatus_htpass" > /root/.serverstatus
 htpasswd -b -c /etc/apache2/status-htpasswd $srvstatus_htuser $srvstatus_htpass
 
-######################################################################################################################## Restart Apache to apply new settings
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Restart Apache to apply new settings $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 systemctl enable apache2
 systemctl restart apache2
 
-######################################################################################################################## Open up ports
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Modify Firewall Rules $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 ufw allow to any port 1812 proto udp && sudo ufw allow to any port 1813 proto udp
 iptables -I INPUT -p tcp --dport 80 -j ACCEPT && ufw allow 80 && ufw allow 443
 sudo bash -c "echo -e '<?php\nphpinfo();\n?>' > $WWW_PATH/info.php"
 
-########################################################################################################################
-# MySQL Server Package Installation Tasks
-########################################################################################################################
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN MySQL Server Package Installation Tasks $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
 ######################################################################################################################## MySQL Variables
 MYSQL_USR="root"
@@ -265,11 +289,18 @@ MYSQL_SCHEME="import_db.sql"
 MYSQL_RAD_USER="radius"
 MYSQL_RAD_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
-######################################################################################################################## Install MySQL packages
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Install MySQL Packages $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+
 apt-get install -y mysql-server mysql-client libmysqlclient-dev
 mkdir -p /etc/mysql/conf.d
 mkdir -p /var/lib/mysqltmp
 chown mysql:mysql /var/lib/mysqltmp
+
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
+echo -e "$COL_CYAN Set some security for MySQL $COL_RESET"
+echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
 ######################################################################################################################## Set some info before we secure
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
@@ -277,21 +308,12 @@ mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;"
 mysql $MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME
 
-######################################################################################################################## ISSUE HERE
 mysql -e "DELETE FROM mysql.user WHERE User='';"
 mysql -e "DELETE FROM mysql.user WHERE User='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 mysql -e "DROP DATABASE test;"
 mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\_%';"
 mysql -e "ALTER USER '$MYSQL_USR'@'localhost' IDENTIFIED WITH mysql_native_password BY '$MYSQL_PASS';"
 mysql -e "FLUSH PRIVILEGES;"
-
-#mysql -e "DROP USER ''@'localhost'"
-#mysql -e "DROP USER ''@'$(hostname)'"
-#mysql -e "DROP DATABASE test"
-#mysql -e "FLUSH PRIVILEGES;"
-
-#mysql -e "DELETE FROM mysql.user WHERE USER='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-#mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test_%';"
 
 systemctl restart mysql
 
@@ -414,12 +436,12 @@ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 
 rm -fr "${WWW_PATH:?}/"*
-cp -fr /$TEMP_DIR/test/. ${WWW_PATH:?}/
+cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
 
-cd ${WWW_PATH:?}/
+cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
 
-cp /$TEMP_DIR/templates/test/database.php.template $WWW_PATH/application/config/database.php
+cp /$TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
 
 sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
@@ -428,7 +450,7 @@ sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database
 chown www-data:www-data /var/www/html/ -R
 chmod -R 0755 /var/www/html/
 currentUser="$(whoami)"
-usermod -a -G www-data "${USER}"
+usermod -a -G www-data "$currentUser"
 chgrp -R www-data /var/www
 chmod -R g+w /var/www
 
@@ -543,14 +565,27 @@ echo
 
 3 ) echo "Selected: Test"
 #----------------------------------------------------------------------- DOWNLOADING
-sudo apt-get install git
-#sudo git clone "$INSTALL_URL" "/$TEMP_DIR"
-########################################################################################################################
-# MySQL Server Package Installation Tasks
-########################################################################################################################
 
-# Install MySQL packages
-mysql -uroot -p7wRRl9arWvNwioDV -e pulseisp_db < /temp/db/import_db.sql
+git clone "$INSTALL_URL" "/$TEMP_DIR"
+
+cp $WWW_PATH/application/config/database.php /$TEMP_DIR/templates/site/database.php.template
+
+rm -fr "${WWW_PATH:?}/"*
+cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
+
+cd ${WWW_PATH:?}/ || exit 1
+sudo composer -n install
+
+cp /$TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
+
+chown www-data:www-data /var/www/html/ -R
+chmod -R 0755 /var/www/html/
+currentUser="$(whoami)"
+usermod -a -G www-data "$currentUser"
+chgrp -R www-data /var/www
+chmod -R g+w /var/www
+
+systemctl restart apache2
 
 ;;
 
