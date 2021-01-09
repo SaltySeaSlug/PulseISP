@@ -29,6 +29,8 @@ USR_ROOT_PWD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
 OS_VER=`cat /etc/issue |awk '{print $1}'`
 TEMP_DIR="temp"
 INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
+WWW_PATH="/var/www/html"
+
 
 ########################################################################################################################
 # CONSOLE COLOURS
@@ -167,7 +169,6 @@ echo -e "$COL_CYAN Web Server Package Installation Tasks $COL_RESET"
 echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
 ######################################################################################################################## Variables
-WWW_PATH="/var/www/html"
 
 ######################################################################################################################## Apache variables
 timeout=30
