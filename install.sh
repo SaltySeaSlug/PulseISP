@@ -417,7 +417,7 @@ rm -fr "${WWW_PATH:?}/"*
 cp -fr /$TEMP_DIR/test/. ${WWW_PATH:?}/
 
 cd ${WWW_PATH:?}/
-composer install -y
+sudo -n composer install
 
 cp /$TEMP_DIR/templates/test/database.php.template $WWW_PATH/application/config/database.php
 
