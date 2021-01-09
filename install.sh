@@ -195,11 +195,11 @@ apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils p
 /usr/sbin/phpenmod opcache
 
 ######################################################################################################################## Enable FPM
-#PHP_VER=`php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/'`
-#/usr/sbin/a2dismod php"$PHP_VER"
-#apt-get install php-fpm -y
-#/usr/sbin/a2enmod proxy_fcgi setenvif
-#/usr/sbin/a2enconf php"$PHP_VER"-fpm
+PHP_VER=`php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/'`
+/usr/sbin/a2dismod php"$PHP_VER"
+apt-get install php-fpm -y
+/usr/sbin/a2enmod proxy_fcgi setenvif
+/usr/sbin/a2enconf php"$PHP_VER"-fpm
 
 ######################################################################################################################## Copy over templates
 mkdir /var/www/vhosts
@@ -419,7 +419,7 @@ cp -fr /$TEMP_DIR/test/. ${WWW_PATH:?}/
 cd ${WWW_PATH:?}/
 composer install -y
 
-cp /$TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
+cp /$TEMP_DIR/templates/test/database.php.template $WWW_PATH/application/config/database.php
 
 sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
