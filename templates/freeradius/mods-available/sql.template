@@ -207,7 +207,7 @@ sql {
 
         # If set to 'yes' (default) we read the group tables unless Fall-Through = no in the reply table.
         # If set to 'no' we do not read the group tables unless Fall-Through = yes in the reply table.
-#       read_groups = yes
+       read_groups = yes
 
         # If set to 'yes' (default) we read profiles unless Fall-Through = no in the groupreply table.
         # If set to 'no' we do not read profiles unless Fall-Through = yes in the groupreply table.
@@ -222,11 +222,11 @@ sql {
         # by enabling "logfile" there, or global logging by enabling "logfile" here.
         #
         # Per-section logging can be disabled by setting "logfile = ''"
-       logfile = ${logdir}/sqllog.sql
+#       logfile = ${logdir}/sqllog.sql
 
         #  Set the maximum query duration and connection timeout
         #  for rlm_sql_mysql.
-#       query_timeout = 5
+       query_timeout = 3
 
         #  As of version 3.0, the "pool" section has replaced the
         #  following configuration items:
@@ -300,11 +300,11 @@ sql {
                 retry_delay = 30
 
                 # The lifetime (in seconds) of the connection
-                lifetime = 0
+                lifetime = 600
 
                 #  idle timeout (in seconds).  A connection which is
                 #  unused for this length of time will be closed.
-                idle_timeout = 60
+                idle_timeout = 30
 
                 #  NOTE: All configuration settings are enforced.  If a
                 #  connection is closed because of "idle_timeout",

@@ -23,11 +23,11 @@ clear
 ########################################################################################################################
 
 USR_ROOT="root"
-USR_ROOT_PWD=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 # Set default password for root user
 #echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd root
-OS_VER=`cat /etc/issue |awk '{print $1}'`
-TEMP_DIR="temp"
+OS_VER=$(cat < /etc/issue | awk '{print $1}')
+TEMP_DIR="/temp"
 INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
 WWW_PATH="/var/www/html"
 
@@ -81,26 +81,26 @@ fi
 ######################################################################################################################## Verify Temp Directory
 echo -e "$COL_YELLOW Verifying $TEMP_DIR directory. $COL_RESET"
 sleep 1
-if [ ! -d "/$TEMP_DIR" ]; then
-    echo -e "$COL_RED /$TEMP_DIR folder not found. $COL_RESET"
+if [ ! -d "$TEMP_DIR" ]; then
+    echo -e "$COL_RED $TEMP_DIR folder not found. $COL_RESET"
     echo -e "$COL_MAGENTA Creating directory. $COL_RESET"
     echo -e "$COL_GREEN OK. $COL_RESET"
-    mkdir /$TEMP_DIR
+    mkdir $TEMP_DIR
 else
     echo -e "$COL_GREEN OK. $COL_RESET"
 fi
-cd /$TEMP_DIR || echo "Failure";
+cd $TEMP_DIR || echo "Failure";
 
-rm -fr "/${TEMP_DIR:?}/"*
-rm -fr "/${TEMP_DIR:?}/".??*
+rm -fr "${TEMP_DIR:?}/"*
+rm -fr "${TEMP_DIR:?}/".??*
 
 ######################################################################################################################## Verify Installation URL
 echo -e "$COL_YELLOW Checking if install url is accessible. $COL_RESET"
-cd /$TEMP_DIR || echo "Unable to access directory."
+cd $TEMP_DIR || echo "Unable to access directory."
 
 wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 0 -q https://raw.githubusercontent.com/SaltySeaSlug/PulseISP/main/.gitignore
 
-if [ ! -f /$TEMP_DIR/.gitignore ]; then
+if [ ! -f $TEMP_DIR/.gitignore ]; then
     echo
     echo -e "$COL_RED ERROR: Unable to contact $INSTALL_URL, or possibly internet is not working or your IP is in black list at destination server $COL_RESET"
     echo -e "$COL_RED ERROR: Please check manual if $INSTALL_URL is accessible or not or if it have required files $COL_RESET"
@@ -109,7 +109,7 @@ if [ ! -f /$TEMP_DIR/.gitignore ]; then
 else
     echo -e "$COL_GREEN OK. $COL_RESET"
 fi
-rm -fr "/${TEMP_DIR:?}/".gitignore
+rm -fr "${TEMP_DIR:?}/".gitignore
 
 ######################################################################################################################## Verify GIT
 echo -e "$COL_YELLOW Checking if GIT is installed. $COL_RESET"
@@ -136,7 +136,7 @@ echo "2. Update"
 echo
 echo -n "Choose an option: [1] "
 
-read rmver
+read -r rmver
 if [ -z "$rmver" ]; then
 rmver="1"
 fi
@@ -162,7 +162,7 @@ echo -e "$COL_CYAN Install base packages $COL_RESET"
 echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 
 apt install -y cron openssh-server vim sysstat man-db wget rsync
-git clone "$INSTALL_URL" "/$TEMP_DIR"
+git clone "$INSTALL_URL" "$TEMP_DIR"
 
 echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 echo -e "$COL_CYAN Web Server Package Installation Tasks $COL_RESET"
@@ -178,10 +178,10 @@ keep_alive_timeout=5
 prefork_start_servers=4
 prefork_min_spare_servers=4
 prefork_max_spare_servers=9
-prefork_server_limit=`free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f"`
-prefork_max_clients=`free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f"`
+prefork_server_limit=$(free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f")
+prefork_max_clients=$(free -m | grep "Mem:" | awk '{print $2/2/15}' | xargs printf "%.0f")
 prefork_max_requests_per_child=1000
-prefork_listen_backlog=`free -m | grep "Mem:" | awk '{print $2/2/15*2}' | xargs printf "%.0f"`
+prefork_listen_backlog=$(free -m | grep "Mem:" | awk '{print $2/2/15*2}' | xargs printf "%.0f")
 
 ######################################################################################################################## PHP variables
 max_execution_time=30
@@ -217,13 +217,13 @@ mkdir /var/www/vhosts
 mkdir -p /var/lib/php/sessions
 chown root:www-data /var/lib/php/sessions
 chmod 770 /var/lib/php/sessions
-cp /$TEMP_DIR/templates/ubuntu/apache/default.template /etc/apache2/sites-available/
-cp /$TEMP_DIR/templates/ubuntu/apache/apache2.conf.template /etc/apache2/apache2.conf
-cp /$TEMP_DIR/templates/ubuntu/apache/ports.conf.template /etc/apache2/ports.conf
-cp /$TEMP_DIR/templates/ubuntu/apache/mpm_prefork.conf.template  /etc/apache2/mods-available/mpm_prefork.conf
-cp /$TEMP_DIR/templates/ubuntu/apache/ssl.conf.template  /etc/apache2/mods-available/ssl.conf
-cp /$TEMP_DIR/templates/ubuntu/apache/status.conf.template  /etc/apache2/mods-available/status.conf
-cp /$TEMP_DIR/templates/ubuntu/php/php.ini.template /etc/php/7.4/apache2/php.ini
+cp $TEMP_DIR/templates/ubuntu/apache/default.template /etc/apache2/sites-available/
+cp $TEMP_DIR/templates/ubuntu/apache/apache2.conf.template /etc/apache2/apache2.conf
+cp $TEMP_DIR/templates/ubuntu/apache/ports.conf.template /etc/apache2/ports.conf
+cp $TEMP_DIR/templates/ubuntu/apache/mpm_prefork.conf.template  /etc/apache2/mods-available/mpm_prefork.conf
+cp $TEMP_DIR/templates/ubuntu/apache/ssl.conf.template  /etc/apache2/mods-available/ssl.conf
+cp $TEMP_DIR/templates/ubuntu/apache/status.conf.template  /etc/apache2/mods-available/status.conf
+cp $TEMP_DIR/templates/ubuntu/php/php.ini.template /etc/php/7.4/apache2/php.ini
 
 echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 echo -e "$COL_CYAN Setup Apache Variables $COL_RESET"
@@ -261,7 +261,7 @@ echo -e "$COL_CYAN #############################################################
 srvstatus_htuser=serverinfo
 srvstatus_htpass=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 echo "$srvstatus_htuser $srvstatus_htpass" > /root/.serverstatus
-htpasswd -b -c /etc/apache2/status-htpasswd $srvstatus_htuser $srvstatus_htpass
+htpasswd -b -c /etc/apache2/status-htpasswd $srvstatus_htuser "$srvstatus_htpass"
 
 echo -e "$COL_CYAN ##################################################################################################### $COL_RESET"
 echo -e "$COL_CYAN Restart Apache to apply new settings $COL_RESET"
@@ -307,7 +307,7 @@ echo -e "$COL_CYAN #############################################################
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;"
-mysql $MYSQL_DB < /$TEMP_DIR/db/$MYSQL_SCHEME
+mysql $MYSQL_DB < $TEMP_DIR/db/$MYSQL_SCHEME
 
 mysql -e "DELETE FROM mysql.user WHERE User='';"
 mysql -e "DELETE FROM mysql.user WHERE User='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
@@ -320,7 +320,7 @@ systemctl restart mysql
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Set MySQL root password in /root/.my.cnf
-cp /$TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
+cp $TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
 sed -i "s/\$mysqlrootpassword/$MYSQL_PASS/g" /root/.my.cnf
 sed -i "s/\$mysqlrootusername/$MYSQL_USR/g" /root/.my.cnf
 
@@ -345,7 +345,7 @@ apt-get update
 apt-get install -y holland python3-mysqldb
 
 ######################################################################################################################## Copy over templates and configure backup directory
-cp /$TEMP_DIR/templates/ubuntu/holland/default.conf.template /etc/holland/backupsets/default.conf
+cp $TEMP_DIR/templates/ubuntu/holland/default.conf.template /etc/holland/backupsets/default.conf
 
 ######################################################################################################################## Setup nightly cronjob
 echo "30 3 * * * root /usr/sbin/holland -q bk" > /etc/cron.d/holland
@@ -367,14 +367,14 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get install -y phpmyadmin
 
 ######################################################################################################################## Copy over templates
-cp /$TEMP_DIR/templates/ubuntu/phpmyadmin/phpMyAdmin.conf.template /etc/phpmyadmin/phpMyAdmin.conf
+cp $TEMP_DIR/templates/ubuntu/phpmyadmin/phpMyAdmin.conf.template /etc/phpmyadmin/phpMyAdmin.conf
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Setup PHPMyAdmin variables
 echo "$htuser $htpass" > /root/.phpmyadminpass
 
 ########################################################################################################################Set PHPMyAdmin before htaccess file
-htpasswd -b -c /etc/phpmyadmin/phpmyadmin-htpasswd $htuser $htpass
+htpasswd -b -c /etc/phpmyadmin/phpmyadmin-htpasswd $htuser "$htpass"
 
 ######################################################################################################################## Symlink in apache config and restart apache
 ln -s /etc/phpmyadmin/phpMyAdmin.conf /etc/apache2/conf-enabled/phpMyAdmin.conf
@@ -397,9 +397,9 @@ FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
 
 ######################################################################################################################## Copy over templates
-#cp /$TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.0/mods-available/sql
-#cp /$TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
-#cp /$TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
+cp $TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.0/mods-available/sql
+#cp $TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
+#cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
 
 ######################################################################################################################## Setup Apache variables
 #sed -i "s/\$MYSQL_USR/$MYSQL_USR/g" /etc/freeradius/3.0/mods-available/sql
@@ -408,12 +408,12 @@ apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
 
 ######################################################################################################################## Setup Symbolic Links
 ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
-ln -s /etc/freeradius/3.0/mods-available/sqlcounter /etc/freeradius/3.0/mods-enabled/
-ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
+#ln -s /etc/freeradius/3.0/mods-available/sqlcounter /etc/freeradius/3.0/mods-enabled/
+#ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
 
 ######################################################################################################################## Setup ownership user and group
-chgrp -h freerad /etc/freeradius/3.0/mods-available/sql
-chown -R freerad:freerad /etc/freeradius/3.0/mods-enabled/sql\
+#chgrp -h freerad /etc/freeradius/3.0/mods-available/sql
+#chown -R freerad:freerad /etc/freeradius/3.0/mods-enabled/sql
 
 systemctl enable --now freeradius
 systemctl restart freeradius
@@ -437,12 +437,12 @@ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 
 rm -fr "${WWW_PATH:?}/"*
-cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
+cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 
 cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
 
-cp /$TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
+cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
 
 sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
@@ -459,7 +459,7 @@ systemctl restart apache2
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Set MySQL root password in /root/.my.cnf
-cp /$TEMP_DIR/templates/ubuntu/misc/misc.template /root/.misc.cnf
+cp $TEMP_DIR/templates/ubuntu/misc/misc.template /root/.misc.cnf
 sed -i "s/\$radiususer/$MYSQL_RAD_USER/g" /root/.misc.cnf
 sed -i "s/\$radiuspassword/$MYSQL_RAD_PASS/g" /root/.misc.cnf
 sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
@@ -507,6 +507,21 @@ ${lightblue}Radius User:${nc} $MYSQL_RAD_USER
 ${lightblue}Radius Pass:${nc} $MYSQL_RAD_PASS
 
 ${lightblue}Freeradius Secret:${nc} $FREERADIUS_SECRET
+${lightblue}User Misc :${nc} $currentUser
+
+Front-end Username : superadmin
+Front-end Password : 12345
+
+NOTE :
+  sudo nano /etc/apache2/sites-available/000-default.conf
+ADD
+  <Directory /var/www/html>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Require all granted
+  </Directory>
+
+  sudo systemctl restart apache2
 
 ** For security purposes, there is an htaccess file in front of phpmyadmin.
 So when the popup window appears, use the serverinfo username and password.
@@ -567,17 +582,17 @@ echo
 3 ) echo "Selected: Test"
 #----------------------------------------------------------------------- DOWNLOADING
 
-git clone "$INSTALL_URL" "/$TEMP_DIR"
+git clone "$INSTALL_URL" "$TEMP_DIR"
 
-cp $WWW_PATH/application/config/database.php /$TEMP_DIR/templates/site/database.php.template
+cp $WWW_PATH/application/config/database.php $TEMP_DIR/templates/site/database.php.template
 
 rm -fr "${WWW_PATH:?}/"*
-cp -fr /$TEMP_DIR/site/. ${WWW_PATH:?}/
+cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 
 cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
 
-cp /$TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
+cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
 
 chown www-data:www-data /var/www/html/ -R
 chmod -R 0755 /var/www/html/

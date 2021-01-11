@@ -1,16 +1,22 @@
 <VirtualHost *:80>
         ServerName example.com
         ServerAlias www.example.com
-        DocumentRoot /var/www/vhosts/example.com
+        DocumentRoot /var/www/html
 
         # Force HTTPS when loading the page
         #RewriteEngine On
         #RewriteCond %{HTTPS} off
         #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
-        <Directory /var/www/vhosts/example.com>
-                Options -Indexes +FollowSymLinks -MultiViews
-                AllowOverride All
+        #<Directory /var/www/vhosts/example.com>
+        #        Options -Indexes +FollowSymLinks -MultiViews
+        #        AllowOverride All
+        #</Directory>
+
+        <Directory /var/www/html>
+               Options Indexes FollowSymLinks MultiViews
+               AllowOverride All
+               Require all granted
         </Directory>
 
         CustomLog /var/log/apache2/example.com-access.log combined
