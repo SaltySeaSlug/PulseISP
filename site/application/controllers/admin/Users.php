@@ -92,7 +92,7 @@ class Users extends MY_Controller {
 				if($result){
 
 					// Activity Log 
-					$this->activity_model->add_log(1);
+					$this->activity_model->add_to_log(1, "User has been added successfully");
 
 					$this->session->set_flashdata('success', 'User has been added successfully!');
 					redirect(base_url('admin/users'));
@@ -139,8 +139,8 @@ class Users extends MY_Controller {
 				$data = $this->security->xss_clean($data);
 				$result = $this->user_model->edit_user($data, $id);
 				if($result){
-					// Activity Log 
-					$this->activity_model->add_log(2);
+					// Activity Log
+					$this->activity_model->add_to_log(2, "User has been updated successfully");
 
 					$this->session->set_flashdata('success', 'User has been updated successfully!');
 					redirect(base_url('admin/users'));
@@ -162,8 +162,8 @@ class Users extends MY_Controller {
 		
 		$this->db->delete('ci_users', array('id' => $id));
 
-		// Activity Log 
-		$this->activity_model->add_log(3);
+		// Activity Log
+		$this->activity_model->add_to_log(3, "User has been deleted successfully");
 
 		$this->session->set_flashdata('success', 'Use has been deleted successfully!');
 		redirect(base_url('admin/users'));

@@ -19,9 +19,10 @@
           <thead>
             <tr>
               <th>#</th>
-              <th><?= trans('username') ?></th>
-              <th><?= trans('activity') ?></th>
-              <th><?= trans('date') ?>/<?= trans('time') ?></th>
+              	<th><?= trans('username') ?></th>
+              	<th><?= trans('activity') ?></th>
+				<th>Message</th>
+				<th><?= trans('date') ?>/<?= trans('time') ?></th>
             </tr>
           </thead>
         </table>
@@ -45,8 +46,9 @@
     "columnDefs": [
     { "targets": 0, "name": "id", 'searchable':true, 'orderable':true},
     { "targets": 1, "name": "username", 'searchable':true, 'orderable':true},
-    { "targets": 2, "name": "description", 'searchable':true, 'orderable':true},
-    { "targets": 3, "name": "created_at", 'searchable':true, 'orderable':true},
+	{ "targets": 2, "name": "description", 'searchable':true, 'orderable':true},
+	{ "targets": 3, "name": "message", 'searchable':true, 'orderable':true},
+    { "targets": 4, "name": "created_at", 'searchable':true, 'orderable':true},
     ]
   });
 </script>

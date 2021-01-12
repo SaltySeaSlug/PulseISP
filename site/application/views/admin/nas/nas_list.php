@@ -13,7 +13,7 @@
         </div>
         <div class="d-inline-block float-right">
           <?php if($this->rbac->check_operation_permission('add')): ?>
-            <a href="<?= base_url('admin/users/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_user') ?></a>
+            <a href="<?= base_url('admin/nas/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_nas') ?></a>
           <?php endif; ?>
         </div>
       </div>

@@ -451,6 +451,12 @@ sed -i "s/\$radiususer/$MYSQL_RAD_USER/g" /root/.misc.cnf
 sed -i "s/\$radiuspassword/$MYSQL_RAD_PASS/g" /root/.misc.cnf
 sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
 
+######################################################################################################################## Update sudo file - allow www-user exec access
+sudo cp /etc/sudoers /etc/sudoers.bak
+echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
+
+systemctl restart freeradius
+systemctl restart apache2
 
 ########################################################################################################################
 # Setup Report
@@ -498,17 +504,6 @@ ${lightblue}User Misc :${nc} $currentUser
 
 Front-end Username : superadmin
 Front-end Password : 12345
-
-NOTE :
-  sudo nano /etc/apache2/sites-available/000-default.conf
-ADD
-  <Directory /var/www/html>
-    Options Indexes FollowSymLinks MultiViews
-    AllowOverride All
-    Require all granted
-  </Directory>
-
-  sudo systemctl restart apache2
 
 ** For security purposes, there is an htaccess file in front of phpmyadmin.
 So when the popup window appears, use the serverinfo username and password.

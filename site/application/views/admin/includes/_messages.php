@@ -6,6 +6,7 @@
         <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
         <?= $this->session->flashdata('errors')?>
       </div>
+	<?php unset($_SESSION['errors']); ?>
     <?php endif; ?>
 
     <!--print custom error message-->
@@ -19,6 +20,7 @@
                 </p>
             </div>
         </div>
+	<?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
     <!--print custom success message-->
@@ -32,4 +34,5 @@
                 </p>
             </div>
         </div>
+	<?php unset($_SESSION['success']); ?>
     <?php endif; ?>

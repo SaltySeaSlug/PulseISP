@@ -12,6 +12,7 @@ $lang['nas_list']								= "NAS Devices List";
 $lang['name']									= "Name";
 $lang['ip_address']								= "IP Address";
 $lang['identifier']								= "Identifier";
+$lang['add_new_nas']								= "Add NAS";
 
 $lang['dashboard']                               = "Dashboard";
 	$lang['dashboard_v1']                        = "Dashboard v1";

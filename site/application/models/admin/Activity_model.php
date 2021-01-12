@@ -9,6 +9,7 @@ class Activity_model extends CI_Model{
 			ci_activity_log.user_id,
 			ci_activity_log.admin_id,
 			ci_activity_log.created_at,
+			ci_activity_log.description as message,
 			ci_activity_status.description,
 			ci_users.id as uid,
 			ci_users.username,
@@ -33,7 +34,17 @@ class Activity_model extends CI_Model{
 		$this->db->insert('ci_activity_log',$data);
 		return true;
 	}
-	
+	public function add_to_log($activity,$message){
+		$data = array(
+			'activity_id' => $activity,
+			'user_id' => ($this->session->userdata('user_id') != '') ? $this->session->userdata('user_id') : 0,
+			'admin_id' => ($this->session->userdata('admin_id') != '') ? $this->session->userdata('admin_id') : 0,
+			'description' => json_encode($message),
+			'created_at' => date('Y-m-d H:i:s')
+		);
+		$this->db->insert('ci_activity_log',$data);
+		return true;
+	}
 
 	
 }

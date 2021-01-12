@@ -17,8 +17,19 @@
            <!-- For Messages -->
             <?php $this->load->view('admin/includes/_messages.php') ?>
 
-            <?php echo form_open(base_url('admin/users/add'), 'class="form-horizontal"');  ?> 
-              <div class="form-group">
+            <?php echo form_open(base_url('admin/users/add'), 'class="form-horizontal"');  ?>
+			<div class="form-group">
+				<label for="account_code" class="col-md-2 control-label">Account Code</label>
+
+				<div class="col-md-12">
+					<div class="input-group">
+						<input name="account_code" type="text" class="form-control" id="profile-input-account-code" placeholder="Account Code" autocomplete="off" value="" required>
+						<span class="input-group-append"><button id="account_code_btn" onclick="generateAccountCode()" type="button" class="btn btn-default btn-flat">Generate</button></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
                 <label for="username" class="col-md-2 control-label"><?= trans('username') ?></label>
 
                 <div class="col-md-12">
@@ -80,3 +91,39 @@
       </div>
     </section> 
   </div>
+
+  <script>
+	  $(document).ready(function() {
+
+		  if ($('#profile-input-account-code').val().trim() != '') {
+			  $('#profile-input-account-code').attr("readonly", "true");
+			  $('#account_code_btn').attr("disabled", "true");
+		  }
+	  });
+
+	  function generateAccountCode() {
+		  var fname = $('#firstname').val().trim().toLowerCase();
+
+		  $.ajax({
+			  type: "GET",
+			  url: "<?php echo base_url("functions/generate_accountcode.php"); ?>",
+			  dataType: "json",
+			  data: {"name": fname},
+			  success: function (data) {
+			  	if (data.status == 'OK') {
+					$('#profile-input-account-code').val(data.result);
+					$('#account_code_btn').attr("disabled", "true");
+					$('#firstname').removeClass("is-invalid")
+				}
+			  	else if (data.status == 'ERR')
+				{
+					$('#firstname').addClass("is-invalid");
+				}
+			  	else { alert("Error"); }
+			  },
+			  error: function (error) {
+				  alert(error);
+			  }
+		  });
+	  }
+  </script>

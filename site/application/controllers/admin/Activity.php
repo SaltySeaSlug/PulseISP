@@ -31,7 +31,7 @@ class Activity extends MY_Controller {
 			$data[]= array(
 				++$i,
 				($row['username']) ? $row['username'] : $row['adminname'],
-				$row['description'],
+				$row['description'], $row['message'],
 				date('F d, Y H:i',strtotime($row['created_at'])),	
 			);
 		}

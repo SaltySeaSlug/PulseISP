@@ -1,6 +1,10 @@
+DirectoryIndex index.php
+Options -Indexes
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
+RewriteCond $1 !^(index.php|img|css|js|install|robots.txt|favicon.ico|update.php)
 
 #Removes access to the system folder by users.
 #Additionally this will allow you to create a System.php controller,
@@ -21,7 +25,7 @@ RewriteRule ^(.*)$ /index.php?/$1 [L]
 #request to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?/$1 [L]
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
 </IfModule>
 
 <IfModule !mod_rewrite.c>

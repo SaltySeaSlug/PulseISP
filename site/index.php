@@ -161,6 +161,12 @@ switch (ENVIRONMENT)
 	// The controller function you wish to be called.
 	// $routing['function']	= '';
 
+if (file_exists( 'install' )) {
+	if (!defined('install')) {
+		header('Location: install/index.php');
+		exit;
+	}
+}
 
 /*
  * -------------------------------------------------------------------
