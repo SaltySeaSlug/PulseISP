@@ -20,10 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4ffe9ab6-5474-478e-8846-e8c4390d8e0f" name="Default Changelist" comment="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/site/application/controllers/Home.php" beforeDir="false" afterPath="$PROJECT_DIR$/site/application/controllers/Home.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/site/application/controllers/admin/Nas.php" beforeDir="false" afterPath="$PROJECT_DIR$/site/application/controllers/admin/Nas.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/site/application/views/admin/nas/nas_add.php" beforeDir="false" afterPath="$PROJECT_DIR$/site/application/views/admin/nas/nas_add.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/install.sh" beforeDir="false" afterPath="$PROJECT_DIR$/install.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,18 +88,18 @@
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/site/functions" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/db" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="web.server" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PHP Projects\PulseISP\db" />
       <recent name="D:\PHP Projects\PulseISP\site\functions" />
       <recent name="D:\PHP Projects\PulseISP\site\application\views\admin\nas" />
       <recent name="D:\PHP Projects\PulseISP\site\assets\plugins\fontawesome-free" />
       <recent name="D:\PHP Projects\PulseISP\site\install" />
-      <recent name="D:\PHP Projects\PulseISP\site" />
     </key>
   </component>
   <component name="RunManager">
@@ -127,7 +124,7 @@
       <workItem from="1610002716377" duration="133000" />
       <workItem from="1610002869295" duration="22481000" />
       <workItem from="1610086444401" duration="51390000" />
-      <workItem from="1610360788633" duration="33962000" />
+      <workItem from="1610360788633" duration="34545000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1610028645631</created>
@@ -318,7 +315,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610453483282</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh">
+      <created>1610458289443</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1610458289443</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -402,9 +406,9 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="383" y="167" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610341946092" />
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1610452796745">
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1610458297702">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610452796745" />
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610458297702" />
   </component>
 </project>

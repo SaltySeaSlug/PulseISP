@@ -435,8 +435,8 @@ sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/da
 sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
 
-chown $WWW_USR:$WWW_USR /var/www/html/ -R
-chmod -R 0755 /var/www/html/
+chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
+chmod -R 0755 ${WWW_PATH:?}/
 currentUser="$(whoami)"
 usermod -a -G $WWW_USR "$currentUser"
 chgrp -R $WWW_USR /var/www
@@ -586,11 +586,11 @@ sudo composer -n install
 
 cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
 
-chown www-data:www-data /var/www/html/ -R
+chown $WWW_USR:$WWW_USR ${WWW_PATH}/ -R
 chmod -R 0755 /var/www/html/
 currentUser="$(whoami)"
-usermod -a -G www-data "$currentUser"
-chgrp -R www-data /var/www
+usermod -a -G $WWW_USR "$currentUser"
+chgrp -R $WWW_USR /var/www
 chmod -R g+w /var/www
 
 systemctl restart apache2

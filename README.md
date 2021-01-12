@@ -33,7 +33,7 @@ sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/SaltySeaSlug/Puls
 2.  Navigate to (`e.g. http://localhost/`)
 3.  Follow installation wizard
 
-> `NOTE: This is still a work in progress so note everything may work`
+> `NOTE: This is still a work in progress so not everything may work`
 
 ### Contributing
 If you'd like to contribute to this project.
