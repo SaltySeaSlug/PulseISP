@@ -542,22 +542,31 @@ cat /root/setup_report
 2 ) echo "Selected: Update"
 #----------------------------------------------------------------------- DOWNLOADING
 
+git clone "$INSTALL_URL" "$TEMP_DIR"
+mkdir /backup
 
-sed -n -e '/user/ s/.*= *//p' "/root/.serverstatus"
-sed -n -e '/password/ s/.*= *//p' "/root/.serverstatus"
-sed -n -e '/freeradius/ s/.*= *//p' "/root/.serverstatus"
+cp $WWW_PATH/application/config/database.php /backup/database.php
+cp /backup/database.php $WWW_PATH/application/config/database.php
 
-sed -n -e '/user/ s/.*= *//p' "/root/.phpmyadmin"
-sed -n -e '/password/ s/.*= *//p' "/root/.phpmyadmin"
-sed -n -e '/freeradius/ s/.*= *//p' "/root/.phpmyadmin"
+rm -fr "${WWW_PATH:?}/"*
+cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 
-sed -n -e '/user/ s/.*= *//p' "/root/.my.cnf"
-sed -n -e '/password/ s/.*= *//p' "/root/.my.cnf"
-sed -n -e '/freeradius/ s/.*= *//p' "/root/.my.cnf"
+rm -fr "/backup"
+#sed -n -e '/user/ s/.*= *//p' "/root/.serverstatus"
+#sed -n -e '/password/ s/.*= *//p' "/root/.serverstatus"
+#sed -n -e '/freeradius/ s/.*= *//p' "/root/.serverstatus"
 
-sed -n -e '/user/ s/.*= *//p' "/root/.misc.cnf"
-sed -n -e '/password/ s/.*= *//p' "/root/.misc.cnf"
-sed -n -e '/freeradius/ s/.*= *//p' "/root/.misc.cnf"
+#sed -n -e '/user/ s/.*= *//p' "/root/.phpmyadmin"
+#sed -n -e '/password/ s/.*= *//p' "/root/.phpmyadmin"
+#sed -n -e '/freeradius/ s/.*= *//p' "/root/.phpmyadmin"
+
+#sed -n -e '/user/ s/.*= *//p' "/root/.my.cnf"
+#sed -n -e '/password/ s/.*= *//p' "/root/.my.cnf"
+#sed -n -e '/freeradius/ s/.*= *//p' "/root/.my.cnf"
+
+#sed -n -e '/user/ s/.*= *//p' "/root/.misc.cnf"
+#sed -n -e '/password/ s/.*= *//p' "/root/.misc.cnf"
+#sed -n -e '/freeradius/ s/.*= *//p' "/root/.misc.cnf"
 echo
 ;;
 
