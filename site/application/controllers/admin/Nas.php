@@ -41,7 +41,7 @@ class Nas extends MY_Controller {
 
 				'<a title="View" class="view btn btn-sm btn-info" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fa fa-eye"></i></a>
 				<a title="Edit" class="update btn btn-sm btn-warning" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fa fa-edit"></i></a>
-				<a title="Delete" class="delete btn btn-sm btn-danger" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fa fa-trash-alt"></i></a>'
+				<a title="Delete" class="delete btn btn-sm btn-danger" href='.base_url("admin/nas/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fa fa-trash-alt"></i></a>'
 			);
 		}
 		$records['data']=$data;
@@ -64,12 +64,10 @@ class Nas extends MY_Controller {
 			//$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
 			//$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
 			//$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-			//$this->form_validation->set_rules('nasipaddress', 'nasipaddress', 'trim|required');
+			$this->form_validation->set_rules('nashost', 'nashost', 'trim|required');
 
 			if ($this->form_validation->run() == FALSE) {
-				$data = array(
-					'errors' => validation_errors()
-				);
+				$data = array('errors' => validation_errors());
 				$this->session->set_flashdata('errors', $data['errors']);
 				redirect(base_url('admin/nas/add'),'refresh');
 			}
@@ -78,11 +76,12 @@ class Nas extends MY_Controller {
 					'nasname' => $this->input->post('nashost'),
 					'shortname' => $this->input->post('nasname'),
 					'type' => $this->input->post('nastype'),
-					'ports' => $this->input->post('nasports'),
+					//'ports' => $this->input->post('nasports'),
 					'secret' => $this->input->post('nassecret'),
 					'server' => $this->input->post('nasvirtualserver'),
-					'community' => $this->input->post('nascommunity'),
-					'description' => $this->input->post('nasdescription'),
+					//'community' => $this->input->post('nascommunity'),
+					//'description' => $this->input->post('nasdescription'),
+					'nasidentifier' => $this->input->post('nasidentifier'),
 
 				);
 				$data = $this->security->xss_clean($data);
@@ -95,7 +94,7 @@ class Nas extends MY_Controller {
 					$this->session->set_flashdata('success', 'Nas Device has been added successfully!');
 					redirect(base_url('admin/nas'));
 
-					shell_exec("sudo /etc/init.d/freeradius restart 2>&1");
+					var_dump(shell_exec("sudo /etc/init.d/freeradius restart 2>&1"));
 				}
 			}
 		}
@@ -158,13 +157,13 @@ class Nas extends MY_Controller {
 	{
 		$this->rbac->check_operation_access(); // check opration permission
 		
-		$this->db->delete('ci_users', array('id' => $id));
+		$this->db->delete('nas', array('id' => $id));
 
 		// Activity Log 
 		$this->activity_model->add_log(3);
 
 		$this->session->set_flashdata('success', 'Use has been deleted successfully!');
-		redirect(base_url('admin/users'));
+		redirect(base_url('admin/nas'));
 	}
 
 }

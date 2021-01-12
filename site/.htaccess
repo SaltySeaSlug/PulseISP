@@ -4,7 +4,14 @@ Options -Indexes
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /
-RewriteCond $1 !^(index.php|img|css|js|install|robots.txt|favicon.ico|update.php)
+
+# If the setup directory exists in the document root...
+RewriteCond %{DOCUMENT_ROOT}/install -d
+# ...and you're not in isntall..
+RewriteCond %{REQUEST_URI} !(install) [NC]
+# ...redirect to setup - with a 302 (temporary redirect) to make sure the browser won't cache the redirect.
+RewriteRule !^install/ install/ [L,NC,R=302]
+
 
 #Removes access to the system folder by users.
 #Additionally this will allow you to create a System.php controller,

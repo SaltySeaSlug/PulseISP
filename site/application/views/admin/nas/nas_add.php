@@ -66,7 +66,14 @@
 				<div class="col-md-12">
 					<input type="text" class="form-control" id="nasname" name="nasname" required>
 				</div>
-			</div
+			</div>
+<!-- NAS IDENTIFIER -->
+			<div class="form-group">
+				<label for="nasidentifier" class="col-md-12 control-label">Identifier</label>
+				<div class="col-md-12">
+					<input type="text" class="form-control" id="nasidentifier" name="nasidentifier" required>
+				</div>
+			</div>
 
                   <div class="form-group">
                     <div class="col-md-12">
@@ -96,7 +103,7 @@
 			  type: "GET",
 			  url: "<?php echo base_url("functions/ping_ip.php"); ?>",
 			  dataType: "json",
-			  data: {"ip": $("#nasipaddress").val()},
+			  data: {"ip": $("#nashost").val()},
 			  success: function (result) {
 
 				  if (result != "ERR") { $("#pingbtn").removeClass("bg-red"); $("#pingbtn").addClass("bg-green"); $("#pingbtn").html(result + ' ms'); }
