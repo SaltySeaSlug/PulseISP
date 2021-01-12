@@ -276,7 +276,7 @@ echo -e "$COL_YELLOW MySQL Server Package Installation Tasks $COL_RESET"
 MYSQL_USR="root"
 MYSQL_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 MYSQL_DB="pulseisp_db"
-MYSQL_SCHEME="import_db.sql"
+MYSQL_SCHEME="pulseisp_db.sql"
 MYSQL_RAD_USER="radius"
 MYSQL_RAD_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 

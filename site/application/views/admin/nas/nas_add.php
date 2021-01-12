@@ -23,74 +23,50 @@
                   <?php $this->load->view('admin/includes/_messages.php') ?>
 
                   <?php echo form_open(base_url('admin/nas/add'), 'class="form-horizontal"');  ?>
-                  <div class="form-group">
-                    <label for="connectionType" class="col-md-12 control-label">Connection Type</label>
-
-                    <div class="col-md-12">
-						<input type="text" class="form-control" id="connectionType" name="connectionType" readonly value="Direct (Fixed IP)" required>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="nastype" class="col-md-12 control-label">NAS Type</label>
-
-                    <div class="col-md-12">
-						<select class="form-control" id="nastype" name="nastype">
-							<option value="Mikrotik">Mikrotik</option>
-							<option value="Cisco">Cisco</option>
-							<option value="Other">Other</option>
-						</select>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="nasname" class="col-md-12 control-label">Name</label>
-
-                    <div class="col-md-12">
-						<input type="text" class="form-control" id="nasname" name="nasname" required>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-					  <label for="nasipaddress" class="col-md-12 control-label">IP Address</label>
-
-					  <div class="col-md-12">
-						  <div class="input-group">
-							  <input type="text" class="form-control" id="nasipaddress" name="nasipaddress" required>
-							 <span class="input-group-append">
-								<button type="button" id="pingbtn" class="btn btn-info btn-flat">Ping</button>
-							</span>
-						  </div>
-					  </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="apiusername" class="col-md-12 control-label">API Username</label>
-
-                    <div class="col-md-12">
-						<input type="text" class="form-control" id="apiusername" name="apiusername" required>
-                    </div>
-                  </div>
-					<div class="form-group">
-						<label for="apipassword" class="col-md-12 control-label">API Password</label>
-
-						<div class="col-md-12">
-							<input type="text" class="form-control" id="apipassword" name="apipassword" required>
-						</div>
+<!-- NAS TYPE (CONNECTION TYPE) -->
+			<div class="form-group">
+				<label for="nasconnectiontype" class="col-md-12 control-label">Connection Type</label>
+				<div class="col-md-12">
+					<input type="text" class="form-control" id="nasconnectiontype" name="nasconnectiontype" readonly value="Direct (Fixed IP)" required>
+				</div>
+			</div>
+<!-- NAS HOST (IP ADDRESS) -->
+			<div class="form-group">
+				<label for="nashost" class="col-md-12 control-label">IP Address</label>
+				<div class="col-md-12">
+					<div class="input-group">
+						<input type="text" class="form-control" id="nashost" name="nashost" required>
+						<span class="input-group-append">
+						<button type="button" id="pingbtn" class="btn btn-info btn-flat">Ping</button>
+					</span>
 					</div>
-                  <div class="form-group">
-                    <label for="password" class="col-md-12 control-label">NAS Identifier</label>
-
-                    <div class="col-md-12">
-						<input type="text" class="form-control" id="nasidentifier" name="nasidentifier" required>
-                    </div>
-                  </div>
-
-					<div class="form-group">
-						<label for="nassecret" class="col-md-12 control-label">NAS Secret</label>
-
-						<div class="col-md-12">
-							<input type="text" class="form-control" id="nassecret" name="nassecret" value="qHeOh65w23" required>
-						</div>
-					</div>
+				</div>
+			</div>
+<!-- NAS SECRET -->
+			<div class="form-group">
+				<label for="nassecret" class="col-md-12 control-label">NAS Secret</label>
+				<div class="col-md-12">
+					<input type="text" class="form-control" id="nassecret" name="nassecret" value="qHeOh65w23" required>
+				</div>
+			</div>
+<!-- NAS TYPE -->
+			<div class="form-group">
+				<label for="nastype" class="col-md-12 control-label">NAS Type</label>
+				<div class="col-md-12">
+					<select class="form-control" id="nastype" name="nastype">
+						<option value="Mikrotik">Mikrotik</option>
+						<option value="Cisco">Cisco</option>
+						<option value="Other">Other</option>
+					</select>
+				</div>
+			</div>
+<!-- NAS NAME -->
+			<div class="form-group">
+				<label for="nasname" class="col-md-12 control-label">Name</label>
+				<div class="col-md-12">
+					<input type="text" class="form-control" id="nasname" name="nasname" required>
+				</div>
+			</div
 
                   <div class="form-group">
                     <div class="col-md-12">

@@ -64,7 +64,7 @@ class Nas extends MY_Controller {
 			//$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
 			//$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
 			//$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-			//$this->form_validation->set_rules('password', 'Password', 'trim|required');
+			//$this->form_validation->set_rules('nasipaddress', 'nasipaddress', 'trim|required');
 
 			if ($this->form_validation->run() == FALSE) {
 				$data = array(
@@ -75,12 +75,15 @@ class Nas extends MY_Controller {
 			}
 			else{
 				$data = array(
-					'nasname' => $this->input->post('nasipaddress'),
+					'nasname' => $this->input->post('nashost'),
 					'shortname' => $this->input->post('nasname'),
-					'nasidentifier' => $this->input->post('nasidentifier'),
+					'type' => $this->input->post('nastype'),
+					'ports' => $this->input->post('nasports'),
 					'secret' => $this->input->post('nassecret'),
-					'api_username' => $this->input->post('apiusername'),
-					'api_password' => $this->input->post('apipassword'),
+					'server' => $this->input->post('nasvirtualserver'),
+					'community' => $this->input->post('nascommunity'),
+					'description' => $this->input->post('nasdescription'),
+
 				);
 				$data = $this->security->xss_clean($data);
 				$result = $this->nas_model->add_nas($data);
