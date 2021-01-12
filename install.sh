@@ -565,8 +565,12 @@ rm -fr ${WWW_PATH}/install
 #chgrp -R $WWW_USR /var/www
 #chmod -R g+w /var/www
 
-sudo usermod -a -G $(whoami) www-data
-sudo setfacl -R -m u:$(whoami):rwx /var/www/html
+#sudo usermod -a -G $(whoami) www-data
+#sudo setfacl -R -m u:$(whoami):rwx /var/www/html
+
+chown $WWW_USR:$WWW_USR $WWW_PATH
+chmod -R 775 $WWW_PATH
+usermod -a -G www-data "$(whoami)"
 
 systemctl restart apache2
 
@@ -603,12 +607,9 @@ sudo composer -n install
 
 cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
 
-chown $WWW_USR:$WWW_USR ${WWW_PATH}/ -R
-chmod -R 0755 /var/www/html/
-currentUser="$(whoami)"
-usermod -a -G $WWW_USR "$currentUser"
-chgrp -R $WWW_USR /var/www
-chmod -R g+w /var/www
+chown $WWW_USR:$WWW_USR $WWW_PATH
+chmod -R 775 $WWW_PATH
+usermod -a -G www-data "$(whoami)"
 
 systemctl restart apache2
 
