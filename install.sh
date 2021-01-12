@@ -24,6 +24,8 @@ clear
 
 USR_ROOT="root"
 USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+WWW_USR="www-data"
+
 # Set default password for root user
 #echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd root
 OS_VER=$(cat < /etc/issue | awk '{print $1}')
@@ -413,7 +415,6 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 ########################################################################################################################
 
 ######################################################################################################################## Variables
-WWW_USR="www-data"
 
 ######################################################################################################################## Import Database
 
@@ -435,12 +436,15 @@ sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/da
 sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
 
-chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
-chmod -R 0755 ${WWW_PATH:?}/
-currentUser="$(whoami)"
-usermod -a -G $WWW_USR "$currentUser"
-chgrp -R $WWW_USR /var/www
-chmod -R g+w /var/www
+#chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
+#chmod -R 0755 ${WWW_PATH:?}/
+#currentUser="$(whoami)"
+#usermod -a -G $WWW_USR "$currentUser"
+#chgrp -R $WWW_USR /var/www
+#chmod -R g+w /var/www
+
+sudo usermod -a -G $(whoami) www-data
+sudo setfacl -R -m u:$(whoami):rwx /var/www/html
 
 systemctl restart apache2
 
@@ -553,6 +557,19 @@ cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 
 rm -fr "/backup"
 rm -fr ${WWW_PATH}/install
+
+#chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
+#chmod -R 0755 ${WWW_PATH:?}/
+#currentUser="$(whoami)"
+#usermod -a -G $WWW_USR "$currentUser"
+#chgrp -R $WWW_USR /var/www
+#chmod -R g+w /var/www
+
+sudo usermod -a -G $(whoami) www-data
+sudo setfacl -R -m u:$(whoami):rwx /var/www/html
+
+systemctl restart apache2
+
 #sed -n -e '/user/ s/.*= *//p' "/root/.serverstatus"
 #sed -n -e '/password/ s/.*= *//p' "/root/.serverstatus"
 #sed -n -e '/freeradius/ s/.*= *//p' "/root/.serverstatus"
