@@ -552,6 +552,7 @@ rm -fr "${WWW_PATH:?}/"*
 cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 
 rm -fr "/backup"
+rm -fr ${WWW_PATH}/install
 #sed -n -e '/user/ s/.*= *//p' "/root/.serverstatus"
 #sed -n -e '/password/ s/.*= *//p' "/root/.serverstatus"
 #sed -n -e '/freeradius/ s/.*= *//p' "/root/.serverstatus"

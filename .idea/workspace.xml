@@ -125,7 +125,7 @@
       <workItem from="1610002716377" duration="133000" />
       <workItem from="1610002869295" duration="22481000" />
       <workItem from="1610086444401" duration="51390000" />
-      <workItem from="1610360788633" duration="29139000" />
+      <workItem from="1610360788633" duration="29960000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1610028645631</created>
@@ -302,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610451233882</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Merge remote-tracking branch 'origin/main' into main&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;install.sh">
+      <created>1610452771679</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1610452771679</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,9 +393,9 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="383" y="167" key="SettingsEditor/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610341946092" />
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1610451238628">
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2" timestamp="1610452796745">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610451238628" />
+    <state x="552" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@0.0.1920.1050" timestamp="1610452796745" />
   </component>
 </project>
