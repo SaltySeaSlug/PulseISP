@@ -559,10 +559,11 @@ git clone "$INSTALL_URL" "$TEMP_DIR"
 mkdir /backup
 
 cp $WWW_PATH/application/config/database.php /backup/database.php
-cp /backup/database.php $WWW_PATH/application/config/database.php
 
 rm -fr "${WWW_PATH:?}/"*
 cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
+
+cp /backup/database.php $WWW_PATH/application/config/database.php
 
 rm -fr "/backup"
 rm -fr ${WWW_PATH}/install
