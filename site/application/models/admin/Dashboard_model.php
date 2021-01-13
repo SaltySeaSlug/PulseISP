@@ -18,11 +18,11 @@
 			return $this->db->count_all('radippool');
 		}
 		public function get_free_ips() {
-			$this->db->where('owner', NULL);
+			$this->db->where('username', NULL);
 			return $this->db->count_all_results('radippool');
 		}
 		public function get_used_ips() {
-			$this->db->where('owner NOT NULL');
+			$this->db->where('username NOT NULL');
 			return $this->db->count_all_results('radippool');
 		}
 		public function get_active_user_sessions() {

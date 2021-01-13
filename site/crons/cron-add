@@ -1,0 +1,1 @@
+* * * * * /usr/bin/php /var/www/html/crons/cron.freeradius_cleansession.php >/dev/null 2>&1

@@ -1,0 +1,22 @@
+Mikrotik
+Find the config on one of the three sources above and save it.
+On Oxidized click on the  and save the file as something.rsc. You can select older versions also if you want.
+On Gitlab find the file in the repository and click on it. There is then a "Open Raw" button (). Click on it and save as something.rsc.
+On NMS find the relevant router and go to the config screen. Select the text in the grey box and copy and paste into a text edit. Save it as something.rsc. (Note that routers that have been down for some time are deleted from NMS, so it may longer appear here, but will still be available in gitlab.)
+Make sure the router you are restoring to has the same ROS version as the script. Otherwise it may cause errors. Small differences might not be a problem, but watch out for errors when running the script.
+Reset the router you are trying to restore to default configuration. The script assumes a default configuration as a base.
+Copy the something.rsc script to the router using your method of choice (e.g. drag into WinBox, scp or FTP).
+Open a terminal on the router and type /import something.rsc. If it produces no output it has worked.
+Reset the things that the script does not backup:
+Create users you need as the script does not backup users
+Add OSPF authentication-key under /routing ospf interfaces as this key is dropped from script.
+Run WMS join script again t4o add ctwug user and add radius secrets etc.
+Other Routers
+We can add specific instructions as we need but generally:
+
+Obtain the config as per above saving as a file to your PC. You may need to rename it with a different extension.
+Load the configuration file on the router.
+Run / load the configuration file using the relevant command on the router.
+Passwords / Sensitive Information
+
+If you stor3 passwords and sensitive information in scripts or comments please be aware that this will be included and accessible to other wuggers. Please keep this in mind. The scripts only remove sensitive

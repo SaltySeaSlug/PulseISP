@@ -155,15 +155,17 @@ case $rmver in
 1 ) echo "Selected: Install"
 
 ######################################################################################################################## Create new root user (pulseisp)
-adduser --quiet --disabled-password --shell /bin/bash --home /home/$USR_ROOT --gecos "Administrative User" $USR_ROOT
-echo "$USR_ROOT:$USR_ROOT_PWD" | chpasswd
+echo -e "$COL_CYAN Creating user account. $COL_RESET"
 
-#adduser sudo useradd -s /bin/bash -d /home/$USR_ROOT/ -m -G sudo $USR_ROOT
+adduser --quiet --disabled-password --shell /bin/bash --home /home/$USR_ROOT --gecos "Administrative User" $USR_ROOT
+# Set user password
+echo "$USR_ROOT:$USR_ROOT_PWD" | chpasswd
+# Add user to admin group
+usermod -aG sudo $USR_ROOT
 #echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd $USR_ROOT
-#sudo usermod -aG sudo $USR_ROOT
 
 echo -e "$COL_CYAN Setup starting. $COL_RESET"
-sleep 2
+sleep 1
 clear
 
 echo -e "$COL_CYAN ########################################################## $COL_RESET"
@@ -218,11 +220,11 @@ apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils p
 /usr/sbin/phpenmod opcache
 
 ######################################################################################################################## Enable FPM
-PHP_VER=$(php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/')
-/usr/sbin/a2dismod php"$PHP_VER"
-apt-get install php-fpm -y
+#PHP_VER=$(php -v | sed -e '/^PHP/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/')
+/usr/sbin/a2dismod php7.4
+apt-get install php7.4-fpm -y
 /usr/sbin/a2enmod proxy_fcgi setenvif
-/usr/sbin/a2enconf php"$PHP_VER"-fpm
+/usr/sbin/a2enconf php7.4-fpm
 
 ######################################################################################################################## Copy over templates
 echo -e "$COL_YELLOW Copy over templates $COL_RESET"
@@ -238,6 +240,7 @@ cp $TEMP_DIR/templates/ubuntu/apache/mpm_prefork.conf.template  /etc/apache2/mod
 cp $TEMP_DIR/templates/ubuntu/apache/ssl.conf.template  /etc/apache2/mods-available/ssl.conf
 cp $TEMP_DIR/templates/ubuntu/apache/status.conf.template  /etc/apache2/mods-available/status.conf
 cp $TEMP_DIR/templates/ubuntu/php/php.ini.template /etc/php/7.4/apache2/php.ini
+cp $TEMP_DIR/templates/ubuntu/php/php.ini.template /etc/php/7.4/fpm/php.ini
 
 ######################################################################################################################## Setup Apache Variables
 echo -e "$COL_YELLOW Setup Apache Variables $COL_RESET"
@@ -265,6 +268,16 @@ sed -i "s/\$error_reporting/$error_reporting/g" /etc/php/7.4/apache2/php.ini
 sed -i "s/\$post_max_size/$post_max_size/g" /etc/php/7.4/apache2/php.ini
 sed -i "s/\$upload_max_filesize/$upload_max_filesize/g" /etc/php/7.4/apache2/php.ini
 sed -i "s@\$session_save_path@$session_save_path@g" /etc/php/7.4/apache2/php.ini
+
+######################################################################################################################## Setup PHP variables for FPM
+sed -i "s/\$memory_limit/$memory_limit/g" /etc/php/7.4/fpm/php.ini
+sed -i "s/\$short_open_tag/$short_open_tag/g" /etc/php/7.4/fpm/php.ini
+sed -i "s/\$expose_php/$expose_php/g" /etc/php/7.4/fpm/php.ini
+sed -i "s/\$max_execution_time/$max_execution_time/g" /etc/php/7.4/fpm/php.ini
+sed -i "s/\$error_reporting/$error_reporting/g" /etc/php/7.4/fpm/php.ini
+sed -i "s/\$post_max_size/$post_max_size/g" /etc/php/7.4/fpm/php.ini
+sed -i "s/\$upload_max_filesize/$upload_max_filesize/g" /etc/php/7.4/fpm/php.ini
+sed -i "s@\$session_save_path@$session_save_path@g" /etc/php/7.4/fpm/php.ini
 
 ######################################################################################################################## Secure /server-status | Write to config file
 echo -e "$COL_YELLOW Secure /server-status | Write to config file $COL_RESET"
@@ -462,6 +475,8 @@ sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views
 
 chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
 chmod -R 0755 ${WWW_PATH:?}/
+sudo usermod -a -G $USR_ROOT $WWW_USR
+
 #currentUser="$(whoami)"
 #usermod -a -G $WWW_USR "$currentUser"
 #chgrp -R $WWW_USR /var/www
@@ -480,7 +495,7 @@ sed -i "s/\$radiuspassword/$MYSQL_RAD_PASS/g" /root/.misc.cnf
 sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
 
 ######################################################################################################################## Update sudo file - allow www-user exec access
-sudo cp /etc/sudoers /etc/sudoers.bak
+cp /etc/sudoers /etc/sudoers.bak
 echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
 
 systemctl restart freeradius
@@ -536,11 +551,11 @@ ${lightblue}Radius Pass:${nc} $MYSQL_RAD_PASS
 ${lightblue}Freeradius Secret:${nc} $FREERADIUS_SECRET
 ${lightblue}User Misc :${nc} $CURRENTUSER
 
-Front-end Username : superadmin
-Front-end Password : 12345
+${lightblue}Front-end Username:${nc} superadmin
+${lightblue}Front-end Password:${nc} 12345
 
-PulseISP Linux User : $USR_ROOT
-PulseISP Linux Password : $USR_ROOT_PWD
+${lightblue}PulseISP Linux User:${nc} $USR_ROOT
+${lightblue}PulseISP Linux Password:${nc} $USR_ROOT_PWD
 
 ** For security purposes, there is an htaccess file in front of phpmyadmin.
 So when the popup window appears, use the serverinfo username and password.
