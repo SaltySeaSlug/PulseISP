@@ -155,6 +155,9 @@ case $rmver in
 1 ) echo "Selected: Install"
 
 ######################################################################################################################## Create new root user (pulseisp)
+adduser --quiet --disabled-password --shell /bin/bash --home /home/$USR_ROOT --gecos "Administrative User" $USR_ROOT
+echo "$USR_ROOT:$USR_ROOT_PWD" | chpasswd
+
 #adduser sudo useradd -s /bin/bash -d /home/$USR_ROOT/ -m -G sudo $USR_ROOT
 #echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd $USR_ROOT
 #sudo usermod -aG sudo $USR_ROOT
@@ -403,7 +406,7 @@ cp $TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.
 #cp $TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
 cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
 cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clients.conf
-#cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
+cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
 
 ######################################################################################################################## Setup Symbolic Links
 ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
@@ -413,8 +416,8 @@ ln -s /etc/freeradius/3.0/mods-available/sqlippool /etc/freeradius/3.0/mods-enab
 #ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
 
 ######################################################################################################################## Setup Apache variables
-sed -i "s/\$MYSQL_USR/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-enabled/sql
-sed -i "s/\$MYSQL_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-enabled/sql
+sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-enabled/sql
+sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-enabled/sql
 sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-enabled/sql
 
 sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" /etc/freeradius/3.0/clients.conf
