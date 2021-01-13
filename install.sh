@@ -25,6 +25,7 @@ clear
 USR_ROOT="root"
 USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 WWW_USR="www-data"
+CURRENTUSER="$(whoami)"
 
 # Set default password for root user
 #echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd root
@@ -211,7 +212,7 @@ apt-get install php-fpm -y
 ######################################################################################################################## Copy over templates
 echo -e "$COL_YELLOW Copy over templates $COL_RESET"
 
-mkdir /var/www/vhosts
+#mkdir /var/www/vhosts
 mkdir -p /var/lib/php/sessions
 chown root:www-data /var/lib/php/sessions
 chmod 770 /var/lib/php/sessions
@@ -388,17 +389,20 @@ apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
 ######################################################################################################################## Copy over templates
 cp $TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.0/mods-available/sql
 #cp $TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
-#cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
-
-######################################################################################################################## Setup Apache variables
-#sed -i "s/\$MYSQL_USR/$MYSQL_USR/g" /etc/freeradius/3.0/mods-available/sql
-#sed -i "s/\$MYSQL_PASS/$MYSQL_PASS/g" /etc/freeradius/3.0/mods-available/sql
-#sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-available/sql
+cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
+cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clients.conf
 
 ######################################################################################################################## Setup Symbolic Links
 ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
 #ln -s /etc/freeradius/3.0/mods-available/sqlcounter /etc/freeradius/3.0/mods-enabled/
 #ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
+
+######################################################################################################################## Setup Apache variables
+sed -i "s/\$MYSQL_USR/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-enabled/sql
+sed -i "s/\$MYSQL_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-enabled/sql
+sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-enabled/sql
+
+sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" /etc/freeradius/3.0/clients.conf
 
 ######################################################################################################################## Setup ownership user and group
 #chgrp -h freerad /etc/freeradius/3.0/mods-available/sql
@@ -443,8 +447,8 @@ sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database
 #chgrp -R $WWW_USR /var/www
 #chmod -R g+w /var/www
 
-sudo usermod -a -G $(whoami) www-data
-sudo setfacl -R -m u:$(whoami):rwx /var/www/html
+sudo usermod -a -G "$CURRENTUSER" $WWW_USR
+sudo setfacl -R -m u:"$CURRENTUSER":rwx $WWW_PATH
 
 systemctl restart apache2
 
@@ -504,7 +508,7 @@ ${lightblue}Radius User:${nc} $MYSQL_RAD_USER
 ${lightblue}Radius Pass:${nc} $MYSQL_RAD_PASS
 
 ${lightblue}Freeradius Secret:${nc} $FREERADIUS_SECRET
-${lightblue}User Misc :${nc} $currentUser
+${lightblue}User Misc :${nc} $CURRENTUSER
 
 Front-end Username : superadmin
 Front-end Password : 12345
@@ -560,7 +564,6 @@ rm -fr ${WWW_PATH}/install
 
 #chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
 #chmod -R 0755 ${WWW_PATH:?}/
-#currentUser="$(whoami)"
 #usermod -a -G $WWW_USR "$currentUser"
 #chgrp -R $WWW_USR /var/www
 #chmod -R g+w /var/www
@@ -570,7 +573,7 @@ rm -fr ${WWW_PATH}/install
 
 chown $WWW_USR:$WWW_USR $WWW_PATH
 chmod -R 775 $WWW_PATH
-usermod -a -G www-data "$(whoami)"
+usermod -a -G www-data "$CURRENTUSER"
 
 systemctl restart apache2
 
@@ -590,29 +593,6 @@ systemctl restart apache2
 #sed -n -e '/password/ s/.*= *//p' "/root/.misc.cnf"
 #sed -n -e '/freeradius/ s/.*= *//p' "/root/.misc.cnf"
 echo
-;;
-
-3 ) echo "Selected: Test"
-#----------------------------------------------------------------------- DOWNLOADING
-
-git clone "$INSTALL_URL" "$TEMP_DIR"
-
-cp $WWW_PATH/application/config/database.php $TEMP_DIR/templates/site/database.php.template
-
-rm -fr "${WWW_PATH:?}/"*
-cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
-
-cd ${WWW_PATH:?}/ || exit 1
-sudo composer -n install
-
-cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
-
-chown $WWW_USR:$WWW_USR $WWW_PATH
-chmod -R 775 $WWW_PATH
-usermod -a -G www-data "$(whoami)"
-
-systemctl restart apache2
-
 ;;
 
 * ) echo "Invalid selection. Installation aborted."

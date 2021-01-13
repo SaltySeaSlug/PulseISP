@@ -37,7 +37,7 @@ sql {
         #       sqlite
         #       mongo
         #
-        dialect = "sqlite"
+        dialect = "mysql"
 
         #
         #  The driver module used to execute the queries.  Since we
@@ -156,8 +156,8 @@ sql {
         #
         server = "localhost"
         port = 3306
-        login = "$MYSQL_USR"
-        password = "$MYSQL_PASS"
+        login = "$MYSQL_RAD_USER"
+        password = "$MYSQL_RAD_PASS"
 
         # Connection info for Mongo
         # Authentication Without SSL
@@ -211,7 +211,7 @@ sql {
 
         # If set to 'yes' (default) we read profiles unless Fall-Through = no in the groupreply table.
         # If set to 'no' we do not read profiles unless Fall-Through = yes in the groupreply table.
-#       read_profiles = yes
+       read_profiles = yes
 
         # Remove stale session if checkrad does not see a double login
         delete_stale_sessions = yes
