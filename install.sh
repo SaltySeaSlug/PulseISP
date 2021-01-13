@@ -155,7 +155,7 @@ case $rmver in
 1 ) echo "Selected: Install"
 
 ######################################################################################################################## Create new root user (pulseisp)
-adduser -m -s /bin/bash -c "Administrative User" $USR_ROOT
+adduser -s /bin/bash -c "Administrative User" $USR_ROOT
 echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd $USR_ROOT
 sudo usermod -aG sudo $USR_ROOT
 
