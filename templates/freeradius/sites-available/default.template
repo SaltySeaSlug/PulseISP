@@ -639,7 +639,7 @@ accounting {
 
 	#  Return an address to the IP Pool when we see a stop record.
 #	main_pool
-
+sqlippool
 	#
 	#  Log traffic to an SQL database.
 	#
@@ -729,7 +729,7 @@ post-auth {
 
 	#  Get an address from the IP Pool.
 #	main_pool
-
+sqlippool
 
 	#  Create the CUI value and add the attribute to Access-Accept.
 	#  Uncomment the line below if *returning* the CUI.

@@ -391,9 +391,12 @@ cp $TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.
 #cp $TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
 cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
 cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clients.conf
+cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
 
 ######################################################################################################################## Setup Symbolic Links
 ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
+ln -s /etc/freeradius/3.0/mods-available/sqlippool /etc/freeradius/3.0/mods-enabled/
+
 #ln -s /etc/freeradius/3.0/mods-available/sqlcounter /etc/freeradius/3.0/mods-enabled/
 #ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
 
@@ -435,10 +438,12 @@ cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
 
 cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
+cp $TEMP_DIR/templates/site/nas_add.php.template $WWW_PATH/application/views/nas/nas_add.php
 
 sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
+sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views/nas/nas_add.php
 
 #chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
 #chmod -R 0755 ${WWW_PATH:?}/
