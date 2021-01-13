@@ -155,9 +155,9 @@ case $rmver in
 1 ) echo "Selected: Install"
 
 ######################################################################################################################## Create new root user (pulseisp)
-adduser -s /bin/bash -c "Administrative User" $USR_ROOT
-echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd $USR_ROOT
-sudo usermod -aG sudo $USR_ROOT
+#adduser sudo useradd -s /bin/bash -d /home/$USR_ROOT/ -m -G sudo $USR_ROOT
+#echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd $USR_ROOT
+#sudo usermod -aG sudo $USR_ROOT
 
 echo -e "$COL_CYAN Setup starting. $COL_RESET"
 sleep 2
