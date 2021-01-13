@@ -22,17 +22,24 @@ clear
 # Variables
 ########################################################################################################################
 
-USR_ROOT="root"
+# PulseISP root user and password
+USR_ROOT="pulseisp"
 USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
+# Apache user
 WWW_USR="www-data"
+WWW_PATH="/var/www/html/"
+
+# OS/System current executing user
 CURRENTUSER="$(whoami)"
 
-# Set default password for root user
-#echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd root
+# OS Version/Distribution
 OS_VER=$(cat < /etc/issue | awk '{print $1}')
+
+# Global variables
 TEMP_DIR="/temp"
 INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
-WWW_PATH="/var/www/html"
+BACKUP_DIR="/backup"
 
 
 ########################################################################################################################
@@ -146,6 +153,10 @@ fi
 
 case $rmver in
 1 ) echo "Selected: Install"
+
+######################################################################################################################## Create new root user (pulseisp)
+adduser $USR_ROOT && adduser $USR_ROOT sudo
+echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd $USR_ROOT
 
 echo -e "$COL_CYAN Setup starting. $COL_RESET"
 sleep 2
@@ -391,7 +402,7 @@ cp $TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.
 #cp $TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
 cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
 cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clients.conf
-cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
+#cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
 
 ######################################################################################################################## Setup Symbolic Links
 ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
@@ -445,15 +456,15 @@ sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/da
 sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views/nas/nas_add.php
 
-#chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
-#chmod -R 0755 ${WWW_PATH:?}/
+chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
+chmod -R 0755 ${WWW_PATH:?}/
 #currentUser="$(whoami)"
 #usermod -a -G $WWW_USR "$currentUser"
 #chgrp -R $WWW_USR /var/www
 #chmod -R g+w /var/www
 
-sudo usermod -a -G "$CURRENTUSER" $WWW_USR
-sudo setfacl -R -m u:"$CURRENTUSER":rwx $WWW_PATH
+#sudo usermod -a -G "$CURRENTUSER" $WWW_USR
+#sudo setfacl -R -m u:"$CURRENTUSER":rwx $WWW_PATH
 
 systemctl restart apache2
 
@@ -470,6 +481,12 @@ echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudo
 
 systemctl restart freeradius
 systemctl restart apache2
+
+
+#chmod 777 var/www/html/application/config/database.php
+#chmod 777 /var/www/html/application/session
+#rm $WWW_PATH/install
+#rm /var/www/html/install
 
 ########################################################################################################################
 # Setup Report
@@ -518,6 +535,9 @@ ${lightblue}User Misc :${nc} $CURRENTUSER
 Front-end Username : superadmin
 Front-end Password : 12345
 
+PulseISP Linux User : $USR_ROOT
+PulseISP Linux Password : $USR_ROOT_PWD
+
 ** For security purposes, there is an htaccess file in front of phpmyadmin.
 So when the popup window appears, use the serverinfo username and password.
 Once your on the phpmyadmin landing page, use the root MySQL credentials.
@@ -556,7 +576,7 @@ cat /root/setup_report
 #----------------------------------------------------------------------- DOWNLOADING
 
 git clone "$INSTALL_URL" "$TEMP_DIR"
-mkdir /backup
+mkdir $BACKUP_DIR
 
 cp $WWW_PATH/application/config/database.php /backup/database.php
 
