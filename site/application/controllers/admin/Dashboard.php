@@ -55,8 +55,8 @@ class Dashboard extends My_Controller {
 		$data['active_user_sessions'] = $this->dashboard_model->get_active_user_sessions();
 		$data['total_users'] = $this->dashboard_model->get_all_users();
 		$data['total_alerts'] = $this->dashboard_model->get_all_alerts();
-		$data['statUsageToday']['upload'] = 1;
-		$data['statUsageToday']['download'] = 1028;
+		$data['statUsageToday']['upload'] = 0;
+		$data['statUsageToday']['download'] = 0;
 
 		$this->load->view('admin/includes/_header', $data);
 

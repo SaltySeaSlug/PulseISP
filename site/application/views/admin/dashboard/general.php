@@ -230,7 +230,7 @@
       })
           .then(bindUsageChart)
           .then(function () {
-            setTimeout(loadUsageChartData, 30000);
+            //setTimeout(loadUsageChartData, 30000);
           });
     }
 
