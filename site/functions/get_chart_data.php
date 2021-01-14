@@ -52,7 +52,7 @@ $password = "";
 $conn = mysqli_connect($servername, $username, $password, $database);
 if (!$conn) { die("Connection failed: " . mysqli_connect_error()); }
 
-$sql = "SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM ppp_accounts_stats WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ASC";
+$sql = "SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM ppp_accounts_stats WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ORDER BY hour ASC";
 $result = mysqli_query($conn, $sql);
 
 // GENERATE RANGE 0 to 23

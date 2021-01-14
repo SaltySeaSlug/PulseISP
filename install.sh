@@ -88,6 +88,14 @@ else
     exit 1
 fi
 
+######################################################################################################################## Set timezone
+timedatectl set-timezone Africa/Johannesburg
+
+croncmd="/usr/bin/php $WWW_PATH/crons/cron.freeradius_cleansession.php 2>&1 >/dev/null"
+cronjob="* * * * * $croncmd"
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+# remove
+#( crontab -l | grep -v -F "$croncmd" ) | crontab -
 ######################################################################################################################## Verify Temp Directory
 echo -e "$COL_YELLOW Verifying $TEMP_DIR directory. $COL_RESET"
 sleep 1
@@ -162,7 +170,6 @@ adduser --quiet --disabled-password --shell /bin/bash --home /home/$USR_ROOT --g
 echo "$USR_ROOT:$USR_ROOT_PWD" | chpasswd
 # Add user to admin group
 usermod -aG sudo $USR_ROOT
-#echo -e "$USR_ROOT_PWD\n$USR_ROOT_PWD\n" | sudo passwd $USR_ROOT
 
 echo -e "$COL_CYAN Setup starting. $COL_RESET"
 sleep 1
@@ -421,6 +428,14 @@ cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradi
 cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clients.conf
 cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
 
+
+
+sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-available/sql
+sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-available/sql
+sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-available/sql
+
+sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" /etc/freeradius/3.0/clients.conf
+
 ######################################################################################################################## Setup Symbolic Links
 ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
 ln -s /etc/freeradius/3.0/mods-available/sqlippool /etc/freeradius/3.0/mods-enabled/
@@ -429,11 +444,6 @@ ln -s /etc/freeradius/3.0/mods-available/sqlippool /etc/freeradius/3.0/mods-enab
 #ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
 
 ######################################################################################################################## Setup Apache variables
-sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-enabled/sql
-sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-enabled/sql
-sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-enabled/sql
-
-sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" /etc/freeradius/3.0/clients.conf
 
 ######################################################################################################################## Setup ownership user and group
 #chgrp -h freerad /etc/freeradius/3.0/mods-available/sql
@@ -442,7 +452,6 @@ sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" /etc/freeradius/3.0/clients.
 systemctl enable --now freeradius
 systemctl restart freeradius
 ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
-
 
 
 ########################################################################################################################
@@ -473,9 +482,6 @@ sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/da
 sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views/nas/nas_add.php
 
-chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
-chmod -R 0755 ${WWW_PATH:?}/
-sudo usermod -a -G $USR_ROOT $WWW_USR
 
 #currentUser="$(whoami)"
 #usermod -a -G $WWW_USR "$currentUser"
@@ -485,8 +491,6 @@ sudo usermod -a -G $USR_ROOT $WWW_USR
 #sudo usermod -a -G "$CURRENTUSER" $WWW_USR
 #sudo setfacl -R -m u:"$CURRENTUSER":rwx $WWW_PATH
 
-systemctl restart apache2
-
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Set MySQL root password in /root/.my.cnf
 cp $TEMP_DIR/templates/ubuntu/misc/misc.template /root/.misc.cnf
@@ -495,17 +499,35 @@ sed -i "s/\$radiuspassword/$MYSQL_RAD_PASS/g" /root/.misc.cnf
 sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
 
 ######################################################################################################################## Update sudo file - allow www-user exec access
-cp /etc/sudoers /etc/sudoers.bak
-echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
-
-systemctl restart freeradius
-systemctl restart apache2
 
 
 #chmod 777 var/www/html/application/config/database.php
 #chmod 777 /var/www/html/application/session
 #rm $WWW_PATH/install
 #rm /var/www/html/install
+
+######################################################################################################################## Configure Rights
+
+usermod -aG freerad $USR_ROOT
+usermod -aG $WWW_USR $USR_ROOT
+
+cp /etc/sudoers /etc/sudoers.bak
+echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
+
+chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
+chmod -R 0755 ${WWW_PATH:?}/
+chmod -R ug+rw ${WWW_PATH:?}/
+
+
+
+
+
+
+
+######################################################################################################################## RESTART
+systemctl restart freeradius
+systemctl restart apache2
+
 
 ########################################################################################################################
 # Setup Report
