@@ -85,7 +85,7 @@ CREATE TABLE `ci_admin` (
 
 INSERT INTO `ci_admin` (`admin_id`, `admin_role_id`, `username`, `firstname`, `lastname`, `email`, `mobile_no`, `image`, `password`, `last_login`, `is_verify`, `is_admin`, `is_active`, `is_supper`, `token`, `password_reset_code`, `last_ip`, `created_at`, `updated_at`) VALUES
 (25, 2, 'admin', 'Admin', 'User', 'admin@gmail.com', '544354353', '', '$2y$10$KyH0L.rMhaXWkMh/ZoN1.e44FOzEak.KzZoUjQdIGiuVJtuKa9z0y', '2019-01-09 00:00:00', 1, 1, 1, 0, '', '', '', '2018-03-19 00:00:00', '2019-11-24 00:00:00'),
-(31, 1, 'superadmin', 'Mark', 'Cockbain', 'cockbainma@gmail.com', '0727938031', '', '$2y$10$KyH0L.rMhaXWkMh/ZoN1.e44FOzEak.KzZoUjQdIGiuVJtuKa9z0y', '0000-00-00 00:00:00', 1, 1, 1, 1, '', 'e620a99414d5ebf5c61d6a43a4ac94a2', '::1', '2019-01-16 06:01:58', '2020-12-22 00:00:00');
+(31, 1, 'superadmin', 'Super', 'Admin', 'superadmin@test.com', '45896587142', '', '$2y$10$KyH0L.rMhaXWkMh/ZoN1.e44FOzEak.KzZoUjQdIGiuVJtuKa9z0y', '0000-00-00 00:00:00', 1, 1, 1, 1, '', 'e620a99414d5ebf5c61d6a43a4ac94a2', '::1', '2019-01-16 06:01:58', '2020-12-22 00:00:00');
 
 -- --------------------------------------------------------
 

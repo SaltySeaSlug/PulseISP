@@ -24,8 +24,15 @@ class Users extends MY_Controller {
 		$data = array();
 
 		$i=0;
-		foreach ($records['data']   as $row) 
-		{  
+
+		foreach ($records['data']   as $row)
+		{
+			if ($this->rbac->check_operation_permission('view')) { $action_view = '<a title="View" class="view btn btn-sm btn-info" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fa fa-eye"></i></a>';}
+			if ($this->rbac->check_operation_permission('edit')) { $action_edit = '<a title="Edit" class="update btn btn-sm btn-warning" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fa fa-pencil-square-o"></i></a>';}
+			if ($this->rbac->check_operation_permission('delete')) {$action_delete = '<a title="Delete" class="delete btn btn-sm btn-danger" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fa fa-trash-o"></i></a>';}
+
+
+
 			$status = ($row['is_active'] == 1)? 'checked': '';
 			$verify = ($row['is_verify'] == 1)? 'Verified': 'Pending';
 			$data[]= array(
@@ -39,11 +46,9 @@ class Users extends MY_Controller {
 				data-id="'.$row['id'].'" 
 				id="cb_'.$row['id'].'"
 				type="checkbox"  
-				'.$status.'><label for="cb_'.$row['id'].'"></label>',		
+				'.$status.'><label for="cb_'.$row['id'].'"></label>',
 
-				'<a title="View" class="view btn btn-sm btn-info" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fa fa-eye"></i></a>
-				<a title="Edit" class="update btn btn-sm btn-warning" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fa fa-pencil-square-o"></i></a>
-				<a title="Delete" class="delete btn btn-sm btn-danger" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fa fa-trash-o"></i></a>'
+ 				''.$action_view.''.$action_edit.''.$action_delete.''
 			);
 		}
 		$records['data']=$data;
