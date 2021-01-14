@@ -22,6 +22,9 @@ clear
 # Variables
 ########################################################################################################################
 
+HTUSER=serverinfo
+HTPASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
 # PulseISP root user and password
 USR_ROOT="pulseisp"
 USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
@@ -289,10 +292,10 @@ sed -i "s@\$session_save_path@$session_save_path@g" /etc/php/7.4/fpm/php.ini
 ######################################################################################################################## Secure /server-status | Write to config file
 echo -e "$COL_YELLOW Secure /server-status | Write to config file $COL_RESET"
 
-srvstatus_htuser=serverinfo
-srvstatus_htpass=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
-echo "$srvstatus_htuser $srvstatus_htpass" > /root/.serverstatus
-htpasswd -b -c /etc/apache2/status-htpasswd $srvstatus_htuser "$srvstatus_htpass"
+#srvstatus_htuser=serverinfo
+#srvstatus_htpass=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+echo "$HTUSER $HTPASS" > /root/.serverstatus
+htpasswd -b -c /etc/apache2/status-htpasswd $HTUSER "$HTPASS"
 
 ######################################################################################################################## Restart Apache to apply new settings
 echo -e "$COL_YELLOW Restart Apache to apply new settings $COL_RESET"
@@ -384,8 +387,6 @@ echo "30 3 * * * root /usr/sbin/holland -q bk" > /etc/cron.d/holland
 ########################################################################################################################
 
 ######################################################################################################################## PHPMyAdmin variables
-htuser=serverinfo
-htpass=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
 ######################################################################################################################## Install PHPMyAdmin package
 export DEBIAN_FRONTEND=noninteractive
@@ -396,10 +397,10 @@ cp $TEMP_DIR/templates/ubuntu/phpmyadmin/phpMyAdmin.conf.template /etc/phpmyadmi
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Setup PHPMyAdmin variables
-echo "$htuser $htpass" > /root/.phpmyadminpass
+echo "$HTUSER $HTPASS" > /root/.phpmyadminpass
 
 ########################################################################################################################Set PHPMyAdmin before htaccess file
-htpasswd -b -c /etc/phpmyadmin/phpmyadmin-htpasswd $htuser "$htpass"
+htpasswd -b -c /etc/phpmyadmin/phpmyadmin-htpasswd $HTUSER "$HTPASS"
 
 ######################################################################################################################## Symlink in apache config and restart apache
 ln -s /etc/phpmyadmin/phpMyAdmin.conf /etc/apache2/conf-enabled/phpMyAdmin.conf
@@ -520,10 +521,6 @@ chmod -R ug+rw ${WWW_PATH:?}/
 
 
 
-
-
-
-
 ######################################################################################################################## RESTART
 systemctl restart freeradius
 systemctl restart apache2
@@ -558,12 +555,12 @@ ${txtbld}---------------------------------------------------------------
 ---------------------------------------------------------------${nc}
 
 ${lightblue}Apache Server Status URL:${nc}   http://$real_ip/server-status
-${lightblue}Apache Server Status User:${nc}  serverinfo
-${lightblue}Apache Server Status Pass:${nc}  $srvstatus_htpass
+${lightblue}Apache Server Status User:${nc}  $HTUSER
+${lightblue}Apache Server Status Pass:${nc}  $HTPASS
 
 ${lightblue}PHPMyAdmin URL:${nc}  http://$real_ip/phpmyadmin
-${lightblue}PHPMyAdmin User:${nc} serverinfo    /    root
-${lightblue}PHPMyAdmin Pass:${nc} $htpass       /    $MYSQL_PASS
+${lightblue}PHPMyAdmin User:${nc} $HTUSER    /    root
+${lightblue}PHPMyAdmin Pass:${nc} $HTPASS       /    $MYSQL_PASS
 
 ${lightblue}MySQL Root User:${nc}  $MYSQL_USR
 ${lightblue}MySQL Root Pass:${nc}  $MYSQL_PASS
