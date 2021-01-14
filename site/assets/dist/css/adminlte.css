@@ -32941,9 +32941,9 @@ a.text-muted:hover {
 .form-background {
   min-height: 100%;
   overflow-x: hidden;
-  background: url('../img/banner.jpg') bottom;
+  /*background: url('../img/banner.jpg') bottom;*/
   background-size: cover;
- 
+  background-color: transparent;
 }
 
 

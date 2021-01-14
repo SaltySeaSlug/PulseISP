@@ -54,6 +54,7 @@
 <!-- DROPZONE -->
 <script src="<?= base_url() ?>assets/plugins/dropzone/dropzone.js" type="text/javascript"></script>
 
+<script src="<?= base_url() ?>assets/dist/js/functions.js" type="text/javascript"></script>
 <script>
 
 var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';

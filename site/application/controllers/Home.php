@@ -4,9 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Home extends CI_Controller {
 
 	public function index()	{
-		//if (constant("REQUEST") != "external") {
-			redirect(base_url('admin'));
-		//}
+		redirect(base_url('admin'));
 	}
 
 	public function site_lang($site_lang) {

@@ -90,27 +90,26 @@
           <!-- ./col -->
         </div>
 
-<div class="row">
-      <div class="col-lg-7">
-        <div class="box box-primary" >
-          <div class="box-header with-border">
-            <i class="fa fa-bar-chart-o"></i>
-          <h3 class="box-title">Todays Usage</h3>
-          <div class="box-tools pull-right">
-            <span class="label bg-purple"><?php echo "In [ " . (!is_null($statUsageToday['upload']) ? toxbyte($statUsageToday['upload']) : 0); ?> ]</span> <span class="label bg-orange"><?php echo "Out [ " . (!is_null($statUsageToday['download']) ? toxbyte($statUsageToday['download']) : 0); ?> ]</span>
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          </div>
-          </div>
-          <div class="box-body">
-          <div class="chart" style="overflow: auto;">
-            <canvas id="Client6Chart" style="height: 250px"></canvas>
-          </div>
-          </div>
-          <div class="box-footer text-center">
-            <a href="?route=radius/authrequests" class="uppercase">View All Data Usage</a>
-          </div>
-        </div>
-       </div>
+	<div class="row">
+		  <div class="col-lg-7">
+			  <div class="card">
+				  <div class="card-header">
+					  <h5 class="card-title"><i class="fa fa-th mr-1"></i>Today's Usage</h5>
+					  <div class="card-tools">
+						  <span class="badge bg-purple"><?php echo "In [ " . (!is_null($statUsageToday['upload']) ? toxbyte($statUsageToday['upload']) : 0); ?> ]</span> <span class="badge bg-orange"><?php echo "Out [ " . (!is_null($statUsageToday['download']) ? toxbyte($statUsageToday['download']) : 0); ?> ]</span>
+						  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
+							  <i class="fas fa-minus"></i>
+						  </button>
+					  </div>
+				  </div>
+				  <div class="card-body">
+					  <div class="chart" style="overflow: auto;">
+						  <canvas id="Client6Chart" style="height: 250px"></canvas>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+	</div>
       <div class="col-lg-5">
                <div class="box box-primary">
                  <div class="box-header with-border">
@@ -132,18 +131,12 @@
         </div>
       </div>
     </div>
-
-      <div class="row">
-        <div class="col-12 text-center">
-          <h4>Welcome to <?= $this->general_settings['application_name'] ?>!</h4>
-        </div>
-      </div>
     </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
+<script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js"></script>
 <script>
   $(function() {
     function buildUsageChartData(data) {
@@ -232,15 +225,49 @@
     function loadUsageChartData() {
       $.ajax({
         type: 'GET',
-        url: './shell/getChartData.php',
+        url: '<?php echo base_url("functions/get_chart_data.php"); ?>',
         dataType: 'json'
       })
           .then(bindUsageChart)
           .then(function () {
-            setTimeout(loadUsageChartData, reloadTime);
+            setTimeout(loadUsageChartData, 30000);
           });
     }
 
     loadUsageChartData();
   });
+
+  // Make the dashboard widgets sortable Using jquery UI
+ /* $('.connectedSortable').sortable({
+	  placeholder         : 'sort-highlight',
+	  connectWith         : '.connectedSortable',
+	  handle              : '.card-header, .nav-tabs',
+	  forcePlaceholderSize: true,
+	  zIndex              : 999999
+  })
+  $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
+
+  $(function() {
+	  let $sortable = $('.connectedSortable');
+
+	  let dashboard = JSON.parse(localStorage.getItem('remember.dashboard.layout'));
+	  if (dashboard) {
+		  $.each(dashboard, function(i, column) {
+			  $.each(column[1], function(i, item) {
+				  $('#' + item).appendTo($('#' + column[0])); // or prependTo for reverse
+			  });
+		  });
+	  }
+
+	  $sortable.sortable({ update: saveNewOrder });
+	  function saveNewOrder() {
+		  let dat = [];
+		  let i = 0;
+		  $.each($sortable, function() {
+			  dat[i++] = [this.id, $(this).sortable('toArray')]; // this.id is the column id, the 2nd element are the job id's in that column
+		  });
+		  localStorage.setItem('remember.dashboard.layout', JSON.stringify(dat));
+	  }
+  });*/
+
 </script>
