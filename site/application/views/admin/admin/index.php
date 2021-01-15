@@ -54,7 +54,7 @@
     <!-- Main content -->
     <section class="content mt10">
     	<div class="card">
-    		<div class="card-body">
+    		<div class="card-body p-0">
                <!-- Load Admin list (json request)-->
                <div class="data_container"></div>
            </div>
