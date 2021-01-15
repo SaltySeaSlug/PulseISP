@@ -46,7 +46,7 @@
         <li id="<?= ($nav['controller_name']) ?>" class="nav-item <?= ($has_submenu) ? 'has-treeview' : '' ?> has-treeview">
 
           <a href="<?= base_url('admin/'.$nav['controller_name']) ?>" class="nav-link">
-            <i class="nav-icon fa <?= $nav['fa_icon'] ?>"></i>
+            <i class="nav-icon <?= $nav['fa_icon'] ?>"></i>
             <p>
               <?= trans($nav['module_name']) ?>
               <?= ($has_submenu) ? '<i class="right fa fa-angle-left"></i>' : '' ?>
@@ -63,7 +63,7 @@
 
             <li id="<?= $nav['controller_name'].'_'. $sub_nav['link'] ?>" class="nav-item">
               <a href="<?= base_url('admin/'.$nav['controller_name'].'/'.$sub_nav['link']); ?>" class="nav-link">
-                <i class="fa fa-circle-o nav-icon"></i>
+                <i class="fad fa-angle-right nav-icon"></i>
                 <p><?= trans($sub_nav['name']) ?></p>
               </a>
             </li>

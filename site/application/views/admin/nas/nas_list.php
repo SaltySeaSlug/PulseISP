@@ -9,7 +9,7 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title"><i class="fa fa-list"></i>&nbsp; <?= trans('nas_list') ?></h3>
+          <h3 class="card-title mt-2"><i class="fa fa-list"></i>&nbsp; <?= trans('nas_list') ?></h3>
         </div>
         <div class="d-inline-block float-right">
           <?php if($this->rbac->check_operation_permission('add')): ?>
@@ -20,7 +20,7 @@
     </div>
     <div class="card">
       <div class="card-body table-responsive">
-        <table id="na_datatable" class="table table-bordered table-striped table-sm" width="100%">
+        <table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md" width="100%">
           <thead>
             <tr>
               <th>ID</th>
@@ -28,7 +28,7 @@
               <th>IP Address</th>
               <th>Identifier</th>
               <th>Status</th>
-              <th width="100" class="text-right"><?= trans('action') ?></th>
+              <th class="text-right"><?= trans('action') ?></th>
             </tr>
           </thead>
         </table>

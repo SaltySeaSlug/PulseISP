@@ -13,7 +13,7 @@
   <!-- Custom Favicon -->
   <?= isset($this->general_settings['favicon']) ? '<link href="' . base_url().$this->general_settings['favicon'] . '" rel="icon" type="image/x-icon" />' : '' ?>
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/fontawesome-5/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="<?= base_url()?>assets/plugins/ionicons/ionicons.min.css">
   <!-- Theme style -->

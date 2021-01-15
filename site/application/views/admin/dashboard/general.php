@@ -91,10 +91,10 @@
         </div>
 
 	<div class="row">
-		  <div class="col-lg-7">
-			  <div class="card">
+	<div id="leftCol" class="col-lg-7 connectedSortable">
+			  <div id="today_usage" class="card">
 				  <div class="card-header">
-					  <h5 class="card-title"><i class="fa fa-th mr-1"></i>Today's Usage</h5>
+					  <h5 class="card-title mt-1"><i class="fa fa-th mr-1"></i>Today's Usage</h5>
 					  <div class="card-tools">
 						  <span class="badge bg-purple"><?php echo "In [ " . (!is_null($statUsageToday['upload']) ? toxbyte($statUsageToday['upload']) : 0); ?> ]</span> <span class="badge bg-orange"><?php echo "Out [ " . (!is_null($statUsageToday['download']) ? toxbyte($statUsageToday['download']) : 0); ?> ]</span>
 						  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
@@ -109,34 +109,36 @@
 				  </div>
 			  </div>
 		  </div>
+	<div id="rightCol" class="col-lg-5 connectedSortable">
+			<div id="auth_request" class="card">
+				<div class="card-header">
+					<i class="fa fa-user mr-1"></i>
+					<h3 class="card-title mt-1">Auth Requests</h3>
+					<div class="card-tools">
+						<span id="statAuthRequests"></span>
+						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="chart" style="overflow: auto;">
+						<canvas id="Client7Chart" style="height: 250px"></canvas>
+					</div>
+				</div>
+				<div class="card-footer text-center">
+					<a href="?route=radius/authrequests" class="uppercase">View All Authentication Requests</a>
+				</div>
+			</div>
+		</div>
 	</div>
-      <div class="col-lg-5">
-               <div class="box box-primary">
-                 <div class="box-header with-border">
-                     <i class="fa fa-user"></i>
-                     <h3 class="box-title">Auth Requests</h3>
-                     <div class="box-tools pull-right">
-                         <span id="statAuthRequests"></span>
-                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                     </div>
-                 </div>
-                 <div class="box-body">
-            <div class="chart" style="overflow: auto;">
-              <canvas id="Client7Chart" style="height: 250px"></canvas>
-            </div>
-          </div>
-          <div class="box-footer text-center">
-            <a href="?route=radius/authrequests" class="uppercase">View All Authentication Requests</a>
-          </div>
-        </div>
-      </div>
-    </div>
+
     </div><!-- /.container-fluid -->
   </section>
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 <script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js"></script>
+<script src="<?= base_url() ?>assets/dist/js/pages/global.js"></script>
+
 <script>
   $(function() {
     function buildUsageChartData(data) {
@@ -236,38 +238,5 @@
 
     loadUsageChartData();
   });
-
-  // Make the dashboard widgets sortable Using jquery UI
- /* $('.connectedSortable').sortable({
-	  placeholder         : 'sort-highlight',
-	  connectWith         : '.connectedSortable',
-	  handle              : '.card-header, .nav-tabs',
-	  forcePlaceholderSize: true,
-	  zIndex              : 999999
-  })
-  $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
-
-  $(function() {
-	  let $sortable = $('.connectedSortable');
-
-	  let dashboard = JSON.parse(localStorage.getItem('remember.dashboard.layout'));
-	  if (dashboard) {
-		  $.each(dashboard, function(i, column) {
-			  $.each(column[1], function(i, item) {
-				  $('#' + item).appendTo($('#' + column[0])); // or prependTo for reverse
-			  });
-		  });
-	  }
-
-	  $sortable.sortable({ update: saveNewOrder });
-	  function saveNewOrder() {
-		  let dat = [];
-		  let i = 0;
-		  $.each($sortable, function() {
-			  dat[i++] = [this.id, $(this).sortable('toArray')]; // this.id is the column id, the 2nd element are the job id's in that column
-		  });
-		  localStorage.setItem('remember.dashboard.layout', JSON.stringify(dat));
-	  }
-  });*/
-
+s
 </script>

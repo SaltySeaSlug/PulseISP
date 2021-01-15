@@ -89,7 +89,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title">Monthly Recap Report</h5>
+                <h5 class="card-title mt-2">Monthly Recap Report</h5>
 
                 <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
@@ -213,7 +213,7 @@
             <!-- MAP & BOX PANE -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Visitors Report</h3>
+                <h3 class="card-title mt-2">Visitors Report</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
@@ -261,7 +261,7 @@
                 <!-- DIRECT CHAT -->
                 <div class="card direct-chat direct-chat-warning">
                   <div class="card-header">
-                    <h3 class="card-title">Direct Chat</h3>
+                    <h3 class="card-title mt-2">Direct Chat</h3>
 
                     <div class="card-tools">
                       <span data-toggle="tooltip" title="3 New Messages" class="badge badge-warning">3</span>
@@ -464,7 +464,7 @@
                 <!-- USERS LIST -->
                 <div class="card">
                   <div class="card-header">
-                    <h3 class="card-title">Latest Members</h3>
+                    <h3 class="card-title mt-2">Latest Members</h3>
 
                     <div class="card-tools">
                       <span class="badge badge-danger">8 New Members</span>
@@ -535,7 +535,7 @@
             <!-- TABLE: LATEST ORDERS -->
             <div class="card">
               <div class="card-header border-transparent">
-                <h3 class="card-title">Latest Orders</h3>
+                <h3 class="card-title mt-2">Latest Orders</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">

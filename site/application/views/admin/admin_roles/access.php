@@ -5,7 +5,7 @@
         <div class="card card-default color-palette-bo">
             <div class="card-header">
               <div class="d-inline-block">
-                  <h3 class="card-title"> <i class="fa fa-edit"></i>
+                  <h3 class="card-title mt-2"> <i class="fad fa-edit"></i>
                   &nbsp; <?= $title ?> </h3>
               </div>
               <div class="d-inline-block float-right">
@@ -37,15 +37,15 @@
 	                                    <div class="col-md-3 pb-3">	
 	                                        <span class="pull-left">
 	                                            <input type='checkbox'
-	                                            class='tgl tgl-ios tgl_checkbox'
+	                                            class='tgl tgl-light tgl_checkbox'
 	                                            data-module='<?= $module['controller_name'] ?>'
 	                                            data-operation='<?= $operation; ?>'
 	                                            id='cb_<?=$kk.$k?>' 
 	                                            <?php if (in_array($module['controller_name'].'/'.$operation, $access)) echo 'checked="checked"';?>
 	                                            />
-	                                            <label class='tgl-btn' for='cb_<?=$kk.$k?>'></label> 
+	                                            <label class='tgl-btn' for='cb_<?=$kk.$k?>'></label>
 	                                        </span>
-	                                        <span class="mt-15 pl-3">
+	                                        <span>
 												<?=ucwords($operation)?>
 	                                        </span>
 	                                    </div>

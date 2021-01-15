@@ -94,7 +94,7 @@
             <!-- Custom tabs (Charts with tabs)-->
             <div class="card">
               <div class="card-header d-flex p-0">
-                <h3 class="card-title p-3">
+                <h3 class="card-title mt-1 p-3">
                   <i class="fa fa-pie-chart mr-1"></i>
                   <?= trans('sales') ?>
                 </h3>
@@ -121,7 +121,7 @@
             <!-- DIRECT CHAT -->
             <div class="card direct-chat direct-chat-primary">
               <div class="card-header">
-                <h3 class="card-title"><?= trans('direct_chat') ?></h3>
+                <h3 class="card-title mt-1"><?= trans('direct_chat') ?></h3>
 
                 <div class="card-tools">
                   <span data-toggle="tooltip" title="3 New Messages" class="badge badge-primary">3</span>
@@ -323,7 +323,7 @@
             <!-- TO DO List -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">
+                <h3 class="card-title mt-1">
                   <i class="ion ion-clipboard mr-1"></i>
                   <?= trans('to_do_list') ?>
                 </h3>
@@ -440,7 +440,7 @@
             <!-- Map card -->
             <div class="card bg-primary-gradient">
               <div class="card-header no-border">
-                <h3 class="card-title">
+                <h3 class="card-title mt-1">
                   <i class="fa fa-map-marker mr-1"></i>
                   <?= trans('visitors') ?>
                 </h3>
@@ -485,7 +485,7 @@
             <!-- solid sales graph -->
             <div class="card bg-info-gradient">
               <div class="card-header no-border">
-                <h3 class="card-title">
+                <h3 class="card-title mt-1">
                   <i class="fa fa-th mr-1"></i>
                   <?= trans('sales_graph') ?>
                 </h3>
@@ -537,7 +537,7 @@
             <div class="card bg-success-gradient">
               <div class="card-header no-border">
 
-                <h3 class="card-title">
+                <h3 class="card-title mt-1">
                   <i class="fa fa-calendar"></i>
                   <?= trans('calendar') ?>
                 </h3>

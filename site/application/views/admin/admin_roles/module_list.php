@@ -17,7 +17,7 @@
 			</div>
 
 			<div class="card-body">
-				<table id="example1" class="table table-bordered table-hover">
+				<table id="example1" class="table table-hover table-striped table-hover no-footer table-md text-md">
 					<thead>
 						<tr>
 							<th width="50"><?= trans('id') ?></th>
@@ -25,8 +25,7 @@
 							<th><?= trans('controller_name') ?></th>
 							<th><?= trans('fa_icon') ?></th>
 							<th><?= trans('operations') ?></th>
-							<th><?= trans('sub_module') ?></th>
-							<th width="100"><?= trans('action') ?></th>
+							<th class="text-right"><?= trans('action') ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,15 +37,15 @@
 								<td><?= $record['fa_icon']; ?></td>
 								<td><?= $record['operation']; ?></td>
 								<td>
-									<a href="<?= base_url('admin/admin_roles/sub_module/'.$record['module_id']) ?>" class="btn btn-info btn-xs mr5">
-										<i class="fa fas fa-sliders-h"></i>
+									<div class="text-right">
+									<a href="<?= base_url('admin/admin_roles/sub_module/'.$record['module_id']) ?>" class="btn-right text-dark pr-1" title="Sub Module">
+										<i class="fad fa-sliders-h"></i>
 									</a>
-								</td>
-								<td>
-									<a href="<?php echo site_url("admin/admin_roles/module_edit/".$record['module_id']); ?>" class="btn btn-warning btn-xs mr5" >
-											<i class="fa fa-edit"></i>
+									<a href="<?php echo site_url("admin/admin_roles/module_edit/".$record['module_id']); ?>" class="btn-right text-dark5 pr-1" title="Edit">
+											<i class="fad fa-edit"></i>
 										</a>
-									<a href="<?php echo site_url("admin/admin_roles/module_delete/".$record['module_id']); ?>" onclick="return confirm('are you sure to delete?')" class="btn btn-danger btn-xs"><i class="fas fa-minus"></i></a>
+									<a href="<?php echo site_url("admin/admin_roles/module_delete/".$record['module_id']); ?>" onclick="return confirm('are you sure to delete?')" class="btn-right text-red" title="Delete"><i class="fad fa-trash-alt"></i></a>
+									</div>
 								</td>
 							</tr>
 						<?php endforeach; ?>

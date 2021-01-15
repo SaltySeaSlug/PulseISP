@@ -12,7 +12,8 @@ $lang['nas_list']								= "NAS Devices List";
 $lang['name']									= "Name";
 $lang['ip_address']								= "IP Address";
 $lang['identifier']								= "Identifier";
-$lang['add_new_nas']								= "Add NAS";
+$lang['add_new_nas']							= "Add NAS";
+$lang['edit_nas'] 								= "Edit Nas";
 
 $lang['dashboard']                               = "Dashboard";
 	$lang['dashboard_v1']                        = "Dashboard v1";
@@ -221,6 +222,7 @@ $lang['select_a_template']                               = "Select a Template";
 $lang['preview']                               = "Preview";
 $lang['variables']                               = "Variables";
 $lang['title']                               = "Title";
+$lang['use_google_font']					= "Use Google Fonts";
 
 // Charts
 $lang['area_chart'] = "Area Chart";

@@ -9,7 +9,7 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title"><i class="fa fa-list"></i>&nbsp; <?= trans('users_activity_log') ?></h3>
+          <h3 class="card-title mt-2"><i class="fa fa-list"></i>&nbsp; <?= trans('users_activity_log') ?></h3>
         </div>
       </div>
     </div>

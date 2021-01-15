@@ -15,13 +15,15 @@
         </footer>-->
 
 
-<?php endif; ?>  
+<?php endif; ?>
 
+<?php if(!isset($sidebar)): ?>
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
   <!-- /.control-sidebar -->
+<?php endif; ?>
 
   
 </div>

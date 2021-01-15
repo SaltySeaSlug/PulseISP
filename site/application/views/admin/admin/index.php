@@ -8,7 +8,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-inline-block">
-                  <h3 class="card-title">
+                  <h3 class="card-title mt-2">
                     <i class="fa fa-list"></i>
                     <?= trans('admin_list') ?>
                   </h3>

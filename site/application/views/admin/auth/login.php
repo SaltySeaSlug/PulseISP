@@ -11,7 +11,7 @@
     <div class="card">
 
       <div class="card-body login-card-body">
-        <p class="login-box-msg"><?= trans('signin_to_start_your_session') ?></p>
+        <!--<p class="login-box-msg"><?= trans('signin_to_start_your_session') ?></p>-->
 
         <?php $this->load->view('admin/includes/_messages.php') ?>
         
@@ -32,7 +32,7 @@
         </div>
 
         <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="<?= trans('password') ?>" required="">
+          <input type="password" name="password" id="password" class="form-control" placeholder="<?= trans('password') ?>" required="">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fa fa-lock"></span>
@@ -74,11 +74,11 @@
        
         <!--<p class="mb-0">
           <a href="<?= base_url('admin/auth/register'); ?>" class="text-center"><?= trans('register_new_membership') ?></a>
-        </p>-->
+        </p>
         <br>
          <p class="mb-1 login-box-msg">
           <a href="<?= base_url('admin/auth/forgot_password'); ?>"><?= trans('i_forgot_my_password') ?></a>
-        </p>
+        </p>-->
       </div>
 
       
@@ -91,3 +91,15 @@
     <?= $this->general_settings['copyright']; ?>
 </footer>
 </div>
+
+<script>
+	$('#password').keypress(function (e) {
+		var key = e.which;
+		if(key == 13)  // the enter key code
+		{
+			alert();
+			$('input[name = submit]').click();
+			return false;
+		}
+	});
+</script>

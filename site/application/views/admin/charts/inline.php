@@ -26,7 +26,7 @@
             <!-- jQuery Knob -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">
+                <h3 class="card-title mt-2">
                   <i class="fa fa-bar-chart-o"></i>
                   jQuery Knob
                 </h3>
@@ -98,7 +98,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">
+                <h3 class="card-title mt-2">
                   <i class="fa fa-bar-chart-o"></i>
                   jQuery Knob Different Sizes
                 </h3>
@@ -157,7 +157,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">
+                <h3 class="card-title mt-2">
                   <i class="fa fa-bar-chart-o"></i>
                   jQuery Knob Tron Style
                 </h3>
@@ -225,7 +225,7 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title text-danger">Sparkline Pie</h3>
+                <h3 class="card-title mt-2 text-danger">Sparkline Pie</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool"><i class="fa fa-refresh"></i></button>
@@ -246,7 +246,7 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title text-primary">Sparkline line</h3>
+                <h3 class="card-title mt-2 text-primary">Sparkline line</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool"><i class="fa fa-refresh"></i></button>
@@ -270,7 +270,7 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title text-warning">Sparkline Bar</h3>
+                <h3 class="card-title mt-2 text-warning">Sparkline Bar</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool"><i class="fa fa-refresh"></i></button>
@@ -295,7 +295,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Sparkline examples</h3>
+                <h3 class=card-title mt-2">Sparkline examples</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-widget="collapse"><i

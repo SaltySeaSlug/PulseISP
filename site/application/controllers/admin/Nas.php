@@ -37,11 +37,12 @@ class Nas extends MY_Controller {
 				$row['nasidentifier'],
 				//date_time($row['created_at']),	
 				//'<span class="btn btn-success">'.$verify.'</span>',	
-				'<input class="tgl_checkbox tgl-ios" data-id="'.$row['id'].'" id="cb_'.$row['id'].'" type="checkbox" '.$status.'><label for="cb_'.$row['id'].'"></label>',		
+				//'<input class="tgl tgl-light tgl_checkbox" data-id="'.$row['id'].'" id="cb_'.$row['id'].'" type="checkbox" '.$status.'><label class="tgl-btn" for="cb_'.$row['id'].'"></label>',
+				'<span class="badge badge-success">Online</span>',
 
-				'<a title="View" class="view btn btn-sm btn-info" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fa fa-eye"></i></a>
-				<a title="Edit" class="update btn btn-sm btn-warning" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fa fa-edit"></i></a>
-				<a title="Delete" class="delete btn btn-sm btn-danger" href='.base_url("admin/nas/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fa fa-trash-alt"></i></a>'
+				'<div class="text-right"><a title="View" class="btn-right text-dark pr-1" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fad fa-eye"></i></a>
+				<a title="Edit" class="btn-right text-warning pr-1" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fad fa-edit"></i></a>
+				<a title="Delete" class="btn-right text-danger pr-1" href='.base_url("admin/nas/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash-alt"></i></a></div>'
 			);
 		}
 		$records['data']=$data;

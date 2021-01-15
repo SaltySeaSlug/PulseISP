@@ -5,7 +5,7 @@
       <div class="card card-default color-palette-bo">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title"> <i class="fa fa-plus"></i>
+              <h3 class="card-title mt-2"> <i class="fa fa-plus"></i>
               <?= trans('add_new_admin') ?> </h3>
           </div>
           <div class="d-inline-block float-right">
