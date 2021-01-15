@@ -38,7 +38,7 @@
                 </td>
                 <td>
 					<div class="text-right">
-                    <a href="<?= base_url("admin/admin/edit/".$row['admin_id']); ?>" class="btn-right text-dark pr-1">
+                    <a href="<?= base_url("admin/admin/edit/".$row['admin_id']); ?>" class="btn-right text-warning pr-1">
                     <i class="fad fa-edit"></i>
                     </a>
                     <a href="<?= base_url("admin/admin/delete/".$row['admin_id']); ?>" onclick="return confirm('are you sure to delete?')" class="btn-right text-danger pr-1"><i class="fad fa-trash-alt"></i></a>

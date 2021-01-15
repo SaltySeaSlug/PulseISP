@@ -31,6 +31,9 @@
                   <li class="nav-item">
                     <a class="nav-link" id="pills-company-tab" data-toggle="pill" href="#company" role="tab" aria-controls="company" aria-selected="false"><?= trans('company_setting') ?></a>
                   </li>
+					<li class="nav-item">
+						<a class="nav-link" id="pills-radius-tab" data-toggle="pill" href="#radius" role="tab" aria-controls="company" aria-selected="false">Radius Settings</a>
+					</li>
                 </ul>
 
                  <!-- Tab panes -->
@@ -205,7 +208,19 @@
                         </div>
                     </div>
 
-                <div class="box-footer">
+					<!-- Radius Settings -->
+					<div role="tabpanel" class="tab-pane" id="radius">
+						<div class="form-group">
+							<label class="control-label">Radius Secret</label>
+							<input type="text" class="form-control" name="radius_secret" placeholder="radius secret" value="<?php echo html_escape($general_settings['radius_secret']); ?>">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Realm Suffix</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="realm" value="<?php echo html_escape($general_settings['realm_suffix']); ?>">
+						</div>
+					</div>
+
+					<div class="box-footer">
                     <input type="submit" name="submit" value="<?= trans('save_changes') ?>" class="btn btn-primary pull-right">
                 </div>	
                 <?php echo form_close(); ?>

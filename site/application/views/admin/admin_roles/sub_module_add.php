@@ -24,7 +24,7 @@
 
                 <div class="col-md-12">
                   <input type="text" name="module_name" class="form-control" id="module_name" placeholder="">
-                  <small>Language index as per your languge file</small>
+                  <small>Language index as per your language file</small>
                 </div>
               </div>
               

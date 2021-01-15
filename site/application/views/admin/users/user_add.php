@@ -67,7 +67,10 @@
 			<div class="form-group">
                 <label for="username" class="col-md-2 control-label"><?= trans('username') ?></label>
                 <div class="col-md-12">
-                  <input type="text" name="username" class="form-control" id="username" placeholder="">
+					<div class="input-group">
+						<input name="username" type="text" class="form-control" id="username" placeholder="" autocomplete="off" value="" required>
+						<span class="input-group-append"><button id="account_code_btn" onclick="generatePPPUsername()" type="button" class="btn btn-default btn-flat">Generate</button></span>
+					</div>
                 </div>
               </div>
 <!-- PASSWORD -->
@@ -178,27 +181,147 @@
 
 	  function generateAccountCode() {
 		  var fname = $('#firstname').val().trim().toLowerCase();
+		  if ($('#firstname').val().trim().length <= 0) {
+			  $('#firstname').addClass("is-invalid");
+			  return;
+		  }
+		  if ($('#firstname').val().trim().length >= 3) {
+			  $.ajax({
+				  type: "GET",
+				  url: "<?php echo base_url("admin/data/generate_account_code"); ?>",
+				  dataType: "json",
+				  data: {"name": fname},
+				  success: function (data) {
+					  if (data.status == 'OK') {
+						  $('#profile-input-account-code').val(data.result);
+						  $('#account_code_btn').attr("disabled", "true");
+						  $('#firstname').removeClass("is-invalid")
+					  } else if (data.status == 'ERR') {
+						  $('#firstname').addClass("is-invalid");
+					  } else {
+						  alert("Error");
+					  }
+				  },
+				  error: function (error) {
+					  alert(error);
+				  }
+			  });
+		  } else {
+			  $('#profile-input-account-code').val('');
+			  $('#account_code_btn').removeAttr("disabled");
+		  }
+	  }
+	  function generatePPPUsername() {
+		  var fname = $('#firstname').val().trim().toLowerCase();
+		  var lname = $('#lastname').val().trim().toLowerCase();
+
+		  if (fname.length <= 0) {
+			  $('#firstname').addClass("is-invalid");
+		  }
+		  if (lname.length <= 0) {
+			  $('#lastname').addClass("is-invalid");
+		  }
+		  if (fname.length <= 0 || lname.length <= 0) return
 
 		  $.ajax({
 			  type: "GET",
-			  url: "<?php echo base_url("functions/generate_accountcode.php"); ?>",
+			  url: "<?php echo base_url("admin/data/generate_ppp_username"); ?>",
 			  dataType: "json",
-			  data: {"name": fname},
+			  data: {"firstname": fname, "lastname": lname},
 			  success: function (data) {
-			  	if (data.status == 'OK') {
-					$('#profile-input-account-code').val(data.result);
-					$('#account_code_btn').attr("disabled", "true");
-					$('#firstname').removeClass("is-invalid")
-				}
-			  	else if (data.status == 'ERR')
-				{
-					$('#firstname').addClass("is-invalid");
-				}
-			  	else { alert("Error"); }
+				  if (data.status == 'OK') {
+					  $('#username').val(data.result);
+					  $('#username').removeClass("is-invalid");
+					  $('#firstname').removeClass("is-invalid");
+					  $('#lastname').removeClass("is-invalid");
+				  } else if (data.status == 'ERR') {
+					  $('#username').addClass("is-invalid");
+				  } else {
+					  //alert("Error");
+				  }
 			  },
 			  error: function (error) {
-				  alert(error);
+				  //alert(error);
 			  }
 		  });
 	  }
+	  function checkIfUsernameExists() {
+		  var fname = $('#username').val().trim().toLowerCase();
+
+		  $.ajax({
+			  type: "GET",
+			  url: "<?php echo base_url("admin/data/check_username"); ?>",
+			  dataType: "json",
+			  data: {"username": fname},
+			  success: function (data) {
+				  if (data == false) {
+					  $('#username').removeClass("is-invalid");
+				  } else if (data == true) {
+					  $('#username').addClass("is-invalid");
+				  } else {
+					  //alert("Error");
+				  }
+			  },
+			  error: function (error) {
+				  //alert(error);
+			  }
+		  });
+	  }
+
+
+	  (function($){
+		  $.fn.extend({
+			  donetyping: function(callback,timeout){
+				  timeout = timeout || 1e3; // 1 second default timeout
+				  var timeoutReference,
+						  doneTyping = function(el){
+							  if (!timeoutReference) return;
+							  timeoutReference = null;
+							  callback.call(el);
+						  };
+				  return this.each(function(i,el){
+					  var $el = $(el);
+					  // Chrome Fix (Use keyup over keypress to detect backspace)
+					  // thank you @palerdot
+					  $el.is(':input') && $el.on('keyup keypress paste',function(e){
+						  // This catches the backspace button in chrome, but also prevents
+						  // the event from triggering too preemptively. Without this line,
+						  // using tab/shift+tab will make the focused element fire the callback.
+						  if (e.type=='keyup' && e.keyCode!=8) return;
+
+						  // Check if timeout has been set. If it has, "reset" the clock and
+						  // start over again.
+						  if (timeoutReference) clearTimeout(timeoutReference);
+						  timeoutReference = setTimeout(function(){
+							  // if we made it here, our timeout has elapsed. Fire the
+							  // callback
+							  doneTyping(el);
+						  }, timeout);
+					  }).on('blur',function(){
+						  // If we can, fire the event since we're leaving the field
+						  doneTyping(el);
+					  });
+				  });
+			  }
+		  });
+	  })(jQuery);
+
+	  $('#firstname').donetyping(function(){
+		  generateAccountCode();
+	  });
+
+	  $('#firstname').donetyping(function(){
+		  if ($('#firstname').val().trim().length > 0 && $('#lastname').val().trim().length > 0) {
+	  		generatePPPUsername();
+		  }
+	  });
+	  $('#lastname').donetyping(function(){
+		  if ($('#firstname').val().trim().length > 0 && $('#lastname').val().trim().length > 0) {
+			  generatePPPUsername();
+		  }
+	  });
+	  $('#username').donetyping(function(){
+		  checkIfUsernameExists();
+	  });
+
   </script>

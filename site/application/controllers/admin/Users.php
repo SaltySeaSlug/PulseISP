@@ -9,6 +9,7 @@ class Users extends MY_Controller {
 
 		$this->load->model('admin/user_model', 'user_model');
 		$this->load->model('admin/Activity_model', 'activity_model');
+		$this->load->model('admin/Setting_model', 'setting_model');
 	}
 
 	//-----------------------------------------------------------
@@ -65,6 +66,8 @@ class Users extends MY_Controller {
 		
 		$this->rbac->check_operation_access(); // check opration permission
 
+		$data['general_settings'] = $this->setting_model->get_general_settings();
+
 		if($this->input->post('submit')){
 			$this->form_validation->set_rules('username', 'Username', 'trim|required');
 			$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
@@ -82,15 +85,16 @@ class Users extends MY_Controller {
 			}
 			else{
 				$data = array(
-					'username' => $this->input->post('username'),
 					'firstname' => $this->input->post('firstname'),
 					'lastname' => $this->input->post('lastname'),
 					'email' => $this->input->post('email'),
 					'mobile_no' => $this->input->post('mobile_no'),
 					'address' => $this->input->post('address'),
-					'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
+					'account_code' => $this->input->post('profile-input-account-code'),
+					'username' => $this->input->post('username'),
+					'password' =>  $this->input->post('password'),
 					'created_at' => date('Y-m-d : h:m:s'),
-					'updated_at' => date('Y-m-d : h:m:s'),
+					//'updated_at' => date('Y-m-d : h:m:s'),
 				);
 				$data = $this->security->xss_clean($data);
 				$result = $this->user_model->add_user($data);

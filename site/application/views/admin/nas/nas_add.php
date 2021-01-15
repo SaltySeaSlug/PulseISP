@@ -5,7 +5,7 @@
       <div class="card card-default color-palette-bo">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title"> <i class="fa fa-plus"></i>
+              <h3 class="card-title mt-2"> <i class="fa fa-plus"></i>
               <?= trans('add_new_nas') ?> </h3>
           </div>
           <div class="d-inline-block float-right">
@@ -46,7 +46,7 @@
 			<div class="form-group">
 				<label for="nassecret" class="col-md-12 control-label">NAS Secret</label>
 				<div class="col-md-12">
-					<input type="text" class="form-control" id="nassecret" name="nassecret" value="qHeOh65w23" required>
+					<input type="text" class="form-control" id="nassecret" name="nassecret" value="<?php echo html_escape($general_settings['radius_secret']); ?>" required>
 				</div>
 			</div>
 <!-- NAS TYPE -->
@@ -77,7 +77,7 @@
 
                   <div class="form-group">
                     <div class="col-md-12">
-                      <input type="submit" name="submit" value="<?= trans('add_admin') ?>" class="btn btn-primary pull-right">
+                      <input type="submit" name="submit" value="<?= trans('add_new_nas') ?>" class="btn btn-primary pull-right">
                     </div>
                   </div>
                   <?php echo form_close(); ?>
@@ -98,7 +98,9 @@
 		  return regex.test(str);
 	  }
 	  function doPing(event) {
-		  event.preventDefault();
+	  	if (event != null) event.preventDefault();
+		if (!isValidIP($('#nashost').val())) { $("#pingbtn").removeClass("bg-green"); $("#pingbtn").addClass("bg-red"); $("#pingbtn").html('Invalid IP'); return; }
+
 		  $.ajax({
 			  type: "GET",
 			  url: "<?php echo base_url("functions/ping_ip.php"); ?>",
@@ -116,4 +118,45 @@
 	  }
 
 	  $('#pingbtn').on('click', doPing);
+
+	  (function($){
+		  $.fn.extend({
+			  donetyping: function(callback,timeout){
+				  timeout = timeout || 1e3; // 1 second default timeout
+				  var timeoutReference,
+						  doneTyping = function(el){
+							  if (!timeoutReference) return;
+							  timeoutReference = null;
+							  callback.call(el);
+						  };
+				  return this.each(function(i,el){
+					  var $el = $(el);
+					  // Chrome Fix (Use keyup over keypress to detect backspace)
+					  // thank you @palerdot
+					  $el.is(':input') && $el.on('keyup keypress paste',function(e){
+						  // This catches the backspace button in chrome, but also prevents
+						  // the event from triggering too preemptively. Without this line,
+						  // using tab/shift+tab will make the focused element fire the callback.
+						  if (e.type=='keyup' && e.keyCode!=8) return;
+
+						  // Check if timeout has been set. If it has, "reset" the clock and
+						  // start over again.
+						  if (timeoutReference) clearTimeout(timeoutReference);
+						  timeoutReference = setTimeout(function(){
+							  // if we made it here, our timeout has elapsed. Fire the
+							  // callback
+							  doneTyping(el);
+						  }, timeout);
+					  }).on('blur',function(){
+						  // If we can, fire the event since we're leaving the field
+						  doneTyping(el);
+					  });
+				  });
+			  }
+		  });
+	  })(jQuery);
+
+	  $('#nashost').donetyping(function(){
+		  doPing();
+	  });
   </script>

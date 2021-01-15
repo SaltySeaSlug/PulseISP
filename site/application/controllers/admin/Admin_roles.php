@@ -273,6 +273,13 @@ class Admin_roles extends MY_Controller
 				if($result){
 					$this->session->set_flashdata('success', 'Sub Module has been added successfully!');
 					redirect(base_url('admin/admin_roles/sub_module/'.$parent));
+
+					$fl=base_url('/langauages/english/site_lang.php');
+					/*read operation ->*/ $tmp = fopen($fl, "r");   $content=fread($tmp,filesize($fl)); fclose($tmp);
+
+// here goes your update
+					$content = preg_replace('/\$targetvariable=\"(.*?)\";/', '$targetvariable="hi Greg";', $content);
+					/*write operation ->*/ $tmp =fopen($fl, "w");    fwrite($tmp, $content);    fclose($tmp);
 				}
 			}
 		}

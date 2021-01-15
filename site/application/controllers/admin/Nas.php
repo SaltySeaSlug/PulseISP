@@ -9,6 +9,7 @@ class Nas extends MY_Controller {
 
 		$this->load->model('admin/Nas_model', 'nas_model');
 		$this->load->model('admin/Activity_model', 'activity_model');
+		$this->load->model('admin/Setting_model', 'setting_model');
 	}
 
 	//-----------------------------------------------------------
@@ -59,13 +60,13 @@ class Nas extends MY_Controller {
 		
 		$this->rbac->check_operation_access(); // check opration permission
 
+		$data['general_settings'] = $this->setting_model->get_general_settings();
+
 		if($this->input->post('submit')){
-			//$this->form_validation->set_rules('username', 'Username', 'trim|required');
-			//$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
-			//$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-			//$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
-			//$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-			$this->form_validation->set_rules('nashost', 'nashost', 'trim|required');
+			$this->form_validation->set_rules('nasname', 'Name', 'trim|required');
+			$this->form_validation->set_rules('nashost', 'IP Address', 'trim|required');
+			$this->form_validation->set_rules('nasidentifier', 'Identifier', 'trim|required');
+			$this->form_validation->set_rules('nassecret', 'Secret', 'trim|required');
 
 			if ($this->form_validation->run() == FALSE) {
 				$data = array('errors' => validation_errors());
@@ -74,34 +75,31 @@ class Nas extends MY_Controller {
 			}
 			else{
 				$data = array(
+					'connection_type' => 'direct',
 					'nasname' => $this->input->post('nashost'),
-					'shortname' => $this->input->post('nasname'),
-					'type' => $this->input->post('nastype'),
-					//'ports' => $this->input->post('nasports'),
 					'secret' => $this->input->post('nassecret'),
-					'server' => $this->input->post('nasvirtualserver'),
-					//'community' => $this->input->post('nascommunity'),
-					//'description' => $this->input->post('nasdescription'),
-					'nasidentifier' => $this->input->post('nasidentifier'),
-
+					'type' => $this->input->post('nastype'),
+					'shortname' => $this->input->post('nasname'),
+					'nasidentifier' => $this->input->post('nasidentifier')
 				);
 				$data = $this->security->xss_clean($data);
 				$result = $this->nas_model->add_nas($data);
 				if($result){
+
+					shell_exec("sudo /etc/init.d/freeradius restart 2>&1");
 
 					// Activity Log 
 					$this->activity_model->add_to_log(1, "Nas Device has been added successfully");
 
 					$this->session->set_flashdata('success', 'Nas Device has been added successfully!');
 					redirect(base_url('admin/nas'));
-
-					var_dump(shell_exec("sudo /etc/init.d/freeradius restart 2>&1"));
 				}
 			}
 		}
 		else{
+
 			$this->load->view('admin/includes/_header');
-			$this->load->view('admin/nas/nas_add');
+			$this->load->view('admin/nas/nas_add', $data);
 			$this->load->view('admin/includes/_footer');
 		}
 		
@@ -112,31 +110,33 @@ class Nas extends MY_Controller {
 		$this->rbac->check_operation_access(); // check opration permission
 
 		if($this->input->post('submit')){
-			$this->form_validation->set_rules('shortname', 'Name', 'trim|required');
-			$this->form_validation->set_rules('nasname', 'IP Address', 'trim|required');
+			$this->form_validation->set_rules('nasname', 'Name', 'trim|required');
+			$this->form_validation->set_rules('nashost', 'IP Address', 'trim|required');
 			$this->form_validation->set_rules('nasidentifier', 'Identifier', 'trim|required');
-			$this->form_validation->set_rules('type', 'Type', 'trim|required');
-			$this->form_validation->set_rules('ports', 'Ports', 'trim|required');
-			$this->form_validation->set_rules('secret', 'Secret', 'trim|required');
+			$this->form_validation->set_rules('nassecret', 'Secret', 'trim|required');
 			if ($this->form_validation->run() == FALSE) {
 					$data = array(
 						'errors' => validation_errors()
 					);
 					$this->session->set_flashdata('errors', $data['errors']);
-					redirect(base_url('admin/nas/nas_edit/'.$id),'refresh');
+					redirect(base_url('admin/nas/edit/'.$id),'refresh');
 			}
 			else{
 				$data = array(
-					'shortname' => $this->input->post('shortname'),
-					'nasname' => $this->input->post('nasname'),
-					'nasidentifier' => $this->input->post('nasidentifier'),
-					'type' => $this->input->post('type'),
-					'ports' => $this->input->post('ports'),
-					'secret' => $this->input->post('secret') //password_hash($this->input->post('password'), PASSWORD_BCRYPT),
+					'connection_type' => 'direct', //$this->input->post('nasconnectiontype'),
+					'nasname' => $this->input->post('nashost'),
+					'secret' => $this->input->post('nassecret'),
+					'type' => $this->input->post('nastype'),
+					'shortname' => $this->input->post('nasname'),
+					'nasidentifier' => $this->input->post('nasidentifier')
+					//password_hash($this->input->post('password'), PASSWORD_BCRYPT),
 				);
 				$data = $this->security->xss_clean($data);
 				$result = $this->nas_model->edit_nas($data, $id);
 				if($result){
+
+					shell_exec("sudo /etc/init.d/freeradius restart 2>&1");
+
 					// Activity Log 
 					$this->activity_model->add_log(2);
 

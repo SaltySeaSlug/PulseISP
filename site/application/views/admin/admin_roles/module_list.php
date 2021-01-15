@@ -41,7 +41,7 @@
 									<a href="<?= base_url('admin/admin_roles/sub_module/'.$record['module_id']) ?>" class="btn-right text-dark pr-1" title="Sub Module">
 										<i class="fad fa-sliders-h"></i>
 									</a>
-									<a href="<?php echo site_url("admin/admin_roles/module_edit/".$record['module_id']); ?>" class="btn-right text-dark5 pr-1" title="Edit">
+									<a href="<?php echo site_url("admin/admin_roles/module_edit/".$record['module_id']); ?>" class="btn-right text-warning pr-1" title="Edit">
 											<i class="fad fa-edit"></i>
 										</a>
 									<a href="<?php echo site_url("admin/admin_roles/module_delete/".$record['module_id']); ?>" onclick="return confirm('are you sure to delete?')" class="btn-right text-red" title="Delete"><i class="fad fa-trash-alt"></i></a>

@@ -59,7 +59,9 @@ class General_settings extends MY_Controller {
 			'recaptcha_lang' => $this->input->post('recaptcha_lang'),
 			'created_date' => date('Y-m-d : h:m:s'),
 			'updated_date' => date('Y-m-d : h:m:s'),
-			'use_google_font' => $this->input->post('use_google_font')
+			'use_google_font' => $this->input->post('use_google_font'),
+			'radius_secret' => $this->input->post('radius_secret'),
+			'realm_suffix' => $this->input->post('realm_suffix')
 		);
 
 		$old_logo = $this->input->post('old_logo');

@@ -14,11 +14,13 @@ $lang['ip_address']								= "IP Address";
 $lang['identifier']								= "Identifier";
 $lang['add_new_nas']							= "Add NAS";
 $lang['edit_nas'] 								= "Edit Nas";
+$lang['update_nas'] 							= "Update Nas";
 
 $lang['dashboard']                               = "Dashboard";
 	$lang['dashboard_v1']                        = "Dashboard v1";
 	$lang['dashboard_v2']                        = "Dashboard v2";
 	$lang['dashboard_v3']                        = "Dashboard v3";
+	$lang['dashboard_test']						 = "Dashboard Test";
 $lang['admin']  								 = "Admin";
 	$lang['admin_list']                               = "Admin List";
 	$lang['add_new_admin']                               = "Add New Admin";
