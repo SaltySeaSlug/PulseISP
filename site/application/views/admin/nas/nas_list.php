@@ -9,7 +9,7 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title mt-2"><i class="fa fa-list"></i>&nbsp; <?= trans('nas_list') ?></h3>
+          <h3 class="card-title mt-2"><i class="fad fa-server"></i>&nbsp; <?= trans('nas_list') ?></h3>
         </div>
         <div class="d-inline-block float-right">
           <?php if($this->rbac->check_operation_permission('add')): ?>
