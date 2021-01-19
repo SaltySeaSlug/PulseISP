@@ -9,7 +9,7 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="d-inline-block">
-					<h3 class="card-title"><i class="fa fa-list"></i>&nbsp; <?= $title ?></h3>
+					<h3 class="card-title mt-2"><i class="fa fa-list"></i>&nbsp; <?= $title ?></h3>
 				</div>
 				<div class="d-inline-block float-right">
 					<a href="<?= base_url('admin/admin_roles/module_add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_module') ?></a>
@@ -17,10 +17,10 @@
 			</div>
 
 			<div class="card-body">
-				<table id="example1" class="table table-hover table-striped table-hover no-footer table-md text-md">
+				<table id="example1" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
 					<thead>
 						<tr>
-							<th width="50"><?= trans('id') ?></th>
+							<th># <?= trans('id') ?></th>
 							<th><?= trans('module_name') ?></th>
 							<th><?= trans('controller_name') ?></th>
 							<th><?= trans('fa_icon') ?></th>
@@ -61,6 +61,8 @@
 <!-- DataTables -->
 <script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.js"></script>
+<script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 <script>
   $(function () {

@@ -9,31 +9,29 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title mt-2"><i class="fa fa-list"></i>&nbsp; <?= trans('users_list') ?></h3>
+          <h3 class="card-title mt-2"><i class="fad fa-server"></i>&nbsp; IP Pool</h3>
         </div>
         <div class="d-inline-block float-right">
           <?php if($this->rbac->check_operation_permission('add')): ?>
-            <a href="<?= base_url('admin/users/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_user') ?></a>
+            <a href="<?= base_url('admin/ippool/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add IP Pool</a>
           <?php endif; ?>
         </div>
       </div>
     </div>
     <div class="card">
       <div class="card-body">
-				<table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
-				  <thead>
-					<tr>
-					  <th># <?= trans('id') ?></th>
-					  <th><?= trans('username') ?></th>
-					  <th><?= trans('email') ?></th>
-					  <th><?= trans('mobile_no') ?></th>
-					  <th><?= trans('created_date') ?></th>
-					  <th><?= trans('email_verification') ?></th>
-					  <th><?= trans('status') ?></th>
-					  <th class="text-right"><?= trans('action') ?></th>
-					</tr>
-				  </thead>
-				</table>
+        <table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
+          <thead>
+            <tr>
+				<th># <?= trans('id') ?></th>
+              	<th>Pool Name</th>
+              	<th>IP Address</th>
+				<th>Status</th>
+				<th>Assigned To</th>
+               <!--<th class="text-right"><?= trans('action') ?></th>-->
+            </tr>
+          </thead>
+        </table>
       </div>
     </div>
   </section>  
@@ -45,23 +43,24 @@
 <script src="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.js"></script>
 <script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
 <script>
   //---------------------------------------------------
   var table = $('#na_datatable').DataTable( {
     "processing": true,
     "serverSide": false,
 	"responsive": true,
-	"ajax": "<?=base_url('admin/users/datatable_json')?>",
+    "ajax": "<?=base_url('admin/ip_pool/datatable_json')?>",
     "order": [[0,'asc']],
     "columnDefs": [
     { "targets": 0, "name": "id", 'searchable':true, 'orderable':true},
-    { "targets": 1, "name": "username", 'searchable':true, 'orderable':true},
-    { "targets": 2, "name": "email", 'searchable':true, 'orderable':true, responsivePriority: 4},
-    { "targets": 3, "name": "mobile_no", 'searchable':true, 'orderable':true},
-    { "targets": 4, "name": "created_at", 'searchable':false, 'orderable':false, responsivePriority: 4},
-    { "targets": 5, "name": "is_active", 'searchable':true, 'orderable':true},
-    { "targets": 6, "name": "is_verify", 'searchable':true, 'orderable':true},
-    { "targets": 7, "name": "Action", 'searchable':false, 'orderable':false}
+    { "targets": 1, "name": "pool_name", 'searchable':true, 'orderable':true},
+    { "targets": 2, "name": "framedipaddress", 'searchable':true, 'orderable':true},
+	{ "targets": 3, "name": "status", 'searchable':true, 'orderable':false},
+	{ "targets": 4, "name": "username", 'searchable':true, 'orderable':true},
+    //{ "targets": 5, "name": "Action", 'searchable':false, 'orderable':false},
+    //{ "targets": 6, "name": "is_verify", 'searchable':true, 'orderable':true},
+    //{ "targets": 7, "name": "Action", 'searchable':false, 'orderable':false,'width':'100px'}
     ]
   });
 </script>
@@ -70,7 +69,7 @@
 <script type="text/javascript">
   $("body").on("change",".tgl_checkbox",function(){
     console.log('checked');
-    $.post('<?=base_url("admin/users/change_status")?>',
+    $.post('<?=base_url("admin/nas/change_status")?>',
     {
       '<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>',
       id : $(this).data('id'),

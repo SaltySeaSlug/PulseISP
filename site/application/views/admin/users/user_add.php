@@ -188,7 +188,7 @@
 		  if ($('#firstname').val().trim().length >= 3) {
 			  $.ajax({
 				  type: "GET",
-				  url: "<?php echo base_url("admin/data/generate_account_code"); ?>",
+				  url: "<?php echo base_url("data/generate_account_code"); ?>",
 				  dataType: "json",
 				  data: {"name": fname},
 				  success: function (data) {
@@ -225,7 +225,7 @@
 
 		  $.ajax({
 			  type: "GET",
-			  url: "<?php echo base_url("admin/data/generate_ppp_username"); ?>",
+			  url: "<?php echo base_url("data/generate_ppp_username"); ?>",
 			  dataType: "json",
 			  data: {"firstname": fname, "lastname": lname},
 			  success: function (data) {
@@ -250,7 +250,7 @@
 
 		  $.ajax({
 			  type: "GET",
-			  url: "<?php echo base_url("admin/data/check_username"); ?>",
+			  url: "<?php echo base_url("data/check_username"); ?>",
 			  dataType: "json",
 			  data: {"username": fname},
 			  success: function (data) {

@@ -4,7 +4,7 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="d-inline-block">
-					<h3 class="card-title"><i class="fa fa-list"></i>&nbsp; <?= $title ?></h3>
+					<h3 class="card-title mt-2"><i class="fa fa-list"></i>&nbsp; <?= $title ?></h3>
 				</div>
 				<div class="d-inline-block float-right">
 					<a href="<?= base_url('admin/admin_roles/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_role') ?></a>

@@ -16,6 +16,8 @@ $lang['add_new_nas']							= "Add NAS";
 $lang['edit_nas'] 								= "Edit Nas";
 $lang['update_nas'] 							= "Update Nas";
 
+$lang['ip_pool']								= "IP Pool";
+
 $lang['dashboard']                               = "Dashboard";
 	$lang['dashboard_v1']                        = "Dashboard v1";
 	$lang['dashboard_v2']                        = "Dashboard v2";

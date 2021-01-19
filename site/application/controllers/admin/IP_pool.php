@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Nas extends MY_Controller {
+class IP_pool extends MY_Controller {
 
 	public function __construct(){
 
@@ -7,7 +7,7 @@ class Nas extends MY_Controller {
 		auth_check(); // check login auth
 		$this->rbac->check_module_access();
 
-		$this->load->model('admin/Nas_model', 'nas_model');
+		$this->load->model('admin/IPPool_model', 'ippool_model');
 		$this->load->model('admin/Activity_model', 'activity_model');
 		$this->load->model('admin/Setting_model', 'setting_model');
 		$this->load->helper('data_helper');
@@ -17,30 +17,30 @@ class Nas extends MY_Controller {
 	public function index(){
 
 		$this->load->view('admin/includes/_header');
-		$this->load->view('admin/nas/nas_list');
+		$this->load->view('admin/ippool/ippool_list');
 		$this->load->view('admin/includes/_footer');
 	}
 	
 	public function datatable_json(){				   					   
-		$records['data'] = $this->nas_model->get_all_nas_devices();
+		$records['data'] = $this->ippool_model->get_all_ips();
 		$data = array();
 
 		foreach ($records['data'] as $row)
 		{
-			$status = empty($row['last_contact']) ? '<span class="badge badge-secondary">Never</span>' : (check_nas_status($row['id']) ? '<span class="badge badge-success">Online</span>' : '<span class="badge badge-danger" title="Last seen '. $row['last_contact'] .'">Offline</span>');
+			$status = empty($row['username']) ? '<span class="badge badge-danger">Unallocated</span>' : '<span class="badge badge-success">Allocated</span>';
 			$data[]= array(
 				$row['id'],
-				$row['shortname'],
-				$row['nasname'],
-				$row['nasidentifier'],
+				$row['pool_name'],
+				$row['framedipaddress'],
+				$status,
+				$row['username'],
 				//date_time($row['created_at']),	
 				//'<span class="btn btn-success">'.$verify.'</span>',	
 				//'<input class="tgl tgl-light tgl_checkbox" data-id="'.$row['id'].'" id="cb_'.$row['id'].'" type="checkbox" '.$status.'><label class="tgl-btn" for="cb_'.$row['id'].'"></label>',
-				$status,
 
-				'<div class="text-right"><a title="View" class="btn-right text-primary pr-1" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fad fa-eye"></i></a>
-				<a title="Edit" class="btn-right text-warning pr-1" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fad fa-edit"></i></a>
-				<a title="Delete" class="btn-right text-danger pr-1" href='.base_url("admin/nas/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash-alt"></i></a></div>'
+				//'<div class="text-right"><a title="View" class="btn-right text-primary pr-1" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fad fa-eye"></i></a>
+				//<a title="Edit" class="btn-right text-warning pr-1" href="'.base_url('admin/nas/edit/'.$row['id']).'"> <i class="fad fa-edit"></i></a>
+				//<a title="Delete" class="btn-right text-danger pr-1" href='.base_url("admin/nas/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash-alt"></i></a></div>'
 			);
 		}
 		$records['data']=$data;

@@ -1,19 +1,11 @@
 <?php if(!isset($footer)): ?>
 
   <footer class="main-footer pt-0 pb-0 text-sm">
-    <strong></strong>
-    <div class="float-right d-none d-sm-inline-block">
+	  <?php echo (ENVIRONMENT === 'development') ? 'Rendered in <strong>{elapsed_time}</strong> seconds. CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : ''; ?>
+	  <div class="float-right d-none d-sm-inline-block">
       <?= $this->general_settings['copyright']; ?>
     </div>
   </footer>
-
-  <!--<footer class="main-footer p-1">
-          <div class="pull-right hidden-xs">
-            <strong><a href="http://www.unitechsol.co.za">Unitech Solutions TTL</a> © 2020</strong> | All rights reserved.
-          </div>
-          &nbsp;
-        </footer>-->
-
 
 <?php endif; ?>
 

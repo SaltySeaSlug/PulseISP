@@ -1,5 +1,5 @@
 <?php
-	class NAS_model extends CI_Model{
+	class IPPool_model extends CI_Model{
 
 		public function add_nas($data){
 			$this->db->insert('nas', $data);
@@ -8,10 +8,10 @@
 
 		//---------------------------------------------------
 		// get all users for server-side datatable processing (ajax based)
-		public function get_all_nas_devices(){
+		public function get_all_ips(){
 			$this->db->select('*');
 			//$this->db->where('is_admin',0);
-			return $this->db->get('nas')->result_array();
+			return $this->db->get('radippool')->result_array();
 		}
 
 

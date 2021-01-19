@@ -19,11 +19,11 @@
       </div>
     </div>
     <div class="card">
-      <div class="card-body table-responsive">
-        <table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md" width="100%">
+      <div class="card-body">
+        <table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
           <thead>
             <tr>
-              <th>ID</th>
+				<th># <?= trans('id') ?></th>
               <th>Name</th>
               <th>IP Address</th>
               <th>Identifier</th>
@@ -41,21 +41,24 @@
 <!-- DataTables -->
 <script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>
 <script src="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.js"></script>
+<script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 <script>
   //---------------------------------------------------
   var table = $('#na_datatable').DataTable( {
     "processing": true,
     "serverSide": false,
+	"responsive": true,
     "ajax": "<?=base_url('admin/nas/datatable_json')?>",
-    "order": [[4,'desc']],
+    "order": [[0,'asc']],
     "columnDefs": [
     { "targets": 0, "name": "id", 'searchable':true, 'orderable':true},
     { "targets": 1, "name": "shortname", 'searchable':true, 'orderable':true},
     { "targets": 2, "name": "nasname", 'searchable':true, 'orderable':true},
     { "targets": 3, "name": "nasidentifier", 'searchable':true, 'orderable':true},
-    { "targets": 4, "name": "status", 'searchable':false, 'orderable':false},
-    { "targets": 5, "name": "Action", 'searchable':true, 'orderable':true},
+    { "targets": 4, "name": "status", 'searchable':true, 'orderable':false},
+    { "targets": 5, "name": "Action", 'searchable':false, 'orderable':false},
     //{ "targets": 6, "name": "is_verify", 'searchable':true, 'orderable':true},
     //{ "targets": 7, "name": "Action", 'searchable':false, 'orderable':false,'width':'100px'}
     ]

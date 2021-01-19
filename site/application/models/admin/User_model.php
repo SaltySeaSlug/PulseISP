@@ -6,6 +6,11 @@
 			return true;
 		}
 
+		public function add_user_return_id($data){
+			$this->db->insert('ci_users', $data);
+			return $this->db->insert_id();
+		}
+
 		//---------------------------------------------------
 		// get all users for server-side datatable processing (ajax based)
 		public function get_all_users(){

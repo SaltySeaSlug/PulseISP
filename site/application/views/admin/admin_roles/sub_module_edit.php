@@ -5,7 +5,7 @@
       <div class="card card-default">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title"> <i class="fa fa-pencil"></i>
+              <h3 class="card-title mt-2"> <i class="fa fa-pencil"></i>
               Edit Sub Module </h3>
           </div>
           <div class="d-inline-block float-right">

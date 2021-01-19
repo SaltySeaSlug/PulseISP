@@ -10,6 +10,7 @@ class Users extends MY_Controller {
 		$this->load->model('admin/user_model', 'user_model');
 		$this->load->model('admin/Activity_model', 'activity_model');
 		$this->load->model('admin/Setting_model', 'setting_model');
+		$this->load->model('admin/PPP_model', 'ppp_model');
 	}
 
 	//-----------------------------------------------------------
@@ -24,32 +25,30 @@ class Users extends MY_Controller {
 		$records['data'] = $this->user_model->get_all_users();
 		$data = array();
 
-		$i=0;
-
 		foreach ($records['data']   as $row)
 		{
-			if ($this->rbac->check_operation_permission('view')) { $action_view = '<a title="View" class="view btn btn-sm btn-info" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fa fa-eye"></i></a>';}
-			if ($this->rbac->check_operation_permission('edit')) { $action_edit = '<a title="Edit" class="update btn btn-sm btn-warning" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fa fa-pencil-square-o"></i></a>';}
-			if ($this->rbac->check_operation_permission('delete')) {$action_delete = '<a title="Delete" class="delete btn btn-sm btn-danger" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fa fa-trash-o"></i></a>';}
+			if ($this->rbac->check_operation_permission('view')) { $action_view = '<a title="View" class="btn-right text-primary pr-1" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-eye"></i></a>';}
+			if ($this->rbac->check_operation_permission('edit')) { $action_edit = '<a title="Edit" class="btn-right text-warning pr-1" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-edit"></i></a>';}
+			if ($this->rbac->check_operation_permission('delete')) {$action_delete = '<a title="Delete" class="btn-right text-danger pr-1" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash-alt"></i></a>';}
 
 
 
 			$status = ($row['is_active'] == 1)? 'checked': '';
 			$verify = ($row['is_verify'] == 1)? 'Verified': 'Pending';
 			$data[]= array(
-				++$i,
+				$row['id'],
 				$row['username'],
 				$row['email'],
 				$row['mobile_no'],
 				date_time($row['created_at']),	
-				'<span class="btn btn-success">'.$verify.'</span>',	
-				'<input class="tgl_checkbox tgl-ios" 
+				'<span class="badge badge-success">'.$verify.'</span>',
+				'<input class="tgl tgl-light tgl_checkbox" 
 				data-id="'.$row['id'].'" 
 				id="cb_'.$row['id'].'"
 				type="checkbox"  
-				'.$status.'><label for="cb_'.$row['id'].'"></label>',
+				'.$status.'><label class="tgl-btn" for="cb_'.$row['id'].'"></label>',
 
- 				''.$action_view.''.$action_edit.''.$action_delete.''
+ 				'<div class="text-right">'.$action_view.''.$action_edit.''.$action_delete.'</div>'
 			);
 		}
 		$records['data']=$data;
@@ -91,16 +90,31 @@ class Users extends MY_Controller {
 					'mobile_no' => $this->input->post('mobile_no'),
 					'address' => $this->input->post('address'),
 					'account_code' => $this->input->post('profile-input-account-code'),
-					'username' => $this->input->post('username'),
-					'password' =>  $this->input->post('password'),
 					'created_at' => date('Y-m-d : h:m:s'),
 					//'updated_at' => date('Y-m-d : h:m:s'),
 				);
-				$data = $this->security->xss_clean($data);
-				$result = $this->user_model->add_user($data);
-				if($result){
+				$data_ppp = array(
+					'username' => $this->input->post('username'),
+					'password' =>  $this->input->post('password'),
+					'passwordtype' => $this->input->post('passwordtype'),
+					'profileid' => $this->input->post('profileid'),
+					'ipaddresstype' => $this->input->post('ipaddresstype'),
+					'dhcppool' => $this->input->post('dhcppool'),
+					'staticip' => $this->input->post('staticip'),
+					'start_date' => date('Y-m-d H:i:s')
+				);
 
-					// Activity Log 
+				$data = $this->security->xss_clean($data);
+				$userid = $this->user_model->add_user_return_id($data);
+				$pppid = $this->ppp_model->add_ppp_account_return_id($userid, $data_ppp);
+
+				if($pppid > 0) {
+					// Activity Log
+					$this->activity_model->add_to_log(1, "PPP has been added successfully");
+					$this->session->set_flashdata('success', 'PPP has been added successfully!');
+				}
+				
+				if($userid > 0) {
 					$this->activity_model->add_to_log(1, "User has been added successfully");
 
 					$this->session->set_flashdata('success', 'User has been added successfully!');

@@ -52,7 +52,7 @@
 
 
     <!-- Main content -->
-    <section class="content mt10">
+    <section class="content mt6">
     	<div class="card">
     		<div class="card-body p-0">
                <!-- Load Admin list (json request)-->

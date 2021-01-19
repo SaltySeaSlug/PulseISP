@@ -1,5 +1,5 @@
 <div class="datalist">
-    <table id="example1" class="table table-hover table-striped table-hover no-footer table-md text-md">
+    <table id="example1" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
         <thead>
             <tr>
                 <th width="100"><?= trans('id') ?></th>

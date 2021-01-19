@@ -25,8 +25,12 @@ ob_start();
 |
 */
 
+if (!isset($_SERVER['HTTP_HOST'])) {
+	$_SERVER['HTTP_HOST'] = 'localhost';
+}
+
 $url = (isset($_SERVER['HTTPS']) ? "https://" : "http://");
-$url .= $_SERVER['HTTP_HOST']. str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$url .= $_SERVER['HTTP_HOST'] . str_replace(basename($_SERVER['SCRIPT_NAME']), "", $_SERVER['SCRIPT_NAME']);
 
 $config['base_url'] = $url;
 

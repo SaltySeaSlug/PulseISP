@@ -509,15 +509,26 @@ sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
 
 ######################################################################################################################## Configure Rights
 
-usermod -aG freerad $USR_ROOT
-usermod -aG $WWW_USR $USR_ROOT
+# Add pulseisp user to freerad group
+usermod -a -G freerad $USR_ROOT
+# Add pulseisp user to www-data group
+usermod -a -G $WWW_USR $USR_ROOT
+
+# Set permissions for path
+chgrp -R $WWW_USR /var/www
+chmod -R g+w /var/www
+
+# Set all directories GID
+find /var/www -type d -exec chmod 2775 {} \;
+# Set all files in path and add r/w permissions for owner and group
+find /var/www -type f -exec chmod ug+rw {} \;
 
 cp /etc/sudoers /etc/sudoers.bak
 echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
 
-chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
-chmod -R 0755 ${WWW_PATH:?}/
-chmod -R ug+rw ${WWW_PATH:?}/
+#chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
+#chmod -R 0755 ${WWW_PATH:?}/
+#chmod -R ug+rw ${WWW_PATH:?}/
 
 
 

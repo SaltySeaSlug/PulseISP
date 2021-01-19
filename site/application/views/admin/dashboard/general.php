@@ -112,11 +112,10 @@
 	<div id="rightCol" class="col-lg-5 connectedSortable">
 			<div id="auth_request" class="card">
 				<div class="card-header">
-					<i class="fa fa-user mr-1"></i>
-					<h3 class="card-title mt-1">Auth Requests</h3>
+					<h5 class="card-title mt-1"><i class="fa fa-user mr-1"></i>Auth Requests</h5>
 					<div class="card-tools">
 						<span id="statAuthRequests"></span>
-						<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						<button type="button" class="btn btn-tool btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
 					</div>
 				</div>
 				<div class="card-body">
@@ -238,5 +237,5 @@
 
     loadUsageChartData();
   });
-s
+
 </script>
