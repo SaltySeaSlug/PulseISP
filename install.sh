@@ -94,9 +94,9 @@ fi
 ######################################################################################################################## Set timezone
 timedatectl set-timezone Africa/Johannesburg
 
-croncmd="/usr/bin/php $WWW_PATH/crons/cron.freeradius_cleansession.php 2>&1 >/dev/null"
-cronjob="* * * * * $croncmd"
-( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+#croncmd="/usr/bin/php $WWW_PATH/crons/cron.freeradius_cleansession.php 2>&1 >/dev/null"
+#cronjob="* * * * * $croncmd"
+#( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 # remove
 #( crontab -l | grep -v -F "$croncmd" ) | crontab -
 ######################################################################################################################## Verify Temp Directory
