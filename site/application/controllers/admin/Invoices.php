@@ -226,20 +226,19 @@
 		// Sending email with invoice attachemnt
 		function send_email_with_invoice(){
 		
-			$this->load->helper('email_helper');
+			$this->load->helper('mail_helper');
 			
 			$to = $this->input->post('email');
 			$subject = $this->input->post('subject');
 			$message = $this->input->post('message');
 			$cc = $this->input->post('cc');
 			$file = $this->input->post('file');
-			
-			$check = send_email($to, $subject, $message, $file, $cc);
-						  
-			  if( $check ){
+
+			$check = send_mail($to, $subject, $message, $file, $cc);
+
+			if ($check){
 				  echo 'success';
-			  }
-			
+			}
 		}
 
 		//---------------------------------------------------

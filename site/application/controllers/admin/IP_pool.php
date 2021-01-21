@@ -75,7 +75,7 @@ class IP_pool extends MY_Controller {
 					$ip = preg_split("#/#", $this->input->post('iprange'));
 					$sub = new IPv4\SubnetCalculator($ip[0], $ip[1]);
 
-					foreach ($sub->getAllIPAddresses() as $ip_address) {
+					foreach (ip_range($sub->getMinHost(), $sub->getMaxHost()) as $ip_address) {
 						$sql[] = array('pool_name' => $this->input->post('poolname'), 'framedipaddress' => $ip_address);
 					}
 				}

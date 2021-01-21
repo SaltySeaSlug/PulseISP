@@ -202,4 +202,4 @@ off_clear = "\
                 callingstationid = '', \
                 username = NULL, \
                 expiry_time = NULL \
-        WHERE nasipaddress = '%{%{Nas-IP-Address}:-%{Nas-IPv6-Address}}'"
+        WHERE nasipaddress = '%{%{Nas-IP-Address}:-%{Nas-IPv6-Address}}'",

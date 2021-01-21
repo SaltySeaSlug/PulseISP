@@ -12,6 +12,15 @@ if (!function_exists('check_nas_status')) {
 		else return false;
 	}
 }
+if (!function_exists('ip_range')) {
+
+	function ip_range($start, $end)
+	{
+		$start = ip2long($start);
+		$end = ip2long($end);
+		return array_map('long2ip', range($start, $end));
+	}
+}
 if (!function_exists('checkIfIPRange')) {
 
 	function checkIfIPRange($ipAddress)

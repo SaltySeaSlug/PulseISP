@@ -187,7 +187,8 @@
 						  <label  class="col-md-2 control-label">To</label>
 						  <div class="col-md-10">
 							  <input type="email" class="form-control" id="email" name="email" value="<?= $invoice_detail['client_email']; ?>" placeholder="">
-                              <input type="hidden" class="form-control" id="file" name="file">
+							  <input type="hidden" class="form-control" id="file" name="file">
+							  <input type="hidden" class="form-control" id="fileurl" name="fileurl">
 						  </div>
 					  </div>
 					  <div class="form-group">
@@ -247,7 +248,8 @@
 						var filename = response.substr(index);				 
 						$("#pdf_url").html(filename);
 						$("#file").val(filename);
-						
+						$("#fileurl").val(response);
+
 					}
 				}
 	    }); 
@@ -275,7 +277,6 @@
 						
 						$('.close').trigger('click');
 						//$('#email').modal('hide');
-						
 					}
 				}
 				

@@ -113,9 +113,14 @@ function trans($string)
 function get_new_invoice_number()
 {
     $ci = & get_instance();
-    $record = $ci->db->select('invoice_no')->order_by('invoice_no',"desc")->limit(1)->get('ci_payments')->row()->invoice_no;
-    $last = preg_replace('/\D/', '', $record);
-    return 'INV' . str_pad(++$last, 5, '0', STR_PAD_LEFT);
+    $record = $ci->db->select('invoice_no')->order_by('invoice_no',"desc")->limit(1)->get('ci_payments')->row();//->invoice_no;
+    if (!empty($record->invoice_no)) {
+		$last = preg_replace('/\D/', '', $record->invoice_no);
+		return 'INV' . str_pad(++$last, 5, '0', STR_PAD_LEFT);
+	}
+    else {
+		return 'INV' . str_pad(1, 5, '0', STR_PAD_LEFT);
+	}
 }
 
 function getRealIpAddr(){

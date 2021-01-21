@@ -24,7 +24,6 @@ $lang['add_module']				= "Add Module";
 
 $lang['ip_pool_list']			= "IP Pool List";
 $lang['add_ip_pool']			= "Add IP Pool";
-$lang['']
 
 
 

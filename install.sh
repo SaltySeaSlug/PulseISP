@@ -530,8 +530,9 @@ echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudo
 #chmod -R 0755 ${WWW_PATH:?}/
 #chmod -R ug+rw ${WWW_PATH:?}/
 
-
-
+######################################################################################################################## Install mail server
+apt-get install sendmail
+sendmailconfig -y
 ######################################################################################################################## RESTART
 systemctl restart freeradius
 systemctl restart apache2
