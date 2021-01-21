@@ -5,12 +5,11 @@
       <div class="card card-default">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title"> <i class="fa fa-pencil"></i>
-              &nbsp; <?= trans('edit_user') ?> </h3>
+              <h3 class="card-title mt-2"><i class="fad fa-pencil mr-2"></i><?= trans('edit_user') ?></h3>
           </div>
           <div class="d-inline-block float-right">
-            <a href="<?= base_url('admin/users'); ?>" class="btn btn-success"><i class="fa fa-list"></i> <?= trans('users_list') ?></a>
-            <a href="<?= base_url('admin/users/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_user') ?></a>
+            <a href="<?= base_url('admin/users'); ?>" class="btn btn-success"><i class="fad fa-list mr-2"></i><?= trans('users_list') ?></a>
+            <a href="<?= base_url('admin/users/add'); ?>" class="btn btn-success"><i class="fad fa-plus mr-2"></i><?= trans('add_new_user') ?></a>
           </div>
         </div>
         <div class="card-body">

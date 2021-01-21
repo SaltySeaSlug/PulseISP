@@ -1,17 +1,43 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['contact'] = "Contact";
-$lang['logout'] = "Logout";
-$lang['search'] = "Search";
+// Navbar - Left Top
+$lang['home']                   = "Home";
+$lang['contact'] 				= "Contact";
+$lang['logout'] 				= "Logout";
+$lang['search'] 				= "Search";
+
+// Navbar - Right Top
+$lang['languages']				= "Languages";
+$lang['messages']				= "Messages";
+$lang['notifications']			= "Notifications";
+$lang['fullscreen']				= "Fullscreen";
+$lang['user_profile']			= "User Profile";
+$lang['member_since']			= "Member Since";
+//
 $lang['invoice'] = "Invoice";
+
+$lang['add_sub_module']			= "Add Sub Module";
+$lang['edit_sub_module']		= "Edit Sub Module";
+$lang['sub_module_list']		= "Sub Module List";
+$lang['sub_module_settings']	= "Sub Module Settings";
+$lang['add_module']				= "Add Module";
+
+$lang['ip_pool_list']			= "IP Pool List";
+$lang['add_ip_pool']			= "Add IP Pool";
+$lang['']
+
+
 
 //Navbar
 $lang['nas_devices']							= "NAS Devices";
 $lang['nas_list']								= "NAS Devices List";
 $lang['name']									= "Name";
+$lang['type']									= "Type";
+$lang['ping']									= "Ping";
 $lang['ip_address']								= "IP Address";
 $lang['identifier']								= "Identifier";
+$lang['secret']									= "Secret";
+$lang['connection_type']						= "Connection Type";
 $lang['add_new_nas']							= "Add NAS";
 $lang['edit_nas'] 								= "Edit Nas";
 $lang['update_nas'] 							= "Update Nas";
@@ -122,7 +148,6 @@ $lang['reset_password']                    = "Reset Password";
 $lang['reset']                    = "Reset";
 
 //  Dashboard
-$lang['home']                   = "Home";
 $lang['user_registrations']                   = "User Registerations";
 $lang['active_users']                   = "Active Users";
 $lang['inactive_users']                   = "Inactive Users";

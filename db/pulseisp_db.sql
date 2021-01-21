@@ -361,7 +361,7 @@ CREATE TABLE `ci_users` (
 --
 
 INSERT INTO `ci_users` (`id`, `username`, `account_code`, `firstname`, `lastname`, `email`, `mobile_no`, `password`, `address`, `role`, `is_active`, `is_verify`, `is_admin`, `token`, `password_reset_code`, `last_ip`, `created_at`, `updated_at`) VALUES
-(1, 'cockbain.m@unity', NULL, 'Mark', 'Cockbain', 'cockbainma@gmail.com', '0727938031', 'sdfsdf', '4 Veronia Street', 1, 1, 0, 0, '', '', '', '2021-01-15 00:00:00', '2021-01-15 00:00:00');
+(1, 'test@test', NULL, 'Test', 'TestSurname', 'test@gmail.com', '25896571', 'sdfsdf', 'Random Street', 1, 1, 0, 0, '', '', '', '2021-01-15 00:00:00', '2021-01-15 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -747,12 +747,12 @@ CREATE TABLE `ppp_accounts_stats` (
 --
 
 INSERT INTO `ppp_accounts_stats` (`id`, `radacct_id`, `username`, `realmid`, `nasipaddress`, `nasidentifier`, `framedipaddress`, `calledstationid`, `callingstationid`, `timestamp`, `acctinputoctets`, `acctoutputoctets`) VALUES
-(1, 1, 'matthew@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 348, 52),
-(2, 1, 'matthew@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
-(3, 1, 'matthew@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
-(4, 1, 'matthew@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
-(5, 1, 'matthew@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
-(6, 1, 'matthew@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0);
+(1, 1, 'test@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 348, 52),
+(2, 1, 'test@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
+(3, 1, 'test@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
+(4, 1, 'test@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
+(5, 1, 'test@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0),
+(6, 1, 'test@uni', 0, '100.99.1.255', NULL, '172.20.11.200', NULL, '64:D1:54:5F:77:B0', '2021-01-14 12:10:34', 155, 0);
 
 -- --------------------------------------------------------
 
@@ -842,8 +842,8 @@ CREATE TABLE `radcheck` (
 --
 
 INSERT INTO `radcheck` (`id`, `username`, `attribute`, `op`, `value`) VALUES
-(1, 'matthew@uni', 'Pool-Name', ':=', 'main_pool'),
-(2, 'matthew@uni', 'Cleartext-Password', ':=', 'client@unity');
+(1, 'test@uni', 'Pool-Name', ':=', 'main_pool'),
+(2, 'test@uni', 'Cleartext-Password', ':=', 'test@test');
 
 -- --------------------------------------------------------
 

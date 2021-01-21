@@ -1,15 +1,60 @@
 <?php
 
-use IPTools\IP;
-use IPTools\Range;
+header('Content-type: application/json');
 
-include(".." . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'functions.php');
-include(".." . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'class.iptools.php');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
-//vendorClassAutoload("iptools");
+define('ABSPATH', dirname(dirname(__FILE__)) . '/' );
+require ABSPATH . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 if(isset($_GET['iprange'])) {
     $ipAddress = $_GET['iprange'];
+}
+
+function checkIfIPRange($ipAddress)
+{
+	return preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}-(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}?$/', $ipAddress);
+}
+function checkIfCIDR($ipAddress)
+{
+	return preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}(\/([0-9]|[1-2][0-9]|3[0-2]))?$/', $ipAddress);
+}
+function iMask($s){
+	return base_convert((pow(2, 32) - pow(2, (32-$s))), 10, 16);
+}
+function iprange2cidr($ipStart, $ipEnd){
+	if (is_string($ipStart) || is_string($ipEnd)){
+		$start = ip2long($ipStart);
+		$end = ip2long($ipEnd);
+	}
+	else{
+		$start = $ipStart;
+		$end = $ipEnd;
+	}
+
+	$result = array();
+
+	while($end >= $start){
+		$maxSize = 32;
+		while ($maxSize > 0){
+			$mask = hexdec(iMask($maxSize - 1));
+			$maskBase = $start & $mask;
+			if($maskBase != $start) break;
+			$maxSize--;
+		}
+		$x = log($end - $start + 1)/log(2);
+		$maxDiff = floor(32 - floor($x));
+
+		if($maxSize < $maxDiff){
+			$maxSize = $maxDiff;
+		}
+
+		$ip = long2ip($start);
+		array_push($result, "$ip/$maxSize");
+		$start += pow(2, (32-$maxSize));
+	}
+	return $result;
 }
 
 
@@ -18,15 +63,11 @@ if (checkIfIPRange($ipAddress)) {
 
     $ranges = iprange2cidr($ip[0], $ip[1]);
     $tableArray = array();
-    $count = 0;
-    $hostcount = 0;
-    $test = new Range(new IP($ip[0]), new IP($ip[1]));
-    echo json_encode($test->getSpanNetwork());
 
     foreach ($ranges as $range) {
 
         $ipR = preg_split ('#/#', $range);
-        $sub = new Net\Subnet($ipR[0], $ipR[1]);
+		$sub = new IPv4\SubnetCalculator($ipR[0], $ipR[1]);
 
         $number_ip_addresses    = $sub->getNumberIPAddresses();      // 512
         $number_hosts           = $sub->getNumberAddressableHosts(); // 510
@@ -39,26 +80,22 @@ if (checkIfIPRange($ipAddress)) {
         $max_host               = $sub->getMaxHost();
         $ip_address             = $sub->getIPAddress();
 
-        $tableArray[] = "<td>CIDR Range</td><td>$ip_address/$network_size</td>";
-        $tableArray[] = "<td>Netmask</td><td>$subnet_mask</td>";
-        $tableArray[] = "<td>Wildcard Bits</td><td></td>";
-        $tableArray[] = "<td>First IP</td><td>$min_host</td>";
-        $tableArray[] = "<td>Last IP</td><td>$max_host</td>";
-        $tableArray[] = "<td>Total Hosts</td><td>$number_ip_addresses</td>";
-
-        $count += $number_ip_addresses;
-        $hostcount += $number_hosts;
-
+		$tableArray[] = "<td>CIDR Range</td><td>$ip_address/$network_size</td>";
+		$tableArray[] = "<td>Netmask</td><td>$subnet_mask</td>";
+		$tableArray[] = "<td>Broadcast Address</td><td>$broadcast_address</td>";
+		$tableArray[] = "<td>Addressable Range</td><td>$addressable_host_range[0] - $addressable_host_range[1]</td>";
+		$tableArray[] = "<td>IP Range</td><td>$address_rage[0] - $address_rage[1]</td>";
+		$tableArray[] = "<td>Host IP</td><td>$ip_address</td>";
+		$tableArray[] = "<td>First IP</td><td>$min_host</td>";
+		$tableArray[] = "<td>Last IP</td><td>$max_host</td>";
+		$tableArray[] = "<td>Addressable Hosts</td><td>$number_hosts</td>";
+		$tableArray[] = "<td>Total Hosts</td><td>$number_ip_addresses</td>";
     }
-
-    $tableArray[] = "<td>Total IP ADDRESSES</td><td>$count</td>";
-    $tableArray[] = "<td>Total Host IP ADDRESSES</td><td>$hostcount</td>";
-
 }
-if (checkIfCIDR($ipAddress)) {
+else if (checkIfCIDR($ipAddress)) {
 
     $ip = preg_split("#/#", $ipAddress);
-    $sub = new Net\Subnet($ip[0], $ip[1]);
+	$sub = new IPv4\SubnetCalculator($ip[0], $ip[1]);
 
     $number_ip_addresses    = $sub->getNumberIPAddresses();      // 512
     $number_hosts           = $sub->getNumberAddressableHosts(); // 510
@@ -84,6 +121,6 @@ if (checkIfCIDR($ipAddress)) {
     $tableArray[] = "<td>Addressable Hosts</td><td>$number_hosts</td>";
     $tableArray[] = "<td>Total Hosts</td><td>$number_ip_addresses</td>";
 }
-
+else {}
 echo json_encode($tableArray);
 ?>

@@ -5,11 +5,10 @@
       <div class="card card-default">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title mt-2"> <i class="fa fa-pencil"></i>
-              Edit Sub Module </h3>
+              <h3 class="card-title mt-2"><i class="fad fa-pencil mr-2"></i><?= trans('edit_sub_module') ?></h3>
           </div>
           <div class="d-inline-block float-right">
-            <a href="<?= base_url('admin/admin_roles/sub_module/'.$module['parent']); ?>" class="btn btn-success"><i class="fa fa-list"></i> Sub Module List</a>
+            <a href="<?= base_url('admin/admin_roles/sub_module/'.$module['parent']); ?>" class="btn btn-success"><i class="fad fa-list mr-2"></i><?= trans('sub_module_list') ?></a>
           </div>
         </div>
         

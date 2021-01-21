@@ -5,11 +5,10 @@
       <div class="card card-default color-palette-bo">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title mt-2"> <i class="fa fa-plus"></i>
-              <?= trans('add_new_admin') ?> </h3>
+              <h3 class="card-title mt-2"><i class="fad fa-plus mr-2"></i><?= trans('add_new_admin') ?></h3>
           </div>
           <div class="d-inline-block float-right">
-            <a href="<?= base_url('admin/admin'); ?>" class="btn btn-success"><i class="fa fa-list"></i> <?= trans('admin_list') ?></a>
+            <a href="<?= base_url('admin/admin'); ?>" class="btn btn-success"><i class="fad fa-list mr-1"></i> <?= trans('admin_list') ?></a>
           </div>
         </div>
         <div class="card-body">

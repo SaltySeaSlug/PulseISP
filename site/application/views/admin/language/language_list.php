@@ -6,11 +6,11 @@
   <div class="card">
     <div class="card-header">
       <div class="d-inline-block">
-        <h3 class="card-title"><i class="fa fa-list"></i>&nbsp; Languages List</h3>
+        <h3 class="card-title mt-2"><i class="fad fa-list mr-2"></i><?= trans('language_list') ?></h3>
       </div>
       <div class="d-inline-block float-right">
         <?php if($this->rbac->check_operation_permission('add')): ?>
-        <a href="<?= base_url('admin/languages/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add New Language</a>
+        <a href="<?= base_url('admin/languages/add'); ?>" class="btn btn-success"><i class="fad fa-plus mr-2"></i><?= trans('add_language') ?></a>
         <?php endif; ?>
       </div>
     </div>
@@ -34,8 +34,10 @@
             <td><?= $row['short_name']; ?></td>
             <td><span class="btn btn-xs btn-success" title="status"><?= $status ?><span></td>
             <td>
-              <a title="Edit" class="update btn btn-sm btn-warning" href="<?= base_url('admin/languages/edit/'.$row['id'])?>"> <i class="fa fa-pencil-square-o"></i></a>
-              <a title="Delete" class="delete btn btn-sm btn-danger" href="<?= base_url('admin/languages/del/'.$row['id']); ?>" > <i class="fa fa-trash-o"></i></a>
+				<div class="text-right">
+				  <a title="Edit" class="update btn-right text-warning pr-1" href="<?= base_url('admin/languages/edit/'.$row['id'])?>"> <i class="fad fa-edit"></i></a>
+				  <a title="Delete" class="delete btn-right text-danger pr-1r" href="<?= base_url('admin/languages/del/'.$row['id']); ?>" > <i class="fad fa-trash-alt"></i></a>
+				</div>
             </td>
           </tr>
           <?php endforeach; ?>

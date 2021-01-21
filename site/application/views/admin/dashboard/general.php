@@ -33,9 +33,9 @@
              <p>Available IP Addresses</p>
            </div>
            <div class="icon" style="top:0px">
-             <i class="fa fa-sitemap"></i>
+             <i class="fad fa-sitemap"></i>
            </div>
-           <a href="#" class="small-box-footer"><?= trans('more_info') ?> <i class="fa fa-arrow-circle-right"></i></a>
+           <a href="#" class="small-box-footer"><?= trans('more_info') ?></a>
          </div>
           </div>
           <!-- ./col -->
@@ -49,9 +49,9 @@
                 <p>Active Sessions</p>
               </div>
               <div class="icon">
-                <i class="fa fa-eye"></i>
+                <i class="fad fa-eye"></i>
               </div>
-              <a href="#" class="small-box-footer"><?= trans('more_info') ?> <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer"><?= trans('more_info') ?></a>
             </div>
           </div>
           <!-- ./col -->
@@ -65,9 +65,9 @@
                 <p>Customers</p>
               </div>
               <div class="icon">
-                <i class="fa fa-user"></i>
+                <i class="fad fa-user"></i>
               </div>
-              <a href="#" class="small-box-footer"><?= trans('more_info') ?> <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer"><?= trans('more_info') ?></a>
             </div>
           </div>
           
@@ -82,9 +82,9 @@
                 <p>Alerts</p>
               </div>
               <div class="icon">
-                <i class="fa <?php if ($total_alerts > 0) echo "fa-exclamation-circle"; else echo "fa-check-circle"; ?>"></i>
+                <i class="fad <?php if ($total_alerts > 0) echo "fa-exclamation-circle"; else echo "fa-check-circle"; ?>"></i>
               </div>
-              <a href="#" class="small-box-footer"><?= trans('more_info') ?> <i class="fa fa-arrow-circle-right"></i></a>
+              <a href="#" class="small-box-footer"><?= trans('more_info') ?></a>
             </div>
           </div>
           <!-- ./col -->
@@ -94,11 +94,11 @@
 	<div id="leftCol" class="col-lg-7 connectedSortable">
 			  <div id="today_usage" class="card">
 				  <div class="card-header">
-					  <h5 class="card-title mt-1"><i class="fa fa-th mr-1"></i>Today's Usage</h5>
+					  <h5 class="card-title mt-1"><i class="fad fa-th mr-1"></i>Today's Usage</h5>
 					  <div class="card-tools">
 						  <span class="badge bg-purple"><?php echo "In [ " . (!is_null($statUsageToday['upload']) ? toxbyte($statUsageToday['upload']) : 0); ?> ]</span> <span class="badge bg-orange"><?php echo "Out [ " . (!is_null($statUsageToday['download']) ? toxbyte($statUsageToday['download']) : 0); ?> ]</span>
 						  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
-							  <i class="fas fa-minus"></i>
+							  <i class="fad fa-minus"></i>
 						  </button>
 					  </div>
 				  </div>
@@ -112,10 +112,10 @@
 	<div id="rightCol" class="col-lg-5 connectedSortable">
 			<div id="auth_request" class="card">
 				<div class="card-header">
-					<h5 class="card-title mt-1"><i class="fa fa-user mr-1"></i>Auth Requests</h5>
+					<h5 class="card-title mt-1"><i class="fad fa-user mr-1"></i>Auth Requests</h5>
 					<div class="card-tools">
 						<span id="statAuthRequests"></span>
-						<button type="button" class="btn btn-tool btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						<button type="button" class="btn btn-tool btn-sm" data-widget="collapse"><i class="fad fa-minus"></i></button>
 					</div>
 				</div>
 				<div class="card-body">

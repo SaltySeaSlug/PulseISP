@@ -1,8 +1,8 @@
 <?php
 	class IPPool_model extends CI_Model{
 
-		public function add_nas($data){
-			$this->db->insert('nas', $data);
+		public function add_bulk_ips($data){
+			$this->db->insert_batch('radippool', $data);
 			return true;
 		}
 

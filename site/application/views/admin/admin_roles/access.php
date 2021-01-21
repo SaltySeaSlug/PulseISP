@@ -5,16 +5,15 @@
         <div class="card card-default color-palette-bo">
             <div class="card-header">
               <div class="d-inline-block">
-                  <h3 class="card-title mt-2"> <i class="fad fa-edit"></i>
-                  &nbsp; <?= $title ?> </h3>
+                  <h3 class="card-title mt-2"><i class="fad fa-edit mr-2"></i><?= $title ?></h3>
               </div>
               <div class="d-inline-block float-right">
-                <a href="#" onclick="window.history.go(-1); return false;" class="btn btn-primary pull-right"><i class="fa fa-reply mr5"></i> <?= trans('back') ?></a>
+                <a href="#" onclick="window.history.go(-1); return false;" class="btn btn-primary pull-right"><i class="fad fa-reply mr-2"></i> <?= trans('back') ?></a>
               </div>
             </div>
             <div class="card-body">
             	<div class="col-md-12">
-                    <h3 class="box-title">
+                    <h3 class="card-title">
                         <span class="mr5"><?= trans('permission_access') ?> : </span> 
 						<?=strtoupper($record['admin_role_title'])?>
                     </h3>

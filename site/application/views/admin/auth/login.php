@@ -26,7 +26,7 @@
           <input type="text" name="username" class="form-control" placeholder="<?= trans('username') ?>" required="" autofocus="">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fa fa-envelope"></span>
+              <span class="fad fa-user"></span>
             </div>
           </div>
         </div>
@@ -35,7 +35,7 @@
           <input type="password" name="password" id="password" class="form-control" placeholder="<?= trans('password') ?>" required="">
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fa fa-lock"></span>
+              <span class="fad fa-lock"></span>
             </div>
           </div>
         </div>
@@ -93,13 +93,9 @@
 </div>
 
 <script>
-	$('#password').keypress(function (e) {
-		var key = e.which;
-		if(key == 13)  // the enter key code
-		{
-			alert();
-			$('input[name = submit]').click();
-			return false;
-		}
-	});
+
+	$('#password').enterKey(function () {
+		$('input[name = submit]').click();
+	})
+
 </script>
