@@ -39,6 +39,36 @@
 
 		}
 
+		public function write_to_file($my_lang)
+		{
+			error_reporting(E_ALL);
+			ini_set('display_errors', '1');
+			$this->load->helper('file');
+
+			//$this->db->where('id',1);
+			//$query = $this->db->get('ci_language')->row_array()['short_name'];
+			$category = 'test';
+			$description = 'mystuff';
+			$token = 'My Special Language file';
+
+			$lang = array();
+			$langstr = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+                /**
+                *
+                * Created:  2014-05-31 by Vickel
+                *
+                * Description:  " . $my_lang . " language file for general views
+                *
+                */" . "\n\n\n";
+
+
+			//foreach ($query->result() as $row) {
+				//$lang['error_csrf'] = 'This form post did not pass our security checks.';
+				$langstr .= "\$lang['" . $category . "_" . $description . "'] = \"$token\";" . "\n";
+			//}
+			write_file('./application/language/' . $my_lang . '/custom_lang.php', $langstr);
+echo json_encode($langstr);
+		}
 	}
 
 ?>	

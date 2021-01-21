@@ -53,53 +53,49 @@ class IP_pool extends MY_Controller {
 		$this->nas_model->change_status();
 	}
 
-	public function add(){
-		
+	public function add()
+	{
 		$this->rbac->check_operation_access(); // check opration permission
 
 		$data['general_settings'] = $this->setting_model->get_general_settings();
 
-		if($this->input->post('submit')){
-			$this->form_validation->set_rules('nasname', 'Name', 'trim|required');
-			$this->form_validation->set_rules('nashost', 'IP Address', 'trim|required');
-			$this->form_validation->set_rules('nasidentifier', 'Identifier', 'trim|required');
-			$this->form_validation->set_rules('nassecret', 'Secret', 'trim|required');
+		if ($this->input->post('submit')) {
+			$this->form_validation->set_rules('iprange', 'IP Range', 'trim|required');
 
 			if ($this->form_validation->run() == FALSE) {
 				$data = array('errors' => validation_errors());
 				$this->session->set_flashdata('errors', $data['errors']);
-				redirect(base_url('admin/nas/add'),'refresh');
-			}
-			else{
-				$data = array(
-					'connection_type' => 'direct',
-					'nasname' => $this->input->post('nashost'),
-					'secret' => $this->input->post('nassecret'),
-					'type' => $this->input->post('nastype'),
-					'shortname' => $this->input->post('nasname'),
-					'nasidentifier' => $this->input->post('nasidentifier')
-				);
-				$data = $this->security->xss_clean($data);
-				$result = $this->nas_model->add_nas($data);
-				if($result){
+				redirect(base_url('admin/ippool/ippool_add'), 'refresh');
+			} else {
+				$sql = array();
 
-					shell_exec("sudo /etc/init.d/freeradius restart 2>&1");
+				if (checkIfIPRange($this->input->post('iprange'))) {
 
-					// Activity Log 
-					$this->activity_model->add_to_log(1, "Nas Device has been added successfully");
+				} elseif (checkIfCIDR($this->input->post('iprange'))) {
+					$ip = preg_split("#/#", $this->input->post('iprange'));
+					$sub = new IPv4\SubnetCalculator($ip[0], $ip[1]);
+
+					foreach ($sub->getAllIPAddresses() as $ip_address) {
+						$sql[] = array('pool_name' => $this->input->post('poolname'), 'framedipaddress' => $ip_address);
+					}
+				}
+
+				$data = $this->security->xss_clean($sql);
+				$result = $this->ippool_model->add_bulk_ips($data);
+
+				if ($result) {
+					// Activity Log
+					$this->activity_model->add_to_log(1, "IP pool has been added successfully");
 
 					$this->session->set_flashdata('success', 'Nas Device has been added successfully!');
 					redirect(base_url('admin/nas'));
 				}
 			}
-		}
-		else{
-
+		} else {
 			$this->load->view('admin/includes/_header');
-			$this->load->view('admin/nas/nas_add', $data);
+			$this->load->view('admin/ippool/ippool_add', $data);
 			$this->load->view('admin/includes/_footer');
 		}
-		
 	}
 
 	public function edit($id = 0){

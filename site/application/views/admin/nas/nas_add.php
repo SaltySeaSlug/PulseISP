@@ -5,11 +5,10 @@
       <div class="card card-default color-palette-bo">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title mt-2"> <i class="fa fa-plus"></i>
-              <?= trans('add_new_nas') ?> </h3>
+              <h3 class="card-title mt-2"> <i class="fad fa-plus mr-2"></i><?= trans('add_new_nas') ?> </h3>
           </div>
           <div class="d-inline-block float-right">
-            <a href="<?= base_url('admin/nas'); ?>" class="btn btn-success"><i class="fa fa-list"></i> <?= trans('nas_list') ?></a>
+            <a href="<?= base_url('admin/nas'); ?>" class="btn btn-success"><i class="fad fa-list mr-1"></i> <?= trans('nas_list') ?></a>
           </div>
         </div>
         <div class="card-body">
@@ -25,14 +24,14 @@
                   <?php echo form_open(base_url('admin/nas/add'), 'class="form-horizontal"');  ?>
 <!-- NAS TYPE (CONNECTION TYPE) -->
 			<div class="form-group">
-				<label for="nasconnectiontype" class="col-md-12 control-label">Connection Type</label>
+				<label for="nasconnectiontype" class="col-md-12 control-label"><?= trans('connection_type') ?></label>
 				<div class="col-md-12">
 					<input type="text" class="form-control" id="nasconnectiontype" name="nasconnectiontype" readonly value="Direct (Fixed IP)" required>
 				</div>
 			</div>
 <!-- NAS HOST (IP ADDRESS) -->
 			<div class="form-group">
-				<label for="nashost" class="col-md-12 control-label">IP Address</label>
+				<label for="nashost" class="col-md-12 control-label"><?= trans('ip_address') ?></label>
 				<div class="col-md-12">
 					<div class="input-group">
 						<input type="text" class="form-control" id="nashost" name="nashost" required>
@@ -44,14 +43,14 @@
 			</div>
 <!-- NAS SECRET -->
 			<div class="form-group">
-				<label for="nassecret" class="col-md-12 control-label">NAS Secret</label>
+				<label for="nassecret" class="col-md-12 control-label"><?= trans('secret') ?></label>
 				<div class="col-md-12">
 					<input type="text" class="form-control" id="nassecret" name="nassecret" value="<?php echo html_escape($general_settings['radius_secret']); ?>" required>
 				</div>
 			</div>
 <!-- NAS TYPE -->
 			<div class="form-group">
-				<label for="nastype" class="col-md-12 control-label">NAS Type</label>
+				<label for="nastype" class="col-md-12 control-label"><?= trans('type') ?></label>
 				<div class="col-md-12">
 					<select class="form-control" id="nastype" name="nastype">
 						<option value="Mikrotik">Mikrotik</option>
@@ -62,14 +61,14 @@
 			</div>
 <!-- NAS NAME -->
 			<div class="form-group">
-				<label for="nasname" class="col-md-12 control-label">Name</label>
+				<label for="nasname" class="col-md-12 control-label"><?= trans('name') ?></label>
 				<div class="col-md-12">
 					<input type="text" class="form-control" id="nasname" name="nasname" required>
 				</div>
 			</div>
 <!-- NAS IDENTIFIER -->
 			<div class="form-group">
-				<label for="nasidentifier" class="col-md-12 control-label">Identifier</label>
+				<label for="nasidentifier" class="col-md-12 control-label"><?= trans('identifier') ?></label>
 				<div class="col-md-12">
 					<input type="text" class="form-control" id="nasidentifier" name="nasidentifier" required>
 				</div>

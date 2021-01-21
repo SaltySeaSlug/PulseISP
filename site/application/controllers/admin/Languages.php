@@ -80,6 +80,12 @@ class Languages extends MY_Controller {
 		}
 		redirect(base_url('admin/languages'));
 	}
+
+	public function write()
+	{
+		$result = $this->languages_model->write_to_file('english_test');
+
+	}
 }
 
 ?>

@@ -73,10 +73,10 @@
     <!-- SEARCH FORM -->
     <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-navbar" type="search" placeholder="<?= trans('search') ?>" aria-label="<?= trans('search') ?>">
         <div class="input-group-append">
           <button class="btn btn-navbar" type="submit">
-            <i class="fa fa-search"></i>
+            <i class="fad fa-search"></i>
           </button>
         </div>
       </div>
@@ -87,8 +87,8 @@
       <!-- Languages -->
       <?php  $languages = get_language_list(); ?>
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#" title="Languages">
-          <i class="fa fa-globe"></i>
+        <a class="nav-link" data-toggle="dropdown" href="#" title="<?= trans('languages') ?>">
+          <i class="fad fa-globe"></i>
           <span class="badge badge-warning navbar-badge">
             <?php 
             $lang = ($this->session->userdata('site_lang') == '') ? $this->general_settings['default_language'] : $this->session->userdata('site_lang');
@@ -100,7 +100,7 @@
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <?php foreach($languages as $lang):  ?>
           <a href="<?= base_url('home/site_lang/'.$lang['id']) ?>" class="dropdown-item">
-            <i class="fa fa-flag mr-2"></i> <?= $lang['name'] ?>
+            <i class="fad fa-flag mr-2"></i> <?= $lang['name'] ?>
           </a>
           <div class="dropdown-divider"></div>
           <?php endforeach; ?>
@@ -108,7 +108,7 @@
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fa fa-comments-o"></i>
+          <i class="fad fa-comments"></i>
           <span class="badge badge-danger navbar-badge">3</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -166,7 +166,7 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fa fa-bell-o"></i>
+          <i class="fad fa-bell"></i>
           <span class="badge badge-warning navbar-badge">15</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -213,15 +213,15 @@
 
             <p>
               <?= ucwords($this->session->userdata('fullname')); ?>
-              <small>Member since <?= date('M. Y', strtotime($this->session->userdata('created_date'))); ?></small>
+              <small><?= trans('member_since') ?> <?= date('M. Y', strtotime($this->session->userdata('created_date'))); ?></small>
             </p>
           </li>
 		  <!-- /.row -->
           </li>
           <!-- Menu Footer-->
           <li class="user-footer">
-            <a href="<?= base_url('admin/profile') ?>" class="btn btn-default btn-flat">Profile</a>
-            <a href="<?= base_url('admin/auth/logout') ?>" class="btn btn-default btn-flat float-right">Sign out</a>
+            <a href="<?= base_url('admin/profile') ?>" class="btn btn-default btn-flat"><?= trans('profile') ?></a>
+            <a href="<?= base_url('admin/auth/logout') ?>" class="btn btn-default btn-flat float-right"><?= trans('logout') ?></a>
           </li>
         </ul>
       </li>

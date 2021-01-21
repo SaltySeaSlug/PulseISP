@@ -1,5 +1,5 @@
 <!-- DataTables -->
-<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css"> 
+<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css">
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -9,18 +9,18 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title mt-2"><i class="fa fa-list"></i>&nbsp; <?= trans('users_list') ?></h3>
+          <h3 class="card-title mt-2"><i class="fad fa-list mr-2"></i><?= trans('users_list') ?></h3>
         </div>
         <div class="d-inline-block float-right">
           <?php if($this->rbac->check_operation_permission('add')): ?>
-            <a href="<?= base_url('admin/users/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_user') ?></a>
+            <a href="<?= base_url('admin/users/add'); ?>" class="btn btn-success"><i class="fad fa-plus mr-2"></i><?= trans('add_new_user') ?></a>
           <?php endif; ?>
         </div>
       </div>
     </div>
     <div class="card">
       <div class="card-body">
-				<table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
+				<table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap table-condensed table-valign-middle text-nowrap dataTable" width="100%">
 				  <thead>
 					<tr>
 					  <th># <?= trans('id') ?></th>
@@ -38,7 +38,6 @@
     </div>
   </section>  
 </div>
-
 
 <!-- DataTables -->
 <script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>

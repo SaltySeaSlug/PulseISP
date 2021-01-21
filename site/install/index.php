@@ -73,7 +73,7 @@ if($_POST) {
 
     <!-- CSS -->
     <link rel="stylesheet" href="../assets/plugins/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="../assets/plugins/fontawesome-free/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../assets/plugins/fontawesome-5/css/all.min.css">
     <link rel="stylesheet" href="assets/css/form-elements.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
@@ -203,7 +203,7 @@ if($_POST) {
 
 
 <!-- Javascript -->
-<script src="../assets/plugins/fontawesome-free/js/all.min.js"></script>
+<script src="../assets/plugins/fontawesome-5/js/all.min.js"></script>
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="assets/js/jquery.backstretch.min.js"></script>

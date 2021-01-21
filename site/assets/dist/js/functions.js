@@ -747,8 +747,18 @@ function getChartSession(interval){
 }
 
 
+$.fn.enterKey = function (fnc) {
+	return this.each(function () {
+		$(this).keypress(function (ev) {
+			var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+			if (keycode == '13') {
+				fnc.call(this, ev);
+			}
+		})
+	})
+}
 
-$('form input').keydown(function (e) {
+/*$('form input').keydown(function (e) {
 	if (e.keyCode == 13) {
 		var inputs = $(this).parents("form").eq(0).find(":input");
 		if (inputs[inputs.index(this) + 1] != null) {
@@ -757,7 +767,7 @@ $('form input').keydown(function (e) {
 		e.preventDefault();
 		return false;
 	}
-});
+});*/
 
 function initMap1(map, gps, readonly = false, options = null) {
 	// The location of Uluru
@@ -1366,10 +1376,7 @@ function bytes(bytes, label, decimal = 1) {
 	if (label) value += ' ' + s[e];
 	return value;
 }
-function IsValidGPS(input) {
-	var regex = /([+-]?\d+\.?\d+)\s*,\s*([+-]?\d+\.?\d+)/;
-	return regex.test(input.trim());
-}
+
 function realmCheck(email) {
 	let parts = email.split('@');
 	if (parts.length === 2) {
@@ -1391,4 +1398,42 @@ function removeNL(s) {
 		}
 	}
 	return r;
+}
+
+function IsValidGPS(input) {
+
+	if (/([+-]?\d+\.?\d+)\s*,\s*([+-]?\d+\.?\d+)/.test(input.trim())) {
+		return true
+	}
+
+	alert("You have entered an invalid GPS co-ordinate!")
+	return  false
+}
+function IsValidGPSLatLon(lat, lon) {
+
+	let validLat = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/.test(lat.trim());
+	let validLon = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,18})?|180(?:\.0{1,18})?)$/.test(lon.trim());
+
+	if (validLat && validLon) {
+		return true
+	}
+
+	alert("You have entered an invalid GPS co-ordinate!")
+	return  false
+}
+function IsValidIPAddress(input) {
+	if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(input.trim())) {
+		return true
+	}
+
+	alert("You have entered an invalid IP address!")
+	return false
+}
+function IsValidEmail(input) {
+	if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(input.trim())) {
+		return true
+	}
+
+	alert("You have entered an invalid email address!")
+	return false
 }

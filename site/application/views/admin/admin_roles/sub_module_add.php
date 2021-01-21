@@ -5,12 +5,11 @@
       <div class="card card-default">
         <div class="card-header">
           <div class="d-inline-block">
-              <h3 class="card-title"> <i class="fa fa-plus"></i>
-              Add New Sub Module </h3>
+              <h3 class="card-title mt-2"><i class="fad fa-plus mr-2"></i><?= trans('add_sub_module') ?></h3>
           </div>
           <?php $parent_menu = $this->uri->segment(4); ?>
           <div class="d-inline-block float-right">
-            <a href="<?= base_url('admin/admin_roles/sub_menu/'.$parent_menu); ?>" class="btn btn-success"><i class="fa fa-list"></i>  Sub Module List</a>
+            <a href="<?= base_url('admin/admin_roles/sub_menu/'.$parent_menu); ?>" class="btn btn-success"><i class="fad fa-list mr-2"></i><?= trans('sub_module_list') ?></a>
           </div>
         </div>
         <div class="card-body">

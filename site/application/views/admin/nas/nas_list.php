@@ -9,11 +9,11 @@
     <div class="card">
       <div class="card-header">
         <div class="d-inline-block">
-          <h3 class="card-title mt-2"><i class="fad fa-server"></i>&nbsp; <?= trans('nas_list') ?></h3>
+          <h3 class="card-title mt-2"><i class="fad fa-server mr-2"></i><?= trans('nas_list') ?></h3>
         </div>
         <div class="d-inline-block float-right">
           <?php if($this->rbac->check_operation_permission('add')): ?>
-            <a href="<?= base_url('admin/nas/add'); ?>" class="btn btn-success"><i class="fa fa-plus"></i> <?= trans('add_new_nas') ?></a>
+            <a href="<?= base_url('admin/nas/add'); ?>" class="btn btn-success"><i class="fad fa-plus mr-1"></i><?= trans('add_new_nas') ?></a>
           <?php endif; ?>
         </div>
       </div>
@@ -24,10 +24,10 @@
           <thead>
             <tr>
 				<th># <?= trans('id') ?></th>
-              <th>Name</th>
-              <th>IP Address</th>
-              <th>Identifier</th>
-              <th>Status</th>
+              	<th><?= trans('name') ?></th>
+              	<th><?= trans('ip_address') ?></th>
+              	<th><?= trans('identifier') ?></th>
+              	<th><?= trans('status') ?></th>
               <th class="text-right"><?= trans('action') ?></th>
             </tr>
           </thead>

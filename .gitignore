@@ -18,3 +18,5 @@ application/logs/*
 
 #phpstorm
 .idea/
+/site_rev/
+/site_rev/
