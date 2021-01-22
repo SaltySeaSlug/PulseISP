@@ -40,14 +40,14 @@ class PPP_model extends CI_Model{
 	public function get_all_nas_devices(){
 		$this->db->select('*');
 		//$this->db->where('is_admin',0);
-		return $this->db->get('nas')->result_array();
+		return $this->db->get('radnas')->result_array();
 	}
 
 
 	//---------------------------------------------------
 	// Get user detial by ID
 	public function get_nas_by_id($id){
-		$query = $this->db->get_where('nas', array('id' => $id));
+		$query = $this->db->get_where('radnas', array('id' => $id));
 		return $result = $query->row_array();
 	}
 
@@ -55,7 +55,7 @@ class PPP_model extends CI_Model{
 	// Edit user Record
 	public function edit_nas($data, $id){
 		$this->db->where('id', $id);
-		$this->db->update('nas', $data);
+		$this->db->update('radnas', $data);
 		return true;
 	}
 
@@ -66,7 +66,7 @@ class PPP_model extends CI_Model{
 	{
 		$this->db->set('is_active', $this->input->post('status'));
 		$this->db->where('id', $this->input->post('id'));
-		$this->db->update('nas');
+		$this->db->update('radnas');
 	}
 
 }

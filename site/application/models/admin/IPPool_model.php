@@ -18,7 +18,7 @@
 		//---------------------------------------------------
 		// Get user detial by ID
 		public function get_nas_by_id($id){
-			$query = $this->db->get_where('nas', array('id' => $id));
+			$query = $this->db->get_where('radnas', array('id' => $id));
 			return $result = $query->row_array();
 		}
 
@@ -26,7 +26,7 @@
 		// Edit user Record
 		public function edit_nas($data, $id){
 			$this->db->where('id', $id);
-			$this->db->update('nas', $data);
+			$this->db->update('radnas', $data);
 			return true;
 		}
 
@@ -37,7 +37,7 @@
 		{		
 			$this->db->set('is_active', $this->input->post('status'));
 			$this->db->where('id', $this->input->post('id'));
-			$this->db->update('nas');
+			$this->db->update('radnas');
 		}
 
 		function update_last_contact()

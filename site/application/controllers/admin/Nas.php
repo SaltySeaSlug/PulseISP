@@ -155,7 +155,7 @@ class Nas extends MY_Controller {
 	{
 		$this->rbac->check_operation_access(); // check opration permission
 		
-		$this->db->delete('nas', array('id' => $id));
+		$this->db->delete('radnas', array('id' => $id));
 
 		// Activity Log 
 		$this->activity_model->add_log(3);

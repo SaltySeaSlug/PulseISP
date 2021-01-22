@@ -39,7 +39,7 @@ class Setting_model extends CI_Model
 	}
 
 	public function get_currency_list() {
-		return $this->db->get('currency')->result_array();
+		return $this->db->get('ci_currency')->result_array();
 	}
 
 	public function get_currency(){

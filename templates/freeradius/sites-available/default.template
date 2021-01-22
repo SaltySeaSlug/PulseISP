@@ -727,6 +727,11 @@ post-auth {
 		&reply: += &session-state:
 	}
 
+    # Get the pool name for the BNG that's sent the request. Each BNG has their own pool
+    update control {
+        Pool-Name := "%{sql:SELECT pool_name FROM radnas_pool_names WHERE nas_ip_address='%{NAS-IP-Address}'}"
+    }
+
 	#  Get an address from the IP Pool.
 #	main_pool
 sqlippool

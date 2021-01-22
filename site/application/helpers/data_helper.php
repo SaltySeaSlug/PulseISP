@@ -5,7 +5,7 @@ if (!function_exists('check_nas_status')) {
 	{
 		$ci = &get_instance();
 		$ci->db->where('id', $id);
-		$dateTime = strtotime($ci->db->get('nas')->row_array()['last_contact']);
+		$dateTime = strtotime($ci->db->get('radnas')->row_array()['last_contact']);
 		$dateTimeNow = (strtotime(date('Y-m-d H:i:s')) - 30 * 60);
 
 		if ($dateTime >= $dateTimeNow) return true;

@@ -52795,7 +52795,7 @@ INSERT INTO `ci_users` (`id`, `username`, `firstname`, `lastname`, `email`, `mob
 -- Table structure for table `module`
 --
 
-DROP TABLE IF EXISTS `module`;
+DROP TABLE IF EXISTS ci_module;
 CREATE TABLE IF NOT EXISTS `module` (
   `module_id` int(11) NOT NULL AUTO_INCREMENT,
   `module_name` varchar(255) NOT NULL,
@@ -52810,7 +52810,7 @@ CREATE TABLE IF NOT EXISTS `module` (
 -- Dumping data for table `module`
 --
 
-INSERT INTO `module` (`module_id`, `module_name`, `controller_name`, `fa_icon`, `operation`, `sort_order`) VALUES
+INSERT INTO ci_module (`module_id`, `module_name`, `controller_name`, `fa_icon`, `operation`, `sort_order`) VALUES
 (1, 'admin', 'admin', 'fa-pie-chart', 'view|add|edit|delete|change_status|access', 3),
 (2, 'role_and_permissions', 'admin_roles', 'fa-book', 'view|add|edit|delete|change_status|access', 4),
 (3, 'users', 'users', 'fa-users', 'view|add|edit|delete|change_status|access', 4),
@@ -52839,7 +52839,7 @@ INSERT INTO `module` (`module_id`, `module_name`, `controller_name`, `fa_icon`, 
 -- Table structure for table `module_access`
 --
 
-DROP TABLE IF EXISTS `module_access`;
+DROP TABLE IF EXISTS ci_module_access;
 CREATE TABLE IF NOT EXISTS `module_access` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `admin_role_id` int(11) NOT NULL,
@@ -52853,7 +52853,7 @@ CREATE TABLE IF NOT EXISTS `module_access` (
 -- Dumping data for table `module_access`
 --
 
-INSERT INTO `module_access` (`id`, `admin_role_id`, `module`, `operation`) VALUES
+INSERT INTO ci_module_access (`id`, `admin_role_id`, `module`, `operation`) VALUES
 (1, 1, 'users', 'view'),
 (2, 1, 'users', 'add'),
 (3, 1, 'users', 'edit'),
@@ -52894,7 +52894,7 @@ INSERT INTO `module_access` (`id`, `admin_role_id`, `module`, `operation`) VALUE
 -- Table structure for table `sub_module`
 --
 
-DROP TABLE IF EXISTS `sub_module`;
+DROP TABLE IF EXISTS ci_sub_module;
 CREATE TABLE IF NOT EXISTS `sub_module` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent` int(11) NOT NULL,
@@ -52909,7 +52909,7 @@ CREATE TABLE IF NOT EXISTS `sub_module` (
 -- Dumping data for table `sub_module`
 --
 
-INSERT INTO `sub_module` (`id`, `parent`, `name`, `link`, `sort_order`) VALUES
+INSERT INTO ci_sub_module (`id`, `parent`, `name`, `link`, `sort_order`) VALUES
 (2, 2, 'module_setting', 'module', 1),
 (3, 2, 'role_and_permissions', '', 2),
 (4, 1, 'add_new_admin', 'add', 2),

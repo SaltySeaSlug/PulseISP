@@ -60,7 +60,7 @@ class Admin_roles_model extends CI_Model{
 	//-----------------------------------------------------
 	function get_modules()
     {
-		$this->db->from('module');
+		$this->db->from('ci_module');
 		$this->db->order_by('sort_order','asc');
 		$query=$this->db->get();
 		return $query->result_array();
@@ -74,14 +74,14 @@ class Admin_roles_model extends CI_Model{
 			$this->db->set('admin_role_id',$this->input->post('admin_role_id'));
 			$this->db->set('module',$this->input->post('module'));
 			$this->db->set('operation',$this->input->post('operation'));
-			$this->db->insert('module_access');
+			$this->db->insert('ci_module_access');
 		}
 		else
 		{
 			$this->db->where('admin_role_id',$this->input->post('admin_role_id'));
 			$this->db->where('module',$this->input->post('module'));
 			$this->db->where('operation',$this->input->post('operation'));
-			$this->db->delete('module_access');
+			$this->db->delete('ci_module_access');
 		}
 
 		$this->rbac->set_access_in_session(); // HACK/TODO:UPDATE SESSION
@@ -89,7 +89,7 @@ class Admin_roles_model extends CI_Model{
 	//-----------------------------------------------------
 	function get_access($admin_role_id)
 	{
-		$this->db->from('module_access');
+		$this->db->from('ci_module_access');
 		$this->db->where('admin_role_id',$admin_role_id);
 		$query=$this->db->get();
 		$data=array();
@@ -107,14 +107,14 @@ class Admin_roles_model extends CI_Model{
     {
 		$this->db->select('*');
 		$this->db->order_by('sort_order','asc');
-		$query = $this->db->get('module');
+		$query = $this->db->get('ci_module');
         return $query->result_array();
     }
 
     //-----------------------------------------------------
 	function add_module($data)
     {
-		$this->db->insert('module', $data);
+		$this->db->insert('ci_module', $data);
 		return true;
     }
 
@@ -122,7 +122,7 @@ class Admin_roles_model extends CI_Model{
 	// Edit Module
 	public function edit_module($data, $id){
 		$this->db->where('module_id', $id);
-		$this->db->update('module', $data);
+		$this->db->update('ci_module', $data);
 		return true;
 	}
 
@@ -130,13 +130,13 @@ class Admin_roles_model extends CI_Model{
 	function delete_module($id)
 	{		
 		$this->db->where('module_id',$id);
-		$this->db->delete('module');
+		$this->db->delete('ci_module');
 	} 
 
 	//-----------------------------------------------------
 	function get_module_by_id($id)
     {
-		$this->db->from('module');
+		$this->db->from('ci_module');
 		$this->db->where('module_id',$id);
 		$query=$this->db->get();
 		return $query->row_array();
@@ -149,14 +149,14 @@ class Admin_roles_model extends CI_Model{
 	//-----------------------------------------------------
 	function add_sub_module($data)
     {
-		$this->db->insert('sub_module',$data);
+		$this->db->insert('ci_sub_module',$data);
 		return $this->db->insert_id();
     } 
 
 	//-----------------------------------------------------
 	function get_sub_module_by_id($id)
     {
-		$this->db->from('sub_module');
+		$this->db->from('ci_sub_module');
 		$this->db->where('id',$id);
 		$query=$this->db->get();
 		return $query->row_array();
@@ -168,7 +168,7 @@ class Admin_roles_model extends CI_Model{
 		$this->db->select('*');
 		$this->db->where('parent',$id);
 		$this->db->order_by('sort_order','asc');
-		$query = $this->db->get('sub_module');
+		$query = $this->db->get('ci_sub_module');
 		return $query->result_array();
     }
 
@@ -176,7 +176,7 @@ class Admin_roles_model extends CI_Model{
     function edit_sub_module($data, $id)
     {
     	$this->db->where('id', $id);
-		$this->db->update('sub_module', $data);
+		$this->db->update('ci_sub_module', $data);
 		return true;
     }
 
@@ -184,7 +184,7 @@ class Admin_roles_model extends CI_Model{
 	function delete_sub_module($id)
 	{		
 		$this->db->where('id',$id);
-		$this->db->delete('sub_module');
+		$this->db->delete('ci_sub_module');
 		return true;
 	} 
 

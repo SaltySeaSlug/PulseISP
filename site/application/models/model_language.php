@@ -101,7 +101,7 @@ class Model_language extends CI_Model {
 	 */
 	function get_keys_from_db($file){
 		$this->db->select('key as `keys`');
-		$r = $this->db->get_where('language_keys', array('filename' => $file));
+		$r = $this->db->get_where('ci_language_keys', array('filename' => $file));
 		if($r->num_rows()){
 			$result=$r->result();
 			foreach($result as $row){
@@ -119,7 +119,7 @@ class Model_language extends CI_Model {
 	 */
 	function get_comments_from_db($file){
 		$this->db->select('key as `keys`,comment');
-		$r = $this->db->get_where('language_keys', array('filename' => $file));
+		$r = $this->db->get_where('ci_language_keys', array('filename' => $file));
 		if($r->num_rows()){
 			$result=$r->result();
 			foreach($result as $row){
@@ -158,7 +158,7 @@ class Model_language extends CI_Model {
 				'filename'=>$file
 			);
 		}
-		$this->db->insert_batch('language_keys',$data);
+		$this->db->insert_batch('ci_language_keys',$data);
 		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
@@ -193,12 +193,12 @@ class Model_language extends CI_Model {
 	 * @return	bool
 	 */
 	function delete_all_keys($file){
-		$this->db->delete('language_keys',array('filename'=>$file));
+		$this->db->delete('ci_language_keys',array('filename'=>$file));
 		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
 	function delete_one_key($key,$file){
-		$this->db->delete('language_keys',array('filename'=>$file,'key'=>$key));
+		$this->db->delete('ci_language_keys',array('filename'=>$file,'key'=>$key));
 		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
@@ -210,7 +210,7 @@ class Model_language extends CI_Model {
 		foreach ($com as $k=>$c){
 			$this->db->where('key', $k);
 			$this->db->where('filename', $file);
-			$this->db->update('language_keys',array('comment'=>$c));
+			$this->db->update('ci_language_keys',array('comment'=>$c));
 		}
 		$this->db->trans_complete();
 		return ($this->db->trans_status()) ? TRUE : FALSE;
