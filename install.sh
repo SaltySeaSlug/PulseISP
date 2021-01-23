@@ -224,7 +224,7 @@ session_save_path='/var/lib/php/sessions'
 ######################################################################################################################## Install Apache and PHP packages
 echo -e "$COL_YELLOW Install Apache and PHP packages $COL_RESET"
 
-apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils php-cli php-pear php-mysql php-gd php-dev php-curl php-opcache php-mail php-mail-mime php-db php-mbstring php-xml
+apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils php-cli php-pear php-mysql php-gd php-dev php-curl php-opcache php-mail php-mail-mime php-db php-mbstring php-xml php-bcmath
 /usr/sbin/a2dismod mpm_event
 /usr/sbin/a2enmod access_compat alias auth_basic authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex deflate dir env filter mime mpm_prefork negotiation rewrite setenvif socache_shmcb ssl status php7.4 mpm_prefork
 /usr/sbin/phpenmod opcache

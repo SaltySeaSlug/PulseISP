@@ -105,7 +105,7 @@ function get_city_slug($id)
 function trans($string)
 {
     $ci =& get_instance();
-    return empty($ci->lang->line($string)) ? '<b class="text-danger">| Missing key from language file |</b>' : $ci->lang->line($string);
+    return empty($ci->lang->line($string)) ? '<b class="text-danger">| Missing key from language file ['.$string.'] |</b>' : $ci->lang->line($string);
 }
 
 // -----------------------------------------------------------------------------
