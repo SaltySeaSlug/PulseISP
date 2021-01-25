@@ -1,7 +1,7 @@
 <VirtualHost *:80>
         ServerName example.com
         ServerAlias www.example.com
-        DocumentRoot /var/www/html
+        DocumentRoot /var/www/html/pulseisp
 
         # Force HTTPS when loading the page
         #RewriteEngine On
@@ -13,7 +13,7 @@
         #        AllowOverride All
         #</Directory>
 
-        <Directory /var/www/html>
+        <Directory /var/www/html/pulseisp>
                Options Indexes FollowSymLinks MultiViews
                AllowOverride All
                Require all granted

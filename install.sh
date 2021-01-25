@@ -31,7 +31,7 @@ USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
 # Apache user
 WWW_USR="www-data"
-WWW_PATH="/var/www/html/"
+WWW_PATH="/var/www/html/pulseisp/"
 
 # OS/System current executing user
 CURRENTUSER="$(whoami)"
@@ -239,7 +239,7 @@ apt-get install php7.4-fpm -y
 ######################################################################################################################## Copy over templates
 echo -e "$COL_YELLOW Copy over templates $COL_RESET"
 
-#mkdir /var/www/vhosts
+mkdir /var/www/pulseisp
 mkdir -p /var/lib/php/sessions
 chown root:www-data /var/lib/php/sessions
 chmod 770 /var/lib/php/sessions
@@ -648,7 +648,7 @@ rm -fr ${WWW_PATH}/install
 #sudo setfacl -R -m u:$(whoami):rwx /var/www/html
 
 chown $WWW_USR:$WWW_USR $WWW_PATH
-chmod -R 775 $WWW_PATH
+chmod -R 0775 $WWW_PATH
 usermod -a -G www-data "$CURRENTUSER"
 
 systemctl restart apache2
