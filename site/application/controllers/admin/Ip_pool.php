@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class IP_pool extends MY_Controller {
+class Ip_pool extends MY_Controller {
 
 	public function __construct(){
 
@@ -7,7 +7,7 @@ class IP_pool extends MY_Controller {
 		auth_check(); // check login auth
 		$this->rbac->check_module_access();
 
-		$this->load->model('admin/IPPool_model', 'ippool_model');
+		$this->load->model('admin/Ippool_model', 'ippool_model');
 		$this->load->model('admin/Activity_model', 'activity_model');
 		$this->load->model('admin/Setting_model', 'setting_model');
 		$this->load->helper('data_helper');

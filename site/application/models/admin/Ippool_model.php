@@ -1,5 +1,5 @@
 <?php
-	class IPPool_model extends CI_Model{
+	class Ippool_model extends CI_Model{
 
 		public function add_bulk_ips($data){
 			$this->db->insert_batch('radippool', $data);
