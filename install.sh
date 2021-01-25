@@ -476,12 +476,12 @@ cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
 
 cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
-cp $TEMP_DIR/templates/site/nas_add.php.template $WWW_PATH/application/views/nas/nas_add.php
+#cp $TEMP_DIR/templates/site/nas_add.php.template $WWW_PATH/application/views/nas/nas_add.php
 
 sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
 sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
-sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views/nas/nas_add.php
+#sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views/nas/nas_add.php
 
 
 #currentUser="$(whoami)"
