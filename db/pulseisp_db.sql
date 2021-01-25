@@ -28,7 +28,7 @@ CREATE TABLE `ci_activity_log` (
                                    `admin_id` int(11) NOT NULL,
                                    `description` varchar(255) DEFAULT NULL,
                                    `created_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -39,7 +39,7 @@ CREATE TABLE `ci_activity_log` (
 CREATE TABLE `ci_activity_status` (
                                       `id` int(11) NOT NULL,
                                       `description` varchar(225) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_activity_status`
@@ -60,7 +60,7 @@ INSERT INTO `ci_activity_status` (`id`, `description`) VALUES
 CREATE TABLE `ci_admin` (
                             `admin_id` int(11) NOT NULL,
                             `admin_role_id` int(11) NOT NULL,
-                            `username` varchar(100) CHARACTER SET utf8 NOT NULL,
+                            `username` varchar(100) NOT NULL,
                             `firstname` varchar(255) NOT NULL,
                             `lastname` varchar(255) NOT NULL,
                             `email` varchar(255) NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE `ci_admin` (
                             `last_ip` varchar(255) NOT NULL,
                             `created_at` datetime NOT NULL,
                             `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_admin`
@@ -95,13 +95,13 @@ INSERT INTO `ci_admin` (`admin_id`, `admin_role_id`, `username`, `firstname`, `l
 
 CREATE TABLE `ci_admin_roles` (
                                   `admin_role_id` int(11) NOT NULL,
-                                  `admin_role_title` varchar(30) CHARACTER SET utf8 NOT NULL,
+                                  `admin_role_title` varchar(30) NOT NULL,
                                   `admin_role_status` int(11) NOT NULL,
                                   `admin_role_created_by` int(1) NOT NULL,
                                   `admin_role_created_on` datetime NOT NULL,
                                   `admin_role_modified_by` int(11) NOT NULL,
                                   `admin_role_modified_on` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_admin_roles`
@@ -125,7 +125,7 @@ CREATE TABLE `ci_cities` (
                              `slug` varchar(255) NOT NULL,
                              `state_id` int(11) NOT NULL,
                              `status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,7 @@ CREATE TABLE `ci_companies` (
                                 `address1` varchar(255) NOT NULL,
                                 `address2` varchar(255) NOT NULL,
                                 `created_date` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -156,7 +156,7 @@ CREATE TABLE `ci_countries` (
                                 `slug` varchar(255) NOT NULL,
                                 `phonecode` int(11) NOT NULL,
                                 `status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -165,10 +165,10 @@ CREATE TABLE `ci_countries` (
 --
 
 CREATE TABLE `ci_currency` (
-                               `name` char(20) CHARACTER SET utf8 NOT NULL,
-                               `code` char(3) CHARACTER SET utf8 NOT NULL,
-                               `symbol` char(5) CHARACTER SET utf8 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+                               `name` char(20) NOT NULL,
+                               `code` char(3) NOT NULL,
+                               `symbol` char(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_currency`
@@ -302,7 +302,7 @@ CREATE TABLE `ci_email_templates` (
                                       `subject` varchar(255) NOT NULL,
                                       `body` text NOT NULL,
                                       `last_update` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_email_templates`
@@ -323,7 +323,7 @@ CREATE TABLE `ci_email_template_variables` (
                                                `id` int(11) NOT NULL,
                                                `template_id` int(11) NOT NULL,
                                                `variable_name` varchar(250) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_email_template_variables`
@@ -375,7 +375,7 @@ CREATE TABLE `ci_general_settings` (
                                        `realm_suffix` varchar(255) DEFAULT NULL,
                                        `created_date` datetime DEFAULT NULL,
                                        `updated_date` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_general_settings`
@@ -392,11 +392,11 @@ INSERT INTO `ci_general_settings` (`id`, `favicon`, `logo`, `application_name`, 
 
 CREATE TABLE `ci_language` (
                                `id` int(11) NOT NULL,
-                               `name` varchar(225) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+                               `name` varchar(225) NOT NULL,
                                `short_name` varchar(15) NOT NULL,
                                `status` int(11) NOT NULL DEFAULT 1,
                                `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_language`
@@ -416,7 +416,7 @@ CREATE TABLE `ci_language_keys` (
                                     `key` varchar(255) NOT NULL,
                                     `filename` varchar(255) NOT NULL,
                                     `comment` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_language_keys`
@@ -679,7 +679,7 @@ CREATE TABLE `ci_module` (
                              `fa_icon` varchar(100) NOT NULL,
                              `operation` text NOT NULL,
                              `sort_order` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_module`
@@ -721,7 +721,7 @@ CREATE TABLE `ci_module_access` (
                                     `admin_role_id` int(11) NOT NULL,
                                     `module` varchar(255) NOT NULL,
                                     `operation` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_module_access`
@@ -825,7 +825,7 @@ CREATE TABLE `ci_payments` (
                                `due_date` date NOT NULL,
                                `created_date` date NOT NULL,
                                `updated_date` date DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -839,7 +839,7 @@ CREATE TABLE `ci_states` (
                              `slug` varchar(255) NOT NULL,
                              `country_id` int(11) NOT NULL DEFAULT 1,
                              `status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -853,7 +853,7 @@ CREATE TABLE `ci_sub_module` (
                                  `name` varchar(255) NOT NULL,
                                  `link` varchar(255) NOT NULL,
                                  `sort_order` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ci_sub_module`
@@ -923,7 +923,7 @@ CREATE TABLE `ci_uploaded_files` (
                                      `id` int(11) NOT NULL,
                                      `name` varchar(225) NOT NULL,
                                      `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -950,7 +950,7 @@ CREATE TABLE `ci_users` (
                             `last_ip` varchar(30) NOT NULL,
                             `created_at` datetime NOT NULL,
                             `updated_at` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -965,7 +965,7 @@ CREATE TABLE `link_radippool_ppp_accounts` (
                                                `type` enum('static','dynamic','','') NOT NULL DEFAULT 'dynamic',
                                                `start_date` datetime NOT NULL DEFAULT current_timestamp(),
                                                `end_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -980,7 +980,7 @@ CREATE TABLE `link_users_ppp_accounts` (
                                            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
                                            `start_date` datetime DEFAULT current_timestamp(),
                                            `end_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -996,7 +996,7 @@ CREATE TABLE `ppp_accounts` (
                                 `staticip` varchar(24) DEFAULT NULL,
                                 `startdate` datetime DEFAULT NULL,
                                 `enddate` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Dumping data for table `ppp_accounts`
@@ -1024,7 +1024,7 @@ CREATE TABLE `ppp_accounts_stats` (
                                       `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
                                       `acctinputoctets` bigint(20) NOT NULL,
                                       `acctoutputoctets` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1062,7 +1062,7 @@ CREATE TABLE `radacct` (
                            `framedipv6prefix` varchar(45) NOT NULL DEFAULT '',
                            `framedinterfaceid` varchar(44) NOT NULL DEFAULT '',
                            `delegatedipv6prefix` varchar(45) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Triggers `radacct`
@@ -1114,7 +1114,7 @@ CREATE TABLE `radcheck` (
                             `attribute` varchar(64) NOT NULL DEFAULT '',
                             `op` char(2) NOT NULL DEFAULT '==',
                             `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1133,7 +1133,7 @@ CREATE TABLE `raddictionary` (
                                  `recommended_table` varchar(32) DEFAULT NULL,
                                  `recommended_helper` varchar(32) DEFAULT NULL,
                                  `recommended_tooltip` varchar(512) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1147,7 +1147,7 @@ CREATE TABLE `radgroupcheck` (
                                  `attribute` varchar(64) NOT NULL DEFAULT '',
                                  `op` char(2) NOT NULL DEFAULT '==',
                                  `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1161,7 +1161,7 @@ CREATE TABLE `radgroupreply` (
                                  `attribute` varchar(64) NOT NULL DEFAULT '',
                                  `op` char(2) NOT NULL DEFAULT '=',
                                  `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1179,7 +1179,7 @@ CREATE TABLE `radippool` (
                              `expiry_time` datetime DEFAULT NULL,
                              `username` varchar(64) DEFAULT NULL,
                              `pool_key` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Triggers `radippool`
@@ -1230,16 +1230,16 @@ DELIMITER ;
 
 CREATE TABLE `radnas` (
                           `id` int(10) NOT NULL,
-                          `nasname` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
-                          `shortname` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-                          `nasidentifier` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-                          `type` varchar(30) COLLATE utf8_unicode_ci DEFAULT 'other',
+                          `nasname` varchar(128) DEFAULT NULL,
+                          `shortname` varchar(32) DEFAULT NULL,
+                          `nasidentifier` varchar(64) DEFAULT NULL,
+                          `type` varchar(30) DEFAULT 'other',
                           `ports` int(5) DEFAULT 3799,
-                          `secret` varchar(60) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'secret',
-                          `server` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-                          `community` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-                          `description` varchar(200) COLLATE utf8_unicode_ci DEFAULT 'RADIUS Client',
-                          `connection_type` enum('direct','openvpn','pptp','dynamic') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'direct',
+                          `secret` varchar(60) NOT NULL DEFAULT 'secret',
+                          `server` varchar(64) DEFAULT NULL,
+                          `community` varchar(50) DEFAULT NULL,
+                          `description` varchar(200) DEFAULT 'RADIUS Client',
+                          `connection_type` enum('direct','openvpn','pptp','dynamic') NOT NULL DEFAULT 'direct',
                           `record_auth` tinyint(1) NOT NULL DEFAULT 0,
                           `ignore_acct` tinyint(1) NOT NULL DEFAULT 0,
                           `monitor` tinyint(1) NOT NULL DEFAULT 0,
@@ -1249,11 +1249,11 @@ CREATE TABLE `radnas` (
                           `on_public_maps` tinyint(1) NOT NULL DEFAULT 0,
                           `lat` double DEFAULT NULL,
                           `lon` double DEFAULT NULL,
-                          `photo_file_name` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
+                          `photo_file_name` varchar(128) DEFAULT NULL,
                           `user_id` int(11) DEFAULT NULL,
                           `created` datetime DEFAULT NULL,
                           `modified` datetime DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1263,9 +1263,9 @@ CREATE TABLE `radnas` (
 
 CREATE TABLE `radnas_pool_names` (
                                      `id` int(11) UNSIGNED NOT NULL,
-                                     `nas_ip_address` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-                                     `pool_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+                                     `nas_ip_address` varchar(128) NOT NULL DEFAULT '',
+                                     `pool_name` varchar(64) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1279,7 +1279,7 @@ CREATE TABLE `radpostauth` (
                                `pass` varchar(64) NOT NULL DEFAULT '',
                                `reply` varchar(32) NOT NULL DEFAULT '',
                                `authdate` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1293,7 +1293,7 @@ CREATE TABLE `radreply` (
                             `attribute` varchar(64) NOT NULL DEFAULT '',
                             `op` char(2) NOT NULL DEFAULT '=',
                             `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1306,7 +1306,7 @@ CREATE TABLE `radusergroup` (
                                 `username` varchar(64) NOT NULL DEFAULT '',
                                 `groupname` varchar(64) NOT NULL DEFAULT '',
                                 `priority` int(11) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_unicode_ci;
 
 --
 -- Indexes for dumped tables
