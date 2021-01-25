@@ -31,7 +31,6 @@ sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/SaltySeaSlug/Puls
 ### Demo
 1.  Copy files to your test environment (`e.g. http://localhost/`)
 2.  Navigate to (`e.g. http://localhost/`)
-3.  Follow installation wizard
 
 > `NOTE: This is still a work in progress so everything may not work`
 
