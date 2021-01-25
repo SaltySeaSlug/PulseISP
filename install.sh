@@ -626,6 +626,7 @@ cat /root/setup_report
 #----------------------------------------------------------------------- DOWNLOADING
 
 git clone "$INSTALL_URL" "$TEMP_DIR"
+
 mkdir $BACKUP_DIR
 
 cp $WWW_PATH/application/config/database.php /backup/database.php
@@ -635,8 +636,11 @@ cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 
 cp /backup/database.php $WWW_PATH/application/config/database.php
 
-rm -fr "/backup"
-rm -fr ${WWW_PATH}/install
+#rm -fr "/backup"
+#rm -fr ${WWW_PATH}/install
+
+cd ${WWW_PATH:?}/ || exit 1
+sudo composer -n install
 
 #chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
 #chmod -R 0755 ${WWW_PATH:?}/
@@ -647,9 +651,17 @@ rm -fr ${WWW_PATH}/install
 #sudo usermod -a -G $(whoami) www-data
 #sudo setfacl -R -m u:$(whoami):rwx /var/www/html
 
-chown $WWW_USR:$WWW_USR $WWW_PATH
-chmod -R 0775 $WWW_PATH
-usermod -a -G www-data "$CURRENTUSER"
+
+# Set permissions for path
+chgrp -R $WWW_USR /var/www
+chmod -R g+w /var/www
+
+# Set all directories GID
+find /var/www -type d -exec chmod 2775 {} \;
+# Set all files in path and add r/w permissions for owner and group
+find /var/www -type f -exec chmod ug+rw {} \;
+
+
 
 systemctl restart apache2
 
