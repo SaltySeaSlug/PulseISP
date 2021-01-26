@@ -88,8 +88,8 @@ class Nas extends MY_Controller {
 					// Activity Log 
 					$this->activity_model->add_to_log(1, "Nas Device has been added successfully");
 
-					$this->session->set_flashdata('success', shell_exec("sudo /etc/init.d/freeradius restart"));
-					//$this->session->set_flashdata('success', 'Nas Device has been added successfully!');
+					//$this->session->set_flashdata('success', shell_exec("sudo /etc/init.d/freeradius restart"));
+					$this->session->set_flashdata('success', 'Nas Device has been added successfully!');
 					redirect(base_url('admin/nas'));
 				}
 			}

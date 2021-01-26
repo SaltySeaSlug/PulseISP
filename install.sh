@@ -548,7 +548,7 @@ find /var/www -type f -exec chmod ug+rw {} \;
 
 chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
 chmod -R 0755 ${WWW_PATH:?}/
-chmod -R ug+rw ${WWW_PATH:?}/
+chmod -R ug+rwx ${WWW_PATH:?}/
 
 ######################################################################################################################## Install mail server
 #apt-get install sendmail
