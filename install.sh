@@ -430,10 +430,28 @@ cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clie
 cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
 
 
-
 sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-available/sql
 sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-available/sql
 sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-available/sql
+
+######################################################################################################################## Start Test Code (2020-01-26)
+
+#sed -i 's/password = "radpass"/password = "'$RADIUS_PWD'"/' /etc/freeradius/3.0/mods-available/sql.conf
+#sed -i 's/#port = 3306/port = 3306/' /etc/freeradius/3.0/mods-available/sql.conf
+
+sed -i -e 's/$INCLUDE sql.conf/\n$INCLUDE sql.conf/g' /etc/freeradius/3.0/radiusd.conf
+sed -i -e 's|$INCLUDE sql/mysql/counter.conf|\n$INCLUDE sql/mysql/counter.conf|g' /etc/freeradius/3.0/radiusd.conf
+sed -i -e 's|authorize {|authorize {\nsql|' /etc/freeradius/3.0/sites-available/inner-tunnel
+sed -i -e 's|session {|session {\nsql|' /etc/freeradius/3.0/sites-available/inner-tunnel
+sed -i -e 's|authorize {|authorize {\nsql|' /etc/freeradius/3.0/sites-available/default
+sed -i -e 's|session {|session {\nsql|' /etc/freeradius/3.0/sites-available/default
+sed -i -e 's|accounting {|accounting {\nsql|' /etc/freeradius/3.0/sites-available/default
+
+######################################################################################################################## End Test Code (2020-01-26)
+
+
+
+
 
 sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" /etc/freeradius/3.0/clients.conf
 
@@ -524,7 +542,7 @@ find /var/www -type d -exec chmod 2775 {} \;
 find /var/www -type f -exec chmod ug+rw {} \;
 
 cp /etc/sudoers /etc/sudoers.bak
-echo "%admin ALL=(ALL) ALL $WWW_USR ALL = NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
+echo "%admin ALL=(ALL) ALL $WWW_USR ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
 
 #chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
 #chmod -R 0755 ${WWW_PATH:?}/
