@@ -91,43 +91,92 @@
         </div>
 
 	<div class="row">
-	<div id="leftCol" class="col-lg-7 connectedSortable">
+		<div id="leftCol" class="col-lg-7 connectedSortable">
 			  <div id="today_usage" class="card">
 				  <div class="card-header">
 					  <h5 class="card-title mt-1"><i class="fad fa-th mr-1"></i>Today's Usage</h5>
 					  <div class="card-tools">
-						  <span class="badge bg-purple"><?php echo "In [ " . (!is_null($statUsageToday['upload']) ? toxbyte($statUsageToday['upload']) : 0); ?> ]</span> <span class="badge bg-orange"><?php echo "Out [ " . (!is_null($statUsageToday['download']) ? toxbyte($statUsageToday['download']) : 0); ?> ]</span>
-						  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
-							  <i class="fad fa-minus"></i>
-						  </button>
+						  <!--<span class="badge bg-purple"><?php echo "In [ " . (!is_null($statUsageToday['upload']) ? toxbyte($statUsageToday['upload']) : 0); ?> ]</span> <span class="badge bg-orange"><?php echo "Out [ " . (!is_null($statUsageToday['download']) ? toxbyte($statUsageToday['download']) : 0); ?> ]</span>-->
+						  <ul class="nav nav-pills">
+							  <li class="nav-item">
+								  <a class="nav-link active" style="padding: 3px 9px 3px 10px" href="#today-chart" data-toggle="tab" title="Today" onclick="getChartUsage('T','<?php echo base_url('data/getChartUsageData') ?>')">T</a>
+							  </li>
+							  <li class="nav-item">
+								  <a class="nav-link" style="padding: 3px 9px 3px 10px" href="#thisweek-chart" data-toggle="tab" title="This Week" onclick="getChartUsage('W','<?php echo base_url('data/getChartUsageData') ?>');">W</a>
+							  </li>
+							  <li class="nav-item">
+								  <a class="nav-link" style="padding: 3px 9px 3px 10px" href="#thismonth-chart" data-toggle="tab" title="This Month" onclick="getChartUsage('M','<?php echo base_url('data/getChartUsageData') ?>')">M</a>
+							  </li>
+							  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
+								  <i class="fad fa-minus"></i>
+							  </button>
+						  </ul>
 					  </div>
 				  </div>
 				  <div class="card-body">
-					  <div class="chart" style="overflow: auto;">
-						  <canvas id="Client6Chart" style="height: 250px"></canvas>
+					  <div id="rStats" class="text-right" style="margin-top: -20px; display: none"><span class="badge bg-orange" id="rDownload">Downloaded [ 0 B ]</span> <span class="badge bg-purple" id="rUpload">Uploaded [ 0 B ]</span></div>
+					  <div class="tab-content p-0">
+						  <!-- Morris chart - Sales -->
+						  <div class="chart tab-pane active" id="today-chart" style="position: relative; height: 300px;">
+							  <canvas id="today-chart-canvas" height="300" style="height: 300px;"></canvas>
+						  </div>
+						  <div class="chart tab-pane" id="thisweek-chart" style="position: relative; height: 300px;">
+							  <canvas id="thisweek-chart-canvas" height="300" style="height: 300px;"></canvas>
+						  </div>
+						  <div class="chart tab-pane" id="thismonth-chart" style="position: relative; height: 300px;">
+							  <canvas id="thismonth-chart-canvas" height="300" style="height: 300px;"></canvas>
+						  </div>
 					  </div>
 				  </div>
+
+				  <div id="lUChart" class="overlay dark" style="display: none">
+					  <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+				  </div>
 			  </div>
-		  </div>
-	<div id="rightCol" class="col-lg-5 connectedSortable">
-			<div id="auth_request" class="card">
-				<div class="card-header">
-					<h5 class="card-title mt-1"><i class="fad fa-user mr-1"></i>Auth Requests</h5>
-					<div class="card-tools">
-						<span id="statAuthRequests"></span>
-						<button type="button" class="btn btn-tool btn-sm" data-widget="collapse"><i class="fad fa-minus"></i></button>
+		</div>
+
+		<div id="rightCol" class="col-lg-5 connectedSortable">
+				<div id="auth_request" class="card">
+					<div class="card-header">
+						<h5 class="card-title mt-1"><i class="fad fa-user mr-1"></i>Auth Requests</h5>
+						<div class="card-tools">
+							<ul class="nav nav-pills">
+								<li class="nav-item">
+									<a class="nav-link active" style="padding: 3px 9px 3px 10px" href="#today-authchart" data-toggle="tab" title="Today" onclick="getChartAuth('T','<?php echo base_url('data/getChartAuthData') ?>')">T</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" style="padding: 3px 9px 3px 10px" href="#thisweek-authchart" data-toggle="tab" title="This Week" onclick="getChartAuth('W','<?php echo base_url('data/getChartAuthData') ?>');">W</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" style="padding: 3px 9px 3px 10px" href="#thismonth-authchart" data-toggle="tab" title="This Month" onclick="getChartAuth('M','<?php echo base_url('data/getChartAuthData') ?>')">M</a>
+								</li>
+								<button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
+									<i class="fad fa-minus"></i>
+								</button>
+							</ul>
+						</div>
 					</div>
-				</div>
-				<div class="card-body">
-					<div class="chart" style="overflow: auto;">
-						<canvas id="Client7Chart" style="height: 250px"></canvas>
+					<div class="card-body">
+						<div id="rAStats" class="text-right" style="margin-top: -20px; display: none"><span class="badge bg-green" id="rADownload">Accepted [ 0 ]</span> <span class="badge bg-red" id="rAUpload">Rejected [ 0 ]</span></div>
+						<div class="tab-content p-0">
+							<!-- Morris chart - Sales -->
+							<div class="chart tab-pane active" id="today-authchart" style="position: relative; height: 300px;">
+								<canvas id="today-authchart-canvas" height="300" style="height: 300px;"></canvas>
+							</div>
+							<div class="chart tab-pane" id="thisweek-authchart" style="position: relative; height: 300px;">
+								<canvas id="thisweek-authchart-canvas" height="300" style="height: 300px;"></canvas>
+							</div>
+							<div class="chart tab-pane" id="thismonth-authchart" style="position: relative; height: 300px;">
+								<canvas id="thismonth-authchart-canvas" height="300" style="height: 300px;"></canvas>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="card-footer text-center">
-					<a href="?route=radius/authrequests" class="uppercase">View All Authentication Requests</a>
+
+					<div id="lUAChart" class="overlay dark" style="display: none">
+						<i class="fas fa-3x fa-sync-alt fa-spin"></i>
+					</div>
 				</div>
 			</div>
-		</div>
 	</div>
 
     </div><!-- /.container-fluid -->
@@ -139,103 +188,8 @@
 <script src="<?= base_url() ?>assets/dist/js/pages/global.js"></script>
 
 <script>
-  $(function() {
-    function buildUsageChartData(data) {
-      var name = [];
-      var upload = [];
-      var download = [];
-
-      for (var i in data) {
-        name.push(data[i].SUMTime);
-        upload.push(data[i].SUMUpload);
-        download.push(data[i].SUMDownload);
-      }
-
-      return {
-        labels: name,
-        datasets: [{
-          label: 'Upload',
-          backgroundColor: "#605ca8",
-          data: upload
-        }, {
-          label: 'Download',
-          backgroundColor: "#ff851b",
-          data: download
-        }]
-      };
-    }
-    function buildUsageChartConfig(data) {
-      return {
-        type: 'bar',
-        data: data,
-        options: {
-          title: {
-            display: false
-          },
-          legend: {
-            display: false
-          },
-          tooltips: {
-            mode: 'index',
-            intersect: false,
-            callbacks: {
-              title: function () {
-                return "";
-              },
-              label: function (item, data) {
-                var datasetLabel = data.datasets[item.datasetIndex].label || "";
-                var dataPoint = item.yLabel;
-                return datasetLabel + ": " + bytes(dataPoint, true);
-              }
-            }
-          },
-          responsive: true,
-          scales: {
-            xAxes: [{
-              scaleLabel: {
-                display: false,
-                labelString: 'Hours of the day'
-              },
-              ticks : {
-                beginAtZero: true
-              },
-              stacked: true
-            }],
-            yAxes: [{
-              scaleLabel: {
-                display: false,
-                labelString: 'Usage'
-              },
-              stacked: true,
-              ticks: {
-                beginAtZero: true,
-                callback: function (data, index, labels) {
-                  return bytes(data, true);
-                }
-              }
-            }]
-          }
-        }
-      }
-    }
-    function bindUsageChart(data) {
-      var config = buildUsageChartConfig(buildUsageChartData(data));
-      var ctx = document.getElementById('Client6Chart').getContext('2d');
-      var usageChart = new Chart(ctx, config);
-    }
-    function loadUsageChartData() {
-      $.ajax({
-        type: 'GET',
-        url: '<?php echo base_url("functions/get_chart_data.php"); ?>',
-        dataType: 'json'
-      })
-          .then(bindUsageChart)
-          .then(function () {
-            //setTimeout(loadUsageChartData, 30000);
-          });
-    }
-
-    loadUsageChartData();
-  });
-
+	$(document).ready(function() {
+		getChartUsage('T', '<?php echo base_url('data/getChartUsageData') ?>');
+		getChartAuth('T', '<?php echo base_url('data/getChartAuthData') ?>');
+	});
 </script>

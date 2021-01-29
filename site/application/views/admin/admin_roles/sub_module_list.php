@@ -34,11 +34,9 @@
 								<td><?= trans($record['name']); ?></td>
 								<td><?= $record['link']; ?></td>
 								<td>
-									<div class="text-right">
-									<a title="Edit" href="<?php echo site_url("admin/admin_roles/sub_module_edit/".$record['id']); ?>" class="btn-right text-warning pr-1">
-											<i class="fa fa-edit"></i>
-										</a>
-									<a title="Delete" href="<?php echo site_url("admin/admin_roles/sub_module_delete/".$record['id'].'/'.$record['parent']); ?>" onclick="return confirm('are you sure to delete?')" class="btn-right text-danger pr-1"><i class="fad fa-trash-alt"></i></a>
+									<div class="btn-group float-right">
+										<a title="Edit" href="<?php echo site_url("admin/admin_roles/sub_module_edit/".$record['id']); ?>" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+										<a title="Delete" href="<?php echo site_url("admin/admin_roles/sub_module_delete/".$record['id'].'/'.$record['parent']); ?>" onclick="return confirm('are you sure to delete?')" class="btn btn-sm btn-danger"><i class="fad fa-trash-alt"></i></a>
 									</div>
 								</td>
 							</tr>

@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') OR exit('No direct script access allowed');
 class Ip_pool extends MY_Controller {
 
 	public function __construct(){
@@ -52,7 +54,15 @@ class Ip_pool extends MY_Controller {
 	{   
 		$this->nas_model->change_status();
 	}
+	function array_xor ($array_a, $array_b)
+	{
+		if (isset($array_a) || isset($array_b)) return array();
 
+		$union_array = array_merge($array_a, $array_b);
+
+		$intersect_array = array_intersect($array_a, $array_b);
+		return array_diff($union_array, $intersect_array);
+	}
 	public function add()
 	{
 		$this->rbac->check_operation_access(); // check opration permission
@@ -68,15 +78,56 @@ class Ip_pool extends MY_Controller {
 				redirect(base_url('admin/ippool/ippool_add'), 'refresh');
 			} else {
 				$sql = array();
+				$iprange = array();
 
 				if (checkIfIPRange($this->input->post('iprange'))) {
 
 				} elseif (checkIfCIDR($this->input->post('iprange'))) {
+
 					$ip = preg_split("#/#", $this->input->post('iprange'));
 					$sub = new IPv4\SubnetCalculator($ip[0], $ip[1]);
+					$bool = !empty($this->input->post('addunaddressableips'));
 
-					foreach (ip_range($sub->getMinHost(), $sub->getMaxHost()) as $ip_address) {
-						$sql[] = array('pool_name' => $this->input->post('poolname'), 'framedipaddress' => $ip_address);
+					if ($bool) {
+						//$pool = $this->ippool_model->get_ips_by_poolname($this->input->post('poolname'));
+						//$address_rage = $sub->getIPAddressRange();
+						//foreach (ip_range($address_rage[0], $address_rage[1]) as $ip_address) {	$iprange[] = $ip_address; }
+
+						//$uniqueRange = $this->array_xor($iprange, $pool);
+						foreach ($iprange as $ip_address) {
+							$sql[] = array('pool_name' => $this->input->post('poolname'), 'framedipaddress' => $ip_address);
+						}
+
+						//$excluded = IPTools\Network::parse($this->input->post('iprange'));
+						//foreach ($pool as $ip) {
+						//		$excluded->exclude(new \IPTools\IP($ip));
+						//}
+
+						//echo json_encode($pool);
+						//echo json_encode($iprange);
+						//echo json_encode($uniqueRange);
+						//echo json_encode($sql);
+						//echo json_encode($excluded);
+					}
+					else {
+						//$pool = $this->ippool_model->get_ips_by_poolname($this->input->post('poolname'));
+						foreach (ip_range($sub->getMinHost(), $sub->getMaxHost()) as $ip_address) {	$iprange[] = $ip_address; }
+
+						//$uniqueRange = $this->array_xor($iprange, $pool);
+						foreach ($iprange as $ip_address) {
+							$sql[] = array('pool_name' => $this->input->post('poolname'), 'framedipaddress' => $ip_address);
+						}
+
+						//$excluded = IPTools\Network::parse($this->input->post('iprange'));
+						//foreach ($pool as $ip) {
+						//	$excluded->exclude(new \IPTools\IP($ip));
+						//}
+
+						//echo json_encode($pool);
+						//echo json_encode($iprange);
+						//echo json_encode($uniqueRange);
+						//echo json_encode($sql);
+						//echo json_encode($excluded);
 					}
 				}
 
@@ -85,10 +136,10 @@ class Ip_pool extends MY_Controller {
 
 				if ($result) {
 					// Activity Log
-					$this->activity_model->add_to_log(1, "IP pool has been added successfully");
+					$this->activity_model->add_to_system_log("IP pool has been added successfully");
 
-					$this->session->set_flashdata('success', 'Nas Device has been added successfully!');
-					redirect(base_url('admin/nas'));
+					$this->session->set_flashdata('success', 'IP pool has been added successfully!');
+					redirect(base_url('admin/ip_pool'));
 				}
 			}
 		} else {
@@ -131,9 +182,9 @@ class Ip_pool extends MY_Controller {
 					shell_exec("sudo /etc/init.d/freeradius restart 2>&1");
 
 					// Activity Log 
-					$this->activity_model->add_log(2);
+					$this->activity_model->add_to_system_log("IP pool has been updated successfully");
 
-					$this->session->set_flashdata('success', 'NAS device has been updated successfully!');
+					$this->session->set_flashdata('success', 'IP pool has been updated successfully!');
 					redirect(base_url('admin/nas'));
 				}
 			}
@@ -154,7 +205,7 @@ class Ip_pool extends MY_Controller {
 		$this->db->delete('radnas', array('id' => $id));
 
 		// Activity Log 
-		$this->activity_model->add_log(3);
+		$this->activity_model->add_to_system_log("IP pool has been deleted successfully");
 
 		$this->session->set_flashdata('success', 'Use has been deleted successfully!');
 		redirect(base_url('admin/nas'));

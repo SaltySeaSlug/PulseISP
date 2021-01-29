@@ -63,7 +63,7 @@
 
             <li id="<?= $nav['controller_name'].'_'. $sub_nav['link'] ?>" class="nav-item">
               <a href="<?= base_url('admin/'.$nav['controller_name'].'/'.$sub_nav['link']); ?>" class="nav-link">
-                <i class="fad fa-angle-right nav-icon"></i>
+                <i class="fad fa-angle-double-right nav-icon"></i>
                 <p><?= trans($sub_nav['name']) ?></p>
               </a>
             </li>

@@ -1284,7 +1284,10 @@ CREATE TABLE `radpostauth` (
                                `username` varchar(64) NOT NULL DEFAULT '',
                                `pass` varchar(64) NOT NULL DEFAULT '',
                                `reply` varchar(32) NOT NULL DEFAULT '',
-                               `authdate` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6)
+                               `reply_msg` varchar(256) DEFAULT NULL,
+                               `authdate` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
+                               `nasipaddress` varchar(100) DEFAULT NULL,
+                               `callingstationid` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

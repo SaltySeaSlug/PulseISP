@@ -206,7 +206,9 @@ class Language extends MY_Controller{
 				if(empty($keys)||!is_array($keys)){
 					$keys=FALSE;
 				}
+				$new_keys = array();
 				foreach($_POST as $key=>$value){ /// create new array
+
 					if($keys!==FALSE&&in_array($key,$keys)){
 						if($this->input->post('comment_'.$key)){
 							$comments[$key] = $this->input->post('comment_'.$key);
@@ -216,7 +218,8 @@ class Language extends MY_Controller{
 						}
 						$f .= '$lang[\''.$key.'\']=\''; ///for language array
 						$f .= addslashes($this->input->post($key,TRUE)).'\';'."\n";		///for language array		, add escaping "
-					}elseif($pos=strpos($key,'new_key_')!==FALSE){ /// check if there is new key -> strpos is faster than substr
+					}
+					elseif($pos=strpos($key,'new_key_')!==FALSE){ /// check if there is new key -> strpos is faster than substr
 						$new_key = $this->prepare_str(trim($this->input->post($key,TRUE)));
 						if(!empty($new_key)){
 							if(!in_array($new_key,$keys) && !in_array($new_key,$new_keys)){

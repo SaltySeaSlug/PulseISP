@@ -33,6 +33,35 @@
 		public function get_all_alerts() {
 			return 0;
 		}
+
+		public function daily() {
+			$today = date("Y-m-d");
+			$start = $today.' 00:00:00';
+			$end = $today.' 23:59:59';
+			$username = 'test@test';
+
+			$query = $this->db->query('SELECT FLOOR(SUM(acctinputoctets+acctoutputoctets)/1024/1024) as total FROM radacct WHERE username=\''.$username.'\' AND acctstarttime > \''.$start.'\' AND acctstoptime < \''.$end.'\'');
+			$row = $query->row();
+
+			return isset($row->total) ? $row->total : 0;
+		}
+
+		public function monthly() {
+			$this_month =  date("Y-m");
+			$start = date('Y-m-01 00:00:00', strtotime($this_month));
+			$end = date('Y-m-t 00:00:00', strtotime($this_month));
+			$username = 'test@test';
+
+			$query = $this->db->query('SELECT FLOOR(SUM(acctinputoctets+acctoutputoctets)/1024/1024) as total FROM radacct WHERE username=\''.$username.'\' AND acctstarttime > \''.$start.'\' AND acctstoptime < \''.$end.'\'');
+			$row = $query->row();
+
+			return isset($row->total) ? $row->total : 0;
+		}
+
+		public function top($from,$to,$take = 10,$order = 'download',$order_type = 'desc') {//$this->db->save_queries = TRUE;
+			$query = $this->db->query('SELECT DISTINCT(radacct.username),radacct.acctstarttime,MAX(radacct.acctstoptime) AS acctstoptime, radacct.radacctid, SUM(radacct.acctsessiontime) AS `time`, SUM(radacct.acctinputoctets) AS upload, SUM(radacct.acctoutputoctets) AS download FROM radacct WHERE radacct.acctstarttime > \''.$from.'\' AND acctstarttime < \''.$to.'\' GROUP BY radacct.username ORDER BY '.$order.' '.$order_type.' LIMIT '.$take);
+			return $query->result_array();
+		}
 	}
 
 ?>

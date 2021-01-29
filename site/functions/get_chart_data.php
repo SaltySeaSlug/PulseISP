@@ -76,4 +76,5 @@ $result = mysqli_query($conn, $sql);
 	echo json_encode($data);
 
 // SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM user_stats WHERE DATE(timestamp) = CURDATE()
+
 ?>

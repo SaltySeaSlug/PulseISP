@@ -12,6 +12,8 @@ class Auth extends MY_Controller
 	//--------------------------------------------------------------
 	public function index()
 	{
+		//if(!$this->session->userdata("referred_from")) $this->session->set_userdata("referred_from", current_url());
+
 		if ($this->session->has_userdata('is_admin_login')) {
 			redirect('admin/dashboard');
 		} else {
@@ -61,6 +63,7 @@ class Auth extends MY_Controller
 							'lastname' => $result['lastname'],
 							'fullname' => $result['firstname'] . ' ' . $result['lastname'],
 							'created_date' => $result['created_at'],
+							'email' => $result['email'],
 							'is_admin_login' => TRUE
 						);
 						$this->session->set_userdata($admin_data);
@@ -318,5 +321,52 @@ class Auth extends MY_Controller
 		echo json_encode($error);
 	}
 
+	public function lock_screen(){
+
+		/*if ($this->input->post('submit')) {
+			$data = array(
+				'username' => $this->input->post('username'),
+				'password' => $this->input->post('password')
+			);
+
+			$result = $this->auth_model->login($data);
+			if ($result) {
+				$this->session->unset_userdata('locked');
+				$referred_from = $this->session->userdata('referred_from');
+				redirect($referred_from, 'refresh');
+			}
+		}
+		else {*/
+			//$this->session->set_userdata('locked', true);
+			//$data['title'] = 'Lock Screen';
+			//$data['navbar'] = false;
+			//$data['sidebar'] = false;
+			//$data['footer'] = false;
+			//$data['bg_cover'] = false;
+
+			//$this->load->view('admin/includes/_header', $data);
+			//$this->load->view('admin/auth/lock_screen');
+			//$this->load->view('admin/includes/_footer', $data);
+		//}
+	}
+
+	public function lock_screen_unlock()
+	{
+		/*$data = array(
+			'username' => $this->input->post('username'),
+			'password' => $this->input->post('password')
+		);
+
+		$result = $this->auth_model->login($data);
+
+		//if ($result) {
+			$this->session->unset_userdata('locked');
+			redirect('admin/dashboard');
+			//$referred_from = $this->session->userdata('referred_from');
+			//redirect($referred_from, 'refresh');
+		//} else {
+		//$this->load->view('admin/auth/lock_screen');
+		//}*/
+	}
 }  // end class
 ?>

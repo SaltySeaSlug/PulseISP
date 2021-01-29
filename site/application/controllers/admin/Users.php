@@ -11,6 +11,7 @@ class Users extends MY_Controller {
 		$this->load->model('admin/Activity_model', 'activity_model');
 		$this->load->model('admin/Setting_model', 'setting_model');
 		$this->load->model('admin/PPP_model', 'ppp_model');
+		$this->load->model('admin/Profiles_components_model', 'profiles_components_model');
 	}
 
 	//-----------------------------------------------------------
@@ -27,9 +28,9 @@ class Users extends MY_Controller {
 
 		foreach ($records['data']   as $row)
 		{
-			if ($this->rbac->check_operation_permission('view')) { $action_view = '<a title="View" class="btn-right text-primary pr-1" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-eye"></i></a>';}
-			if ($this->rbac->check_operation_permission('edit')) { $action_edit = '<a title="Edit" class="btn-right text-warning pr-1" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-edit"></i></a>';}
-			if ($this->rbac->check_operation_permission('delete')) {$action_delete = '<a title="Delete" class="btn-right text-danger pr-1" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash-alt"></i></a>';}
+			if ($this->rbac->check_operation_permission('view')) { $action_view = '<a title="View" class="btn btn-sm btn-info" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-eye"></i></a>';}
+			if ($this->rbac->check_operation_permission('edit')) { $action_edit = '<a title="Edit" class="btn btn-sm btn-warning" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-edit"></i></a>';}
+			if ($this->rbac->check_operation_permission('delete')) {$action_delete = '<a title="Delete" class="btn btn-sm btn-danger" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash"></i></a>';}
 
 
 
@@ -48,7 +49,7 @@ class Users extends MY_Controller {
 				type="checkbox"  
 				'.$status.'><label class="tgl-btn" for="cb_'.$row['id'].'"></label>',
 
- 				'<div class="text-right">'.$action_view.''.$action_edit.''.$action_delete.'</div>'
+ 				'<div class="btn-group float-right">'.$action_view.''.$action_edit.''.$action_delete.'</div>'
 			);
 		}
 		$records['data']=$data;
@@ -88,7 +89,9 @@ class Users extends MY_Controller {
 					'lastname' => $this->input->post('lastname'),
 					'email' => $this->input->post('email'),
 					'mobile_no' => $this->input->post('mobile_no'),
-					'address' => $this->input->post('address'),
+					'physical_address' => $this->input->post('physical_address'),
+					'postal_address' => $this->input->post('postal_address'),
+					'gps_coordinates' => $this->input->post('gps_coordinates'),
 					'account_code' => $this->input->post('profile-input-account-code'),
 					'created_at' => date('Y-m-d : h:m:s'),
 					//'updated_at' => date('Y-m-d : h:m:s'),
@@ -123,8 +126,9 @@ class Users extends MY_Controller {
 			}
 		}
 		else{
+			$data['profiles'] = $this->profiles_components_model->get_all_profiles();
 			$this->load->view('admin/includes/_header');
-			$this->load->view('admin/users/user_add');
+			$this->load->view('admin/users/user_add', $data);
 			$this->load->view('admin/includes/_footer');
 		}
 		

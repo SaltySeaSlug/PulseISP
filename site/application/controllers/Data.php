@@ -8,6 +8,8 @@ class Data extends MY_Controller
 
 		parent::__construct();
 		$this->load->model('admin/Setting_model', 'setting_model');
+		header('Content-type: application/json');
+
 	}
 
 	//-------------------------------------------------------------------------
@@ -131,6 +133,231 @@ class Data extends MY_Controller
 			echo json_encode(true);
 		}
 	}
+
+	public function get_vendor_attributes()
+	{
+		header('Content-type: application/json');
+		$vendor = isset($_GET['vendor']) ? $_GET['vendor'] : null;
+		$result = $this->db->query('SELECT MAX(id), attribute FROM raddictionary WHERE vendor = \'' . $vendor . '\'  GROUP BY attribute ORDER BY attribute ASC');
+
+		if ($result->num_rows() > 0) {
+			$attributes[] = '<option selected>None</option>';
+
+			foreach ($result->result_array() as $row) {
+				$attributes[] = '<option value="' . $row['attribute'] . '">' . $row['attribute'] . '</option>';
+			}
+		} else {
+			$attributes[] = null;
+		}
+
+		echo json_encode($attributes);
+	}
+
+	public function get_attribute_defaults(){
+		header('Content-type: application/json');
+		$attributeid = isset($_GET['attribute']) ? $_GET['attribute'] : null;
+
+
+		$this->db->select("*", ["id" => $attributeid]);
+		$result = $this->db->get_where('raddictionary', array('id' => $attributeid));
+		$values = [];
+
+		if ($result->num_rows() > 0) {
+			foreach($result->result_array() as $row) {
+				$values[] = $row['value'] ?? null;
+				$values[] = $row['recommended_op'] ?? ':=';
+				$values[] = $row['recommended_table'] ?? 'reply';
+			}
+		} else {
+			$values[] = null;
+			$values[] = ':=';
+			$values[] = 'reply';
+		}
+
+		echo json_encode($values);
+	}
+	function bytes1($bytes, $force_unit = NULL, $format = NULL, $si = FALSE)
+	{
+		//if ($bytes == 0) return 0;
+		// Format string
+		$format = ($format === NULL) ? '%01.2f %s' : (string) $format;
+
+		// IEC prefixes (binary)
+		if ($si == FALSE OR strpos($force_unit, 'i') !== FALSE)
+		{
+			$units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
+			$mod   = 1024;
+		}
+		// SI prefixes (decimal)
+		else
+		{
+			$units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
+			$mod   = 1000;
+		}
+
+		// Determine unit to use
+		if (($power = array_search((string) $force_unit, $units)) === FALSE)
+		{
+			$power = ($bytes > 0) ? floor(log($bytes, $mod)) : 0;
+		}
+
+		return ($bytes / pow($mod, $power));
+	}
+	function getWeekday($date) {
+		return date('w', strtotime($date));
+	}
+	function getDay($dow_numeric){
+		$dowMap = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+		return $dowMap[$dow_numeric];
+	}
+	function daysBetween($dt1, $dt2) {
+		return date_diff(
+			date_create($dt2),
+			date_create($dt1)
+		)->format('%a');
+	}
+	public function getChartUsageData()
+	{
+		$action = isset($_GET['action']) ? $_GET['action'] : null;
+		$period = isset($_GET['period']) ? $_GET['period'] : null;
+
+		$json_data = null;
+
+		switch ($period)
+		{
+			case 'T': {
+				$today = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM ppp_accounts_stats WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ASC")->result_array();
+				$todayCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM ppp_accounts_stats WHERE DATE(timestamp) = CURDATE()")->row();
+
+				$data = range(0, 23);
+
+				foreach ($today as $row) {
+					$data[$row['hour']] = array("downloaded" => $this->bytes1($row['download'], 'B'), "uploaded" => $this->bytes1($row['upload'], 'B'), "period" => $row['hour']);
+				}
+
+				$count = 0;
+				foreach (array_keys($data) as $index => $key) {
+					if ($index == $count && is_numeric($data[$key])) {
+						$data[$key] = array("period" => $key);
+					}
+					$count++;
+				}
+
+				$json_data = array("count" => array("downloaded" => $todayCount->download ?? 0, "uploaded" => $todayCount->upload ?? 0), "chartdata" => $data);
+			} break;
+			case 'W': {
+				$thisweek = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAYNAME(`timestamp`) as day FROM ppp_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0) GROUP BY DAYNAME(`timestamp`) ORDER BY DAYOFWEEK(day)")->result_array();
+				$thisweekCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM ppp_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0)")->row();
+
+				$data = range(0, 6);
+				foreach ($thisweek as $row) {
+					$data[$this->getWeekday($row['day'])] = array("downloaded" => $this->bytes1($row['download'], 'B'), "uploaded" => $this->bytes1($row['upload'], 'B'), "period" => $row['day']);
+				}
+				$count = 0;
+				foreach (array_keys($data) as $index => $key) {
+					if ($index == $count && is_numeric($data[$key])) {
+						$data[$key] = array("period" => $this->getDay($key));
+					}
+					$count++;
+				}
+
+				$json_data = array("count" => array("downloaded" => $thisweekCount->download ?? 0, "uploaded" => $thisweekCount->upload ?? 0), "chartdata" => $data);
+			} break;
+			case 'M': {
+				$thismonth = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAY(`timestamp`) as day FROM ppp_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`timestamp`) ASC")->result_array();
+				$thismonthCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM ppp_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE())")->row();
+
+				$data = range(1, date('t') + 1);
+				foreach ($thismonth as $row) {
+					$data[$row['day']] = array("downloaded" => $this->bytes1($row['download'], 'B'), "uploaded" => $this->bytes1($row['upload'], 'B'), "period" => $row['day']);
+				}
+				$count = 0;
+				foreach (array_keys($data) as $index => $key) {
+					if ($count != 0 && $index == $count && is_numeric($data[$key])) {
+						$data[$key] = array("period" => $key);
+					}
+					if ($count == 0) unset($data[$key]);
+					$count++;
+				}
+				$json_data = array("count" => array("downloaded" => $thismonthCount->download ?? 0, "uploaded" => $thismonthCount->upload ?? 0), "chartdata" => $data);
+			} break;
+			default: break;
+		}
+
+		echo json_encode($json_data);
+	}
+
+	public function getChartAuthData()
+	{
+		$action = isset($_GET['action']) ? $_GET['action'] : null;
+		$period = isset($_GET['period']) ? $_GET['period'] : null;
+
+		$requestData = $_REQUEST;
+		$json_data = null;
+
+		switch ($period)
+		{
+			case 'T': {
+				$today = $this->db->query("SELECT HOUR(`authdate`) as hour, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE DATE(`authdate`) = CURDATE() GROUP BY HOUR(`authdate`)")->result_array();
+				$todayCount = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE DATE(`authdate`) = CURDATE()")->row();
+
+				$data = range(0, 23);
+
+				foreach ($today as $row) {
+					$data[$row['hour']] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['hour']);
+				}
+				$count = 0;
+				foreach (array_keys($data) as $index => $key) {
+					if ($index == $count && is_numeric($data[$key])) {
+						$data[$key] = array("period" => $key);
+					}
+					$count++;
+				}
+
+				$json_data = array("count" => array("accepted" => $todayCount->accept, "rejected" => $todayCount->reject), "chartdata" => $data);
+			} break;
+			case 'W': {
+				$thisweek = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM radpostauth WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0) GROUP BY DAYNAME(`authdate`) ORDER BY DAYOFWEEK(day)")->result_array();
+				$thisweekCount = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM radpostauth WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0)")->row();
+
+				$data = range(0, 6);
+				foreach ($thisweek as $row) {
+					$data[$this->getWeekday($row['day'])] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
+				}
+				$count = 0;
+				foreach (array_keys($data) as $index => $key) {
+					if ($index == $count && is_numeric($data[$key])) {
+						$data[$key] = array("period" => $this->getDay($key));
+					}
+					$count++;
+				}
+
+				$json_data = array("count" => array("accepted" => $thisweekCount->accept, "rejected" => $thisweekCount->reject), "chartdata" => $data);
+			} break;
+			case 'M': {
+				$thismonth = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`authdate`) ASC")->result_array();
+				$thismonthCount = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE())")->row();
+
+				$data = range(1, date('t') + 1);
+				foreach ($thismonth as $row) {
+					$data[$row['day']] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
+				}
+				$count = 0;
+				foreach (array_keys($data) as $index => $key) {
+					if ($count != 0 && $index == $count && is_numeric($data[$key])) {
+						$data[$key] = array("period" => $key);
+					}
+					if ($count == 0) unset($data[$key]);
+					$count++;
+				}
+				$json_data = array("count" => array("accepted" => $thismonthCount->accept, "rejected" => $thismonthCount->reject), "chartdata" => $data);
+			} break;
+			default: break;
+		}
+
+		echo json_encode($json_data);
+	}
+
 }
 
 

@@ -123,16 +123,31 @@ function get_new_invoice_number()
 	}
 }
 
-function getRealIpAddr(){
- if ( !empty($_SERVER['HTTP_CLIENT_IP']) ) {
-  // Check IP from internet.
-  $ip = $_SERVER['HTTP_CLIENT_IP'];
- } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']) ) {
-  // Check IP is passed from proxy.
-  $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
- } else {
-  // Get IP address from remote address.
-  $ip = $_SERVER['REMOTE_ADDR'];
- }
- return $ip;
+function getRealIpAddr()
+{
+	if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+		// Check IP from internet.
+		$ip = $_SERVER['HTTP_CLIENT_IP'];
+	} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		// Check IP is passed from proxy.
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	} else {
+		// Get IP address from remote address.
+		$ip = $_SERVER['REMOTE_ADDR'];
+	}
+	return $ip;
 }
+
+function check_service($sname) {
+	if ($sname != '') {
+		system("pgrep ".escapeshellarg($sname)." >/dev/null 2>&1", $ret_service);
+		if ($ret_service == 0) {
+			return "Running";
+		} else {
+			return "Stopped";
+		}
+	} else {
+		return "no service name";
+	}
+}
+

@@ -25,14 +25,14 @@ class Activity extends MY_Controller {
 		$records['data'] = $this->activity_model->get_activity_log();
 
 		$data = array();
-		$i=0;
-		foreach ($records['data']  as $row) 
+		foreach ($records['data']  as $row)
 		{  
 			$data[]= array(
-				++$i,
+				$row['id'],
 				($row['username']) ? $row['username'] : $row['adminname'],
 				$row['description'], $row['message'],
-				date('F d, Y H:i',strtotime($row['created_at'])),	
+				$row['ip_address'],
+				date('F d, Y H:i',strtotime($row['created_at']))
 			);
 		}
 		$records['data'] = $data;

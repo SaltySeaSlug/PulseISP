@@ -4,7 +4,7 @@
     <?php if($this->session->flashdata('errors')): ?>
       <div class="alert alert-danger">
         <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-        <?= $this->session->flashdata('errors')?>
+        	<?= $this->session->flashdata('errors')?>
       </div>
 	<?php unset($_SESSION['errors']); ?>
     <?php endif; ?>

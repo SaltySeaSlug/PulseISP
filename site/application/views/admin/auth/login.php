@@ -91,6 +91,7 @@
     <?= $this->general_settings['copyright']; ?>
 </footer>
 </div>
+<script src="<?= base_url() ?>assets/dist/js/functions.js" type="text/javascript"></script>
 
 <script>
 

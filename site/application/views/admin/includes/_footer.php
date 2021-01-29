@@ -1,7 +1,7 @@
 <?php if(!isset($footer)): ?>
 
   <footer class="main-footer pt-0 pb-0 text-sm">
-	  <?php echo (ENVIRONMENT === 'development') ? 'Rendered in <strong>{elapsed_time}</strong> seconds. CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : ''; ?>
+	  <?php echo (ENVIRONMENT === 'development') ? 'Rendered in <strong>{elapsed_time}</strong> seconds | CodeIgniter Version <strong>' . CI_VERSION . '</strong> | '.ENVIRONMENT.'' : ''; ?>
 	  <div class="float-right d-none d-sm-inline-block">
       <?= $this->general_settings['copyright']; ?>
     </div>
@@ -49,6 +49,15 @@
 <script src="<?= base_url() ?>assets/plugins/dropzone/dropzone.js" type="text/javascript"></script>
 
 <script src="<?= base_url() ?>assets/dist/js/functions.js" type="text/javascript"></script>
+<script src="<?= base_url() ?>assets/plugins/select2/select2.full.js" type="text/javascript"></script>
+<script src="<?= base_url() ?>assets/plugins/toastr/toastr.min.js" type="text/javascript"></script>
+<script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js" type="text/javascript"></script>
+
+
+<?php if (!empty($this->general_settings['google_api'])) { ?>
+	<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->general_settings['google_api']; ?>&libraries=places"></script>
+<?php } ?>
+
 <script>
 
 var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';

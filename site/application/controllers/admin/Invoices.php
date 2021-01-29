@@ -77,7 +77,7 @@
 					$result = $this->invoice_model->add_invoice($invoice_data);
 					if($result){
 						// Activity Log 
-						$this->activity_model->add_log(7);
+						$this->activity_model->add_to_system_log("Invoice has been added successfully");
 
 						$this->session->set_flashdata('success', 'Invoice has been Added Successfully!');
 						redirect(base_url('admin/invoices'));
@@ -170,7 +170,7 @@
 					$result = $this->invoice_model->update_invoice($invoice_data, $id);
 					if($result){
 						// Activity Log 
-						$this->activity_model->add_log(8);
+						$this->activity_model->add_to_system_log("Invoice has been updated successfully");
 						$this->session->set_flashdata('success', 'Invoice has been updated Successfully!');
 						redirect(base_url('admin/invoices/edit/'.$id));
 					}
@@ -250,7 +250,7 @@
 			$result = $this->db->delete('ci_payments', array('id' => $id));
 			if($result){
 				// Activity Log 
-				$this->activity_model->add_log(9);
+				$this->activity_model->add_to_system_log("Invoice has been deleted successfully");
 				$this->session->set_flashdata('success', 'Record has been deleted Successfully!');
 				redirect(base_url('admin/invoices'));
 			}

@@ -24,8 +24,23 @@ $lang['add_module']				= "Add Module";
 
 $lang['ip_pool_list']			= "IP Pool List";
 $lang['add_ip_pool']			= "Add IP Pool";
-
-
+$lang['system_status']			= "System Status";
+$lang['profiles_components']	= "Profiles and Components";
+$lang['profiles_components_list'] = "Profiles and Components List";
+$lang['add_profile']			= "Add Profile";
+$lang['add_component']			= "Add Components";
+$lang['unaddressableips']		= "Use unaddressable IPs";
+$lang['ippool_name']			= "Pool name";
+$lang['ip_range']				= "IP Range";
+$lang['google_api']				= "Google API key";
+$lang['language_list']			= "Language List";
+$lang['add_language']			= "Add Language";
+$lang['edit_language']			= "Edit Language";
+$lang['display_name']			= "Display Name";
+$lang['directory_name']			= "Directory Name";
+$lang['update_language']		= "Update Language";
+$lang['list']					= "List";
+$lang['add_profile_component']	= "Add Component";
 
 //Navbar
 $lang['nas_devices']							= "NAS Devices";

@@ -60,6 +60,7 @@ class General_settings extends MY_Controller {
 			'created_date' => date('Y-m-d : h:m:s'),
 			'updated_date' => date('Y-m-d : h:m:s'),
 			'use_google_font' => $this->input->post('use_google_font'),
+			'google_api' => $this->input->post('google_api'),
 			'radius_secret' => $this->input->post('radius_secret'),
 			'realm_suffix' => $this->input->post('realm_suffix')
 		);
@@ -175,6 +176,16 @@ class General_settings extends MY_Controller {
         }
     }
 
+    public function system_status(){
+		$data['title'] = '';
+		$data['general_status'] = $this->setting_model->systemInfo();
+		$data['system_status'] = $this->setting_model->systemLoad();
+
+		$this->load->view('admin/includes/_header');
+		$this->load->view('admin/general_settings/system_status', $data);
+		$this->load->view('admin/includes/_footer');
+
+	}
 }
 
 ?>	

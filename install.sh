@@ -194,6 +194,17 @@ echo -e "$COL_YELLOW Install base packages $COL_RESET"
 apt install -y cron openssh-server vim sysstat man-db wget rsync
 git clone "$INSTALL_URL" "$TEMP_DIR"
 
+######################################################################################################################## Start Test Code (26-01-2020)
+######################################################################################################################## Install NTP service
+apt-get -y install ntp ntpdate
+cp /usr/share/zoneinfo/Africa/Johannesburg /etc/localtime
+sudo /etc/init.d/ntp restart
+######################################################################################################################## Disable IPV6
+
+
+######################################################################################################################## End Test Code (26-01-2020)
+
+
 ######################################################################################################################## Web Server Package Installation Tasks
 echo -e "$COL_YELLOW Web Server Package Installation Tasks $COL_RESET"
 
@@ -428,6 +439,7 @@ cp $TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.
 cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
 cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clients.conf
 cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
+cp $TEMP_DIR/templates/freeradius/mods-config/sql.main.mysql.queries.config.template /etc/freeradius/3.0/mods-config/sql/main/mysql/queries.conf
 
 
 sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-available/sql
@@ -435,6 +447,7 @@ sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-available
 sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-available/sql
 
 ######################################################################################################################## Start Test Code (2020-01-26)
+#ln -s /etc/freeradius/3.0/sites-enabled/status status /etc/freeradius/3.0/sites-available/status status
 
 #sed -i 's/password = "radpass"/password = "'$RADIUS_PWD'"/' /etc/freeradius/3.0/mods-available/sql.conf
 #sed -i 's/#port = 3306/port = 3306/' /etc/freeradius/3.0/mods-available/sql.conf

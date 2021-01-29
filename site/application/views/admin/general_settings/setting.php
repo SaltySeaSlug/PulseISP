@@ -103,6 +103,12 @@
                               </option>
                               </select>
                         </div>
+						<div class="form-group">
+							<label class="control-label"><?= trans('google_api') ?></label>
+							<input type="text" class="form-control" name="google_api"
+								   placeholder="Google API"
+								   value="<?php echo html_escape($general_settings['google_api']); ?>">
+						</div>
                         <div class="form-group">
                             <label class="control-label"><?= trans('copyright') ?></label>
                             <input type="text" class="form-control" name="copyright"

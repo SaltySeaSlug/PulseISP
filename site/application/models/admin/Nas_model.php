@@ -1,6 +1,10 @@
 <?php
 	class NAS_model extends CI_Model{
 
+		public function assign_nas_to_ippool($poolid) {
+
+		}
+
 		public function add_nas($data){
 			$this->db->insert('radnas', $data);
 			return true;

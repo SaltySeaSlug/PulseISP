@@ -225,12 +225,24 @@ $("#save").click(function() {
 
 
 
-let debug = true;
+//let debug = true;
 
-let cADownloaded, cAUploaded, cAChart = '';
-let cDownloaded, cUploaded, cChart = '';
-let chartInterval, chartAuthInterval, activeSessionInterval, alertInterval, activeIPInterval, customerInterval, chartSessionInterval = '';
-
+//let cADownloaded, cAUploaded, cAChart = '';
+//let cDownloaded, cUploaded, cChart = '';
+//let chartInterval, chartAuthInterval, activeSessionInterval, alertInterval, activeIPInterval, customerInterval, chartSessionInterval = '';
+function curTime(hour) {
+	if (hour === 0) return "00:00";
+	else if (hour >=1 && hour <= 9) return "0" + hour + ":00";
+	else if (hour >=10 && hour <= 23) return hour +":00";
+	else return null;
+}
+function curDay(day) {
+	if (day % 10 === 1) return day +"st";
+	else if (day % 10 === 2) return day +"nd";
+	else if (day % 10 === 3) return day +"rd";
+	else if (day % 10 === 4 || day % 10 === 5 || day % 10 === 6 || day % 10 === 7 || day % 10 === 8 || day % 10 === 9 || day % 10 === 0) return day +"th";
+	else return null;
+}
 
 
 function buildSessionChartData(data) {
@@ -333,20 +345,23 @@ function buildUsageChartData(data) {
 	var download = [];
 
 	for (var i in data) {
-		name.push(data[i].period);
-		upload.push(data[i].uploaded);
-		download.push(data[i].downloaded);
+		if (localStorage.getItem('remember.chart.usage.period') === 'T') name.push(curTime(data[i].period));
+		else if (localStorage.getItem('remember.chart.usage.period') === 'M') name.push(curDay(data[i].period));
+		else name.push(data[i].period);
+
+		upload.push((data[i].uploaded === undefined) ? 0 : data[i].uploaded);
+		download.push((data[i].downloaded === undefined) ? 0 : data[i].downloaded);
 	}
 
 	return {
 		labels: name,
 		datasets: [{
 			label: 'Uploaded',
-			backgroundColor: "#ffffff",
+			backgroundColor: "#6f42c1",
 			data: upload
 		}, {
 			label: 'Downloaded',
-			backgroundColor: "#6c757d",
+			backgroundColor: "#fd7e14",
 			data: download
 		}]
 	};
@@ -373,7 +388,10 @@ function buildUsageChartConfig(data) {
 						var datasetLabel = data.datasets[item.datasetIndex].label || "";
 						var dataPoint = item.yLabel;
 						var label = data.labels[item.index];
-						return " " + datasetLabel + ": " + bytes(dataPoint, true); // + " @ " + label;
+
+						if (localStorage.getItem('remember.chart.usage.period') === 'T') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " @ " + label;
+						if (localStorage.getItem('remember.chart.usage.period') === 'W') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on " + label;
+						if (localStorage.getItem('remember.chart.usage.period') === 'M') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on the " + label;
 					}
 				},
 				itemSort: function(a, b) {
@@ -389,7 +407,7 @@ function buildUsageChartConfig(data) {
 					},
 					ticks : {
 						beginAtZero: true,
-						fontColor: "white"
+						fontColor: "black"
 					},
 					gridLines: {
 						display: false,
@@ -407,7 +425,7 @@ function buildUsageChartConfig(data) {
 					stacked: true,
 					ticks: {
 						beginAtZero: true,
-						fontColor: "white",
+						fontColor: "black",
 						callback: function (data, index, labels) {
 							return bytes(data, true);
 						}
@@ -418,6 +436,24 @@ function buildUsageChartConfig(data) {
 	}
 }
 function bindUsageChart(data, canvas) {
+	/*Chart.plugins.register({
+		afterDraw: function(chart) {
+			if (chart.data.datasets.length === 0) {
+				// No data is present
+				var ctx = chart.chart.ctx;
+				var width = chart.chart.width;
+				var height = chart.chart.height
+				chart.clear();
+
+				ctx.save();
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'middle';
+				ctx.font = "16px normal 'Helvetica Nueue'";
+				ctx.fillText('No data to display', width / 2, height / 2);
+				ctx.restore();
+			}
+		}
+	});*/
 	var config = buildUsageChartConfig(buildUsageChartData(data));
 	var ctx = document.getElementById(canvas).getContext('2d');
 	var usageChart = new Chart(ctx, config);
@@ -490,7 +526,7 @@ function buildAuthChartConfig(data) {
 					},
 					ticks : {
 						beginAtZero: true,
-						fontColor: "white"
+						fontColor: "black"
 					},
 					gridLines: {
 						display: false,
@@ -512,7 +548,7 @@ function buildAuthChartConfig(data) {
 						callback: function (data, index, labels) {
 							return data;
 						},
-						fontColor: "white"
+						fontColor: "black"
 					}
 				}]
 			}
@@ -525,16 +561,17 @@ function bindAuthChart(data, canvas) {
 	var usageChart = new Chart(ctx, config);
 }
 
-function getChartUsage(period, interval){
+function getChartUsage(period, url, interval){
 	if (period === 'T') { cChart = 'today-chart-canvas'; }
 	if (period === 'W') { cChart = 'thisweek-chart-canvas'; }
 	if (period === 'M') { cChart = 'thismonth-chart-canvas'; }
 	$('#' + cChart).replaceWith($('<canvas id="' + cChart + '" height="300" style="height: 300px;"></canvas>'));
 
 	localStorage.setItem('remember.chart.usage.period', period);
+	localStorage.setItem('remember.chart.usage.url', url);
 
 	$.ajax({
-		url : './data/getStat.php',
+		url: url,
 		type : 'GET',
 		data : {'action' : 'getChartUsageData', 'period' : period},
 		dataType : 'json',
@@ -542,6 +579,8 @@ function getChartUsage(period, interval){
 		complete: function() { $('#lUChart').hide(); $("#rStats").show();
 		},
 		success: function (data) {
+			console.log('success : ' + JSON.stringify(data));
+
 			cDownloaded = bytes(data['count']['downloaded'], true);
 			cUploaded = bytes(data['count']['uploaded'], true);
 
@@ -550,17 +589,18 @@ function getChartUsage(period, interval){
 
 			bindUsageChart(data['chartdata'], cChart);
 
+			if (interval === undefined) return;
 			if (interval > 0) {
-				clearInterval(chartInterval);
-				chartInterval = setInterval(function () {
-					getChartUsage(localStorage.getItem('remember.chart.usage.period'), interval);
+				clearInterval(interval);
+				interval = setInterval(function () {
+					getChartUsage(localStorage.getItem('remember.chart.usage.period'),localStorage.getItem('remember.chart.usage.url'), interval);
 				}, interval);
 			}
 		},
 		error: function(data) {
-//console.log(data);
-			var responseText=JSON.parse(data);
-			alert("Error(s) while building the ZIP file:\n");
+console.log('error : ' + data);
+			var responseText=JSON.stringify(data);
+			alert(responseText);
 		}
 	});
 }
@@ -679,7 +719,7 @@ function getCustomerCount(period, interval) {
 		}
 	});
 }
-function getChartAuth(period, interval){
+function getChartAuth(period, url, interval){
 	if (period === 'T') { cAChart = 'today-authchart-canvas'; }
 	if (period === 'W') { cAChart = 'thisweek-authchart-canvas'; }
 	if (period === 'M') { cAChart = 'thismonth-authchart-canvas'; }
@@ -688,7 +728,7 @@ function getChartAuth(period, interval){
 	localStorage.setItem('remember.chart.auth.period', period);
 
 	$.ajax({
-		url : './data/getStat.php',
+		url : url,
 		type : 'GET',
 		data : {'action' : 'getChartAuthData', 'period' : period},
 		dataType : 'json',
@@ -1214,7 +1254,7 @@ function drawMarkerGoogleMap(map, gps) {
 }
 
 function initMap() {
-	var map = new google.maps.Map(document.getElementById('contact_address_map'), {
+	var map = new google.maps.Map(document.getElementById('google-map'), {
 		zoom: 3,
 		center: {lat: 0, lng: -180},
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -1241,10 +1281,10 @@ function initMap() {
 
 function buildGoogleMap(map, gps, readonly = false, options = null) {
 
-	if (map == null || map == '') return;
+	if (map == null || map === '') return;
 	if (document.getElementById(map) == null) return;
 
-	if (debug) console.log('Building Map ' + map);
+	//if (debug) console.log('Building Map ' + map);
 
 	let contact_map, contact_marker, lat, lng, zoom = 18;
 
@@ -1258,7 +1298,7 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 		zoom = 2;
 	}
 
-	if (debug) console.log('Parsing GPS Co-ordinates ' + lat + ',' + lng);
+	//if (debug) console.log('Parsing GPS Co-ordinates ' + lat + ',' + lng);
 
 	let latlng = new google.maps.LatLng(lat, lng);
 
@@ -1284,18 +1324,20 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 	});
 
 	google.maps.event.addListenerOnce(contact_map, "idle", function () {
-		if (debug) console.log('Listener Idle ' + map);
+		//if (debug) console.log('Listener Idle ' + map);
 
 		google.maps.event.trigger(contact_map, "resize");
 		contact_map.setZoom(contact_map.getZoom());
 	});
 	google.maps.event.addListener(contact_marker, 'mouseup', function () {
-		if (debug) console.log('Listener Mouse Up ' + map);
+		//if (debug) console.log('Listener Mouse Up ' + map);
 
 		if (options != null && options.output !== undefined) {
-			document.getElementById(options.output).value = contact_marker.getPosition();
-
-			if (debug) console.log('Listener Mouse Up ' + map + ' output.value ' + document.getElementById(options.output).value);
+			var gpsstr = contact_marker.getPosition();
+			document.getElementById(options.output).value = gpsstr.toString().substring(1,gpsstr.toString().length-1);
+			//document.getElementById(options.outputgrp).ele .show();
+			//document.getElementById(options.output).trigger('change');
+			//if (debug) console.log('Listener Mouse Up ' + map + ' output.value ' + document.getElementById(options.output).value);
 		}
 
 	});
@@ -1309,27 +1351,27 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 		autocomplete.bindTo('bounds', contact_map);
 		autocomplete.setOptions({strictBounds: true});
 		if (options.country !== undefined) {
-			if (debug) console.log('Setting Restrictions ' + map + ' output.country ' + options.country);
+			//if (debug) console.log('Setting Restrictions ' + map + ' output.country ' + options.country);
 
 			autocomplete.setComponentRestrictions({'country': options.country});
 		}
 		autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
 		autocomplete.addListener('place_changed', function () {
-			if (debug) console.log('Listener Place Changed ' + map);
+			//if (debug) console.log('Listener Place Changed ' + map);
 
 			let place = autocomplete.getPlace();
 
 			if (!place.geometry) return;
 
 			if (place.geometry.viewport) {
-				if (debug) console.log('Listener Place Changed ' + map + ' viewport ' + place.geometry.viewport);
+				//if (debug) console.log('Listener Place Changed ' + map + ' viewport ' + place.geometry.viewport);
 
 				contact_map.fitBounds(place.geometry.viewport);
 				contact_marker.setPosition(place.geometry.location);
 				document.getElementById(options.output).value = place.geometry.location;
 
 			} else {
-				if (debug) console.log('Listener Place Changed ' + map + ' location ' + place.geometry.location);
+				//if (debug) console.log('Listener Place Changed ' + map + ' location ' + place.geometry.location);
 
 				contact_marker.setPosition(place.geometry.location);
 				contact_map.setCenter(place.geometry.location);
@@ -1355,7 +1397,7 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 				//contact_map.setCenter(results[0].geometry.location);
 				contact_map.setCenter(latlng);
 			} else {
-				showErrorAlert("Could not find location: " + options.location);
+				//showErrorAlert("Could not find location: " + options.location);
 			}
 		});
 	}
@@ -1405,8 +1447,6 @@ function IsValidGPS(input) {
 	if (/([+-]?\d+\.?\d+)\s*,\s*([+-]?\d+\.?\d+)/.test(input.trim())) {
 		return true
 	}
-
-	alert("You have entered an invalid GPS co-ordinate!")
 	return  false
 }
 function IsValidGPSLatLon(lat, lon) {

@@ -13,7 +13,7 @@
 
 ### Development Requirements
 *   Ubuntu Server 20.04 or above
-*   Freeradius 3.0.16 or above
+*   Freeradius 3.0.19 or above
 *   Apache
 *   PHP 7.0 or above
 *   MySQL 5.x or above

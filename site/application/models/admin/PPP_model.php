@@ -68,7 +68,6 @@ class PPP_model extends CI_Model{
 		$this->db->where('id', $this->input->post('id'));
 		$this->db->update('radnas');
 	}
-
 }
 
 ?>

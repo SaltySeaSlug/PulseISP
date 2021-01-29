@@ -1,8 +1,27 @@
 <?php
 	class Ippool_model extends CI_Model{
 
+		function array_xor ($array_a, $array_b)
+		{
+			$union_array = array_merge($array_a, $array_b);
+			$intersect_array = array_intersect($array_a, $array_b);
+			return array_diff($union_array, $intersect_array);
+		}
+
+		public function assign_ippool_to_nas($nasid) {
+
+		}
+
+		public function get_ips_by_poolname($poolname) {
+			$this->db->select('framedipaddress');
+			$query = $this->db->get_where('radippool', ['pool_name' => $poolname])->result_array();
+			return array_column($query, 'framedipaddress');
+		}
+
 		public function add_bulk_ips($data){
-			$this->db->insert_batch('radippool', $data);
+			if (count($data) > 0) {
+				$this->db->insert_batch('radippool', $data);
+			}
 			return true;
 		}
 

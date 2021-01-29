@@ -5,16 +5,19 @@
 		function __construct()
 		{
 			parent::__construct();
+			$CI = & get_instance();
+			//$this->output->enable_profiler(TRUE);
 
 			$this->load->model('admin/setting_model', 'setting_model');
-
+			$this->load->library('gravatar');
+			//$this->load->library('user_agent');
+			//$this->load->helper('url');
 
 			//general settings
 
 			$global_data['general_settings'] = $this->setting_model->get_general_settings();
 
 			$this->general_settings = $global_data['general_settings'];
-
 
 			//set timezone
 
@@ -26,9 +29,7 @@
 			$global_data['recaptcha_status'] = true;
 
 			if (empty($this->general_settings['recaptcha_site_key']) || empty($this->general_settings['recaptcha_secret_key'])) {
-
 				$global_data['recaptcha_status'] = false;
-
 			}
 
 			$this->recaptcha_status = $global_data['recaptcha_status'];
@@ -40,6 +41,10 @@
 			$this->config->set_item('language', $language);
 			$this->lang->load(array('site'), $language);
 
+
+			/*if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !isset($this->CI->referrer)) {
+				$this->session->set_userdata('referred_from', current_url());
+			}*/
 		}
 
 		//verify recaptcha
@@ -59,7 +64,6 @@
 			}
 			return false;
 		}
-
 	}
 ?>
 

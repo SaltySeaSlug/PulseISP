@@ -12,6 +12,12 @@ if(isset($_GET['iprange'])) {
     $ipAddress = $_GET['iprange'];
 }
 
+function ip_range($start, $end)
+{
+	$start = ip2long($start);
+	$end = ip2long($end);
+	return array_map('long2ip', range($start, $end));
+}
 function checkIfIPRange($ipAddress)
 {
 	return preg_match('/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}-(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)(?:[.](?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)){3}?$/', $ipAddress);

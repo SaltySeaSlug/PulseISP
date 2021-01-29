@@ -34,17 +34,17 @@
 									<label class='tgl-btn' for='cb_<?=$record['admin_role_id']?>'></label>
 								</td>
 								<td>
-									<div class="pull-right text-right">
+									<div class="btn-group float-right">
 
-									<a href="<?php echo site_url("admin/admin_roles/access/".$record['admin_role_id']); ?>" class="btn-right text-dark pr-1" title="Permissions">
+									<a href="<?php echo site_url("admin/admin_roles/access/".$record['admin_role_id']); ?>" class="btn btn-sm btn-info" title="Permissions">
 										<i class="fad fa-sliders-h"></i>
 									</a>
 
 									<?php if(!in_array($record['admin_role_id'],array(1))): ?>
-										<a href="<?php echo site_url("admin/admin_roles/edit/".$record['admin_role_id']); ?>" class="btn-right text-warning pr-1" title="Edit">
+										<a href="<?php echo site_url("admin/admin_roles/edit/".$record['admin_role_id']); ?>" class="btn btn-sm btn-warning" title="Edit">
 											<i class="fad fa-edit"></i>
 										</a>
-										<a href="<?php echo site_url("admin/admin_roles/delete/".$record['admin_role_id']); ?>" onclick="return confirm('are you sure to delete?')" class="btn-right text-red" title="Delete"><i class="fad fa-trash-alt"></i></a>
+										<a href="<?php echo site_url("admin/admin_roles/delete/".$record['admin_role_id']); ?>" onclick="return confirm('are you sure to delete?')" class="btn btn-sm btn-danger" title="Delete"><i class="fad fa-trash-alt"></i></a>
 									<?php endif;?>
 									</div>
 								</td>

@@ -92,7 +92,7 @@ class Admin extends MY_Controller
 					if($result){
 
 						// Activity Log 
-						$this->activity_model->add_log(4);
+						$this->activity_model->add_to_system_log("Admin has been added successfully");
 
 						$this->session->set_flashdata('success', 'Admin has been added successfully!');
 						redirect(base_url('admin/admin'));
@@ -149,7 +149,7 @@ class Admin extends MY_Controller
 
 				if($result){
 					// Activity Log 
-					$this->activity_model->add_log(5);
+					$this->activity_model->add_to_system_log("Admin has been updated successfully");
 
 					$this->session->set_flashdata('success', 'Admin has been updated successfully!');
 					redirect(base_url('admin/admin'));
@@ -189,7 +189,7 @@ class Admin extends MY_Controller
 		$this->admin->delete($id);
 
 		// Activity Log 
-		$this->activity_model->add_log(6);
+		$this->activity_model->add_to_system_log("Admin has been deleted successfully");
 
 		$this->session->set_flashdata('success','User has been Deleted Successfully.');	
 		redirect('admin/admin');

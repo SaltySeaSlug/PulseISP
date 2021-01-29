@@ -23,6 +23,12 @@
 
                   <?php echo form_open(base_url('admin/ip_pool/add'), 'class="form-horizontal"');  ?>
 					<div class="form-group">
+						<label for="addunaddressableips" class="col-md-12 control-label"><?= trans('unaddressableips') ?></label>
+						<input type="checkbox" class="form-control" id="addunaddressableips" name="addunaddressableips">
+					</div>
+				</div>
+			  </div>
+					<div class="form-group">
 						<label for="poolname" class="col-md-12 control-label"><?= trans('ippool_name') ?></label>
 								<input type="text" class="form-control" id="poolname" name="poolname" required>
 							</div>

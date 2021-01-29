@@ -1,4 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php $gravatar_url = $this->gravatar->get($this->session->userdata('email')); ?>
 
 <!DOCTYPE html>
 <html>
@@ -34,13 +35,18 @@
   <link rel="stylesheet" href="<?= base_url()?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <!-- DropZone -->
   <link rel="stylesheet" href="<?= base_url()?>assets/plugins/dropzone/dropzone.css">
-  
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/toastr/toastr.min.css">
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/select2/select2.css">
+
   <?php if($this->general_settings['use_google_font']) { ?>
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <?php } ?>
   <!-- jQuery -->
   <script src="<?= base_url()?>assets/plugins/jquery/jquery.min.js"></script>
+
+
+
 </head>
 
 <body class="hold-transition layout-fixed <?= (isset($bg_cover)) ? 'bg-cover login-page' : '' ?>">
@@ -203,14 +209,14 @@
       <!-- User Profile Menu -->
       <li class="nav-item dropdown user-menu">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          <img src="<?= base_url()?>assets/dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
+
+			<?php echo '<img src="'.$gravatar_url.'" class="user-image img-circle elevation-2" alt="User Image">'; ?>
           <!--<span class="d-none d-md-inline"><?= ucwords($this->session->userdata('firstname')); ?></span>-->
         </a>
         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
           <!-- User image -->
           <li class="user-header bg-primary">
-            <img src="<?= base_url()?>assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-
+			  <?php echo '<img src="'.$gravatar_url.'" class="user-image img-circle elevation-2" alt="User Image">'; ?>
             <p>
               <?= ucwords($this->session->userdata('fullname')); ?>
               <small><?= trans('member_since') ?> <?= date('M. Y', strtotime($this->session->userdata('created_date'))); ?></small>
@@ -220,7 +226,8 @@
           </li>
           <!-- Menu Footer-->
           <li class="user-footer">
-            <a href="<?= base_url('admin/profile') ?>" class="btn btn-default btn-flat"><?= trans('profile') ?></a>
+			  <a href="<?= base_url('admin/profile') ?>" class="btn btn-default btn-flat"><?= trans('profile') ?></a>
+			  <a href="<?= base_url('admin/auth/lock_screen') ?>" class="btn btn-default btn-flat"><?= trans('lock_screen') ?></a>
             <a href="<?= base_url('admin/auth/logout') ?>" class="btn btn-default btn-flat float-right"><?= trans('logout') ?></a>
           </li>
         </ul>

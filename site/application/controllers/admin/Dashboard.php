@@ -58,12 +58,13 @@ class Dashboard extends My_Controller {
 		$data['statUsageToday']['upload'] = 0;
 		$data['statUsageToday']['download'] = 0;
 
+		//echo json_encode($this->dashboard_model->top('2021-01-01 00:00:00', '2021-01-31 00:00:00', 10));
+
 		$this->load->view('admin/includes/_header', $data);
 
     	$this->load->view('admin/dashboard/general', $data);
 
     	$this->load->view('admin/includes/_footer');
-
 	}
 
 

@@ -282,6 +282,11 @@ listen {
 #  Make *sure* that 'preprocess' comes before any realm if you
 #  need to setup hints for the remote radius server
 authorize {
+    #
+    # Check if the User Calling-Station-Id is the same else reject
+    #
+    if (&request:Calling-Station-Id != &control:Calling-Station-Id) {
+    update reply { Reply-Message := "Incorrect Mac" } reject }
 	#
 	#  Take a User-Name, and perform some checks on it, for spaces and other
 	#  invalid characters.  If the User-Name appears invalid, reject the
@@ -731,7 +736,7 @@ post-auth {
 #	main_pool
     sqlippool
 
-    # Get the pool name for the BNG that's sent the request. Each BNG has their own pool
+    # Get the pool name for the NAS that's sent the request. Each NAS has their own pool
     update control {
         Pool-Name := "%{sql:SELECT pool_name FROM radnas_pool_names WHERE nas_ip_address='%{NAS-IP-Address}'}"
     }
