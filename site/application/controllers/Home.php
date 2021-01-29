@@ -11,9 +11,7 @@ class Home extends CI_Controller {
 		echo $site_lang;
 		echo '<br>';
 		echo 'you will be redirected to :'.$_SERVER['HTTP_REFERER'];
-		$language_data = array(
-			'site_lang' => $site_lang
-		);
+		$language_data = array('site_lang' => $site_lang);
 
 		$this->session->set_userdata($language_data);
 		if ($this->session->userdata('site_lang')) {

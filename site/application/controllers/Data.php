@@ -8,6 +8,7 @@ class Data extends MY_Controller
 
 		parent::__construct();
 		$this->load->model('admin/Setting_model', 'setting_model');
+
 		header('Content-type: application/json');
 
 	}
@@ -21,10 +22,6 @@ class Data extends MY_Controller
 
 
 	//-------------------------------------------------------------------------
-	function generate_numbers($letter, $start, $digits = 5)
-	{
-		return $letter . str_pad($start + 1, $digits, "0", STR_PAD_LEFT);
-	}
 
 	public function generate_account_code()
 	{
@@ -62,7 +59,7 @@ class Data extends MY_Controller
 					$name1 = substr($name, 0, 3);
 
 					$res = preg_replace("/[a-zA-Z]/", "", $name1);
-					$result = $this->generate_numbers(strtoupper($name1), (int)$res);
+					$result = generate_numbers(strtoupper($name1), (int)$res);
 				}
 			}
 
@@ -176,46 +173,6 @@ class Data extends MY_Controller
 
 		echo json_encode($values);
 	}
-	function bytes1($bytes, $force_unit = NULL, $format = NULL, $si = FALSE)
-	{
-		//if ($bytes == 0) return 0;
-		// Format string
-		$format = ($format === NULL) ? '%01.2f %s' : (string) $format;
-
-		// IEC prefixes (binary)
-		if ($si == FALSE OR strpos($force_unit, 'i') !== FALSE)
-		{
-			$units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
-			$mod   = 1024;
-		}
-		// SI prefixes (decimal)
-		else
-		{
-			$units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
-			$mod   = 1000;
-		}
-
-		// Determine unit to use
-		if (($power = array_search((string) $force_unit, $units)) === FALSE)
-		{
-			$power = ($bytes > 0) ? floor(log($bytes, $mod)) : 0;
-		}
-
-		return ($bytes / pow($mod, $power));
-	}
-	function getWeekday($date) {
-		return date('w', strtotime($date));
-	}
-	function getDay($dow_numeric){
-		$dowMap = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-		return $dowMap[$dow_numeric];
-	}
-	function daysBetween($dt1, $dt2) {
-		return date_diff(
-			date_create($dt2),
-			date_create($dt1)
-		)->format('%a');
-	}
 	public function getChartUsageData()
 	{
 		$action = isset($_GET['action']) ? $_GET['action'] : null;
@@ -232,7 +189,7 @@ class Data extends MY_Controller
 				$data = range(0, 23);
 
 				foreach ($today as $row) {
-					$data[$row['hour']] = array("downloaded" => $this->bytes1($row['download'], 'B'), "uploaded" => $this->bytes1($row['upload'], 'B'), "period" => $row['hour']);
+					$data[$row['hour']] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['hour']);
 				}
 
 				$count = 0;
@@ -251,12 +208,12 @@ class Data extends MY_Controller
 
 				$data = range(0, 6);
 				foreach ($thisweek as $row) {
-					$data[$this->getWeekday($row['day'])] = array("downloaded" => $this->bytes1($row['download'], 'B'), "uploaded" => $this->bytes1($row['upload'], 'B'), "period" => $row['day']);
+					$data[getWeekday($row['day'])] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['day']);
 				}
 				$count = 0;
 				foreach (array_keys($data) as $index => $key) {
 					if ($index == $count && is_numeric($data[$key])) {
-						$data[$key] = array("period" => $this->getDay($key));
+						$data[$key] = array("period" => getDay($key));
 					}
 					$count++;
 				}
@@ -269,7 +226,7 @@ class Data extends MY_Controller
 
 				$data = range(1, date('t') + 1);
 				foreach ($thismonth as $row) {
-					$data[$row['day']] = array("downloaded" => $this->bytes1($row['download'], 'B'), "uploaded" => $this->bytes1($row['upload'], 'B'), "period" => $row['day']);
+					$data[$row['day']] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['day']);
 				}
 				$count = 0;
 				foreach (array_keys($data) as $index => $key) {
@@ -322,12 +279,12 @@ class Data extends MY_Controller
 
 				$data = range(0, 6);
 				foreach ($thisweek as $row) {
-					$data[$this->getWeekday($row['day'])] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
+					$data[getWeekday($row['day'])] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
 				}
 				$count = 0;
 				foreach (array_keys($data) as $index => $key) {
 					if ($index == $count && is_numeric($data[$key])) {
-						$data[$key] = array("period" => $this->getDay($key));
+						$data[$key] = array("period" => getDay($key));
 					}
 					$count++;
 				}
