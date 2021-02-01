@@ -210,7 +210,7 @@ echo -e "$COL_YELLOW Web Server Package Installation Tasks $COL_RESET"
 
 ######################################################################################################################## Variables
 ######################################################################################################################## Apache variables
-timeout=30
+timeout=300
 keep_alive=On
 keep_alive_requests=120
 keep_alive_timeout=5
@@ -223,7 +223,7 @@ prefork_max_requests_per_child=1000
 prefork_listen_backlog=$(free -m | grep "Mem:" | awk '{print $2/2/15*2}' | xargs printf "%.0f")
 
 ######################################################################################################################## PHP variables
-max_execution_time=30
+max_execution_time=300
 memory_limit=64M
 error_reporting='E_ALL \& ~E_NOTICE | E_DEPRECATED'
 post_max_size=8M
@@ -506,12 +506,15 @@ cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
 
-cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/database.php
+cp $TEMP_DIR/templates/site/database.php.template $WWW_PATH/application/config/production/database.php
 #cp $TEMP_DIR/templates/site/nas_add.php.template $WWW_PATH/application/views/nas/nas_add.php
 
-sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/database.php
-sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/database.php
-sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/database.php
+sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/production/database.php
+sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/production/database.php
+sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/production/database.php
+
+sed -i "s/\define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');/define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');/g" ${WWW_PATH:?}/index.php
+
 #sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views/nas/nas_add.php
 
 

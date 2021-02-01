@@ -187,3 +187,15 @@ if (!function_exists('iprange2cidr')) {
 		return $result;
 	}
 }
+
+if (!function_exists('os_type'))
+{
+	function os_type() {
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+}
