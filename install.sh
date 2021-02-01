@@ -250,7 +250,7 @@ apt-get install php7.4-fpm -y
 ######################################################################################################################## Copy over templates
 echo -e "$COL_YELLOW Copy over templates $COL_RESET"
 
-mkdir /var/www/pulseisp
+mkdir ${WWW_PATH}
 mkdir -p /var/lib/php/sessions
 chown root:www-data /var/lib/php/sessions
 chmod 770 /var/lib/php/sessions
@@ -686,13 +686,16 @@ sudo composer -n install
 
 
 # Set permissions for path
-chgrp -R $WWW_USR /var/www
-chmod -R g+w /var/www
+chgrp -R $WWW_USR ${WWW_PATH}
+chmod -R g+w ${WWW_PATH}
+chown -R pulseisp:root ${WWW_PATH}
 
 # Set all directories GID
-find /var/www -type d -exec chmod 2775 {} \;
+find ${WWW_PATH} -type d -exec chmod 2775 {} \;
 # Set all files in path and add r/w permissions for owner and group
-find /var/www -type f -exec chmod ug+rw {} \;
+find ${WWW_PATH} -type f -exec chmod ug+rw {} \;
+
+chmod 777 ${WWW_PATH} -R
 
 
 

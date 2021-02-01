@@ -12,6 +12,16 @@
 
 		}
 
+		public function get_all_ippools()
+		{
+			return $this->db->query("SELECT DISTINCT(pool_name), MIN(id) as id FROM radippool GROUP BY pool_name")->result_array();
+		}
+
+		public function link_pool_to_nas($nasId, $poolId) {
+			$query_nas = $this->db->get_where('radnas', ['id' => $nasId]);
+			return $this->db->insert('radnas_pool_names', ['nas_ip_address' => $nasIpAddress, 'pool_nmme' => $poolName]);
+		}
+
 		public function get_ips_by_poolname($poolname) {
 			$this->db->select('framedipaddress');
 			$query = $this->db->get_where('radippool', ['pool_name' => $poolname])->result_array();

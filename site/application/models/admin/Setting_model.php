@@ -1,9 +1,18 @@
 <?php
 class Setting_model extends CI_Model
 {
+	public bool $LINUX_OS;
+
 	public function __construct()
 	{
 		parent::__construct();
+
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			$this->LINUX_OS = false;
+		}
+		else {
+			$this->LINUX_OS = true;
+		}
 	}
 
 	//-----------------------------------------------------
@@ -236,11 +245,11 @@ class Setting_model extends CI_Model
 
 
 	function systemInfo() {
-$win = false;
+
 		$dd=array(
-			'Server Uptime'=> ($win) ? $this->shapeSpace_server_uptime() : '',
+			'Server Uptime'=> ($this->LINUX_OS) ? $this->shapeSpace_server_uptime() : '',
 			'System Time'=> $this->get_datetime(),
-			'Hostname'=> ($win) ? $this->get_hostname() : '',
+			'Hostname'=> ($this->LINUX_OS) ? $this->get_hostname() : '',
 
 			'Server Address'=>$_SERVER['SERVER_ADDR'],
 			'Webserver'=>$_SERVER['SERVER_SOFTWARE'],
@@ -251,14 +260,13 @@ $win = false;
 		return $dd;
 	}
 	function systemLoad() {
-		$win = false;
 
-		$meminfo = ($win) ? $this->get_memory() : array('MemTotal' => 1024, 'MemFree' => 1024);
-		$memused = ($win) ? ($meminfo['MemTotal'] - $meminfo['MemFree']) : 1024;
+		$meminfo = ($this->LINUX_OS) ? $this->get_memory() : array('MemTotal' => 1024, 'MemFree' => 1024);
+		$memused = ($this->LINUX_OS) ? ($meminfo['MemTotal'] - $meminfo['MemFree']) : 1024;
 
 		$dd=array(
-			'System Load'=>($win) ? $this->shapeSpace_system_load() : '',
-			'System Load'=>($win) ?$this->get_system_load():'',
+			'System Load'=>($this->LINUX_OS) ? $this->shapeSpace_system_load() : '',
+			'System Load'=>($this->LINUX_OS) ?$this->get_system_load():'',
 
 			'Memory Total'=>$this->convert_ToMB($meminfo['MemTotal']),
 			'Memory Free'=>$this->convert_ToMB($meminfo['MemFree']),

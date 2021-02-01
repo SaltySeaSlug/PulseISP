@@ -6,8 +6,7 @@
 		}
 
 		public function add_nas($data){
-			$this->db->insert('radnas', $data);
-			return true;
+			return $this->db->insert('radnas', $data);
 		}
 
 		//---------------------------------------------------

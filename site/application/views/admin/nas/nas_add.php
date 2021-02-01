@@ -73,6 +73,18 @@
 					<input type="text" class="form-control" id="nasidentifier" name="nasidentifier" required>
 				</div>
 			</div>
+<!-- DHCP POOL -->
+			<div class="form-group">
+				<label for="ippool" class="col-md-2 control-label">IP Pools</label>
+				<div class="col-md-12">
+					<select class="form-control select2tag" id="ippool" name="ippool">
+						<option value="None">None</option>
+						<?php foreach ($ippools as $pool) { ?>
+							<option value="<?php echo $pool['id']; ?>"><?php echo $pool['pool_name']; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
 
                   <div class="form-group">
                     <div class="col-md-12">

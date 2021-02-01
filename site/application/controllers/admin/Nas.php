@@ -10,6 +10,7 @@ class Nas extends MY_Controller {
 		$this->load->model('admin/Nas_model', 'nas_model');
 		$this->load->model('admin/Activity_model', 'activity_model');
 		$this->load->model('admin/Setting_model', 'setting_model');
+		$this->load->model('admin/Ippool_model', 'ippool_model');
 		$this->load->helper('data_helper');
 	}
 
@@ -81,9 +82,19 @@ class Nas extends MY_Controller {
 					'shortname' => $this->input->post('nasname'),
 					'nasidentifier' => $this->input->post('nasidentifier')
 				);
+
 				$data = $this->security->xss_clean($data);
 				$result = $this->nas_model->add_nas($data);
-				if($result){
+
+				if (empty($this->input->post('ippool')) && $this->input->post('ippool') > 0) {
+					$ippooldata = array(
+						'pool_name' => $this->input->post('ippool')
+					);
+					$ippooldata = $this->security->xss_clean($ippooldata);
+					$this->ippool_model->link_pool_to_nas($result['nasname'], $ippooldata['pool_name']);
+				}
+
+				if($result > 0){
 
 					shell_exec("sudo /etc/init.d/freeradius restart 2>&1");
 
@@ -97,7 +108,7 @@ class Nas extends MY_Controller {
 			}
 		}
 		else{
-
+			$data['ippools'] = $this->ippool_model->get_all_ippools();
 			$this->load->view('admin/includes/_header');
 			$this->load->view('admin/nas/nas_add', $data);
 			$this->load->view('admin/includes/_footer');
