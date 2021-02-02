@@ -183,8 +183,8 @@ class Data extends MY_Controller
 		switch ($period)
 		{
 			case 'T': {
-				$today = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM ppp_accounts_stats WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ASC")->result_array();
-				$todayCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM ppp_accounts_stats WHERE DATE(timestamp) = CURDATE()")->row();
+				$today = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM data_accounts_stats WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ORDER BY HOUR(`timestamp`) ASC")->result_array();
+				$todayCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM data_accounts_stats WHERE DATE(timestamp) = CURDATE()")->row();
 
 				$data = range(0, 23);
 
@@ -203,8 +203,8 @@ class Data extends MY_Controller
 				$json_data = array("count" => array("downloaded" => $todayCount->download ?? 0, "uploaded" => $todayCount->upload ?? 0), "chartdata" => $data);
 			} break;
 			case 'W': {
-				$thisweek = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAYNAME(`timestamp`) as day FROM ppp_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0) GROUP BY DAYNAME(`timestamp`) ORDER BY DAYOFWEEK(day)")->result_array();
-				$thisweekCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM ppp_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0)")->row();
+				$thisweek = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAYNAME(`timestamp`) as day FROM data_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0) GROUP BY DAYNAME(`timestamp`) ORDER BY DAYOFWEEK(day)")->result_array();
+				$thisweekCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM data_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0)")->row();
 
 				$data = range(0, 6);
 				foreach ($thisweek as $row) {
@@ -221,8 +221,8 @@ class Data extends MY_Controller
 				$json_data = array("count" => array("downloaded" => $thisweekCount->download ?? 0, "uploaded" => $thisweekCount->upload ?? 0), "chartdata" => $data);
 			} break;
 			case 'M': {
-				$thismonth = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAY(`timestamp`) as day FROM ppp_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`timestamp`) ASC")->result_array();
-				$thismonthCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM ppp_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE())")->row();
+				$thismonth = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAY(`timestamp`) as day FROM data_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`timestamp`) ORDER BY DAY(`timestamp`) ASC")->result_array();
+				$thismonthCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM data_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE())")->row();
 
 				$data = range(1, date('t') + 1);
 				foreach ($thismonth as $row) {
@@ -274,7 +274,7 @@ class Data extends MY_Controller
 				$json_data = array("count" => array("accepted" => $todayCount->accept, "rejected" => $todayCount->reject), "chartdata" => $data);
 			} break;
 			case 'W': {
-				$thisweek = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM radpostauth WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0) GROUP BY DAYNAME(`authdate`) ORDER BY DAYOFWEEK(day)")->result_array();
+				$thisweek = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM radpostauth WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0) GROUP BY DAYNAME(`authdate`)")->result_array();
 				$thisweekCount = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM radpostauth WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0)")->row();
 
 				$data = range(0, 6);
@@ -292,7 +292,7 @@ class Data extends MY_Controller
 				$json_data = array("count" => array("accepted" => $thisweekCount->accept, "rejected" => $thisweekCount->reject), "chartdata" => $data);
 			} break;
 			case 'M': {
-				$thismonth = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`authdate`) ASC")->result_array();
+				$thismonth = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`authdate`)")->result_array();
 				$thismonthCount = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE())")->row();
 
 				$data = range(1, date('t') + 1);

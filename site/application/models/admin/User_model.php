@@ -43,8 +43,18 @@
 			$this->db->set('is_active', $this->input->post('status'));
 			$this->db->where('id', $this->input->post('id'));
 			$this->db->update('ci_users');
-		} 
+		}
 
+
+
+		function user_id_exists($id) {
+			$query = $this->db->select('id')->from('ci_users')->where('id'. $id)->get();
+			if ($query->num_rows() > 0) { return true;} else { return false; }
+		}
+		function user_accountcode_exists($accountCode) {
+			$query = $this->db->select('account_code')->from('ci_users')->where('account_code'. $accountCode)->get();
+			if ($query->num_rows() > 0) { return true;} else { return false; }
+		}
 	}
 
 ?>

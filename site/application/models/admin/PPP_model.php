@@ -20,7 +20,7 @@ class PPP_model extends CI_Model{
 			'start_date' => $data['start_date']
 			);
 
-		$this->db->insert('ppp_accounts', $cleanData);
+		$this->db->insert('data_accounts', $cleanData);
 		return true;
 	}
 	public function link_ppp_to_user($pppid, $userid)
@@ -31,7 +31,7 @@ class PPP_model extends CI_Model{
 			'start_date' => date('Y-m-d H:i:s'),
 			'is_active' => true,
 		);
-		$this->db->insert('ppp_accounts_users', $data);
+		$this->db->insert('data_accounts_users', $data);
 		return true;
 	}
 

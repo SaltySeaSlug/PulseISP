@@ -7,12 +7,8 @@ class Setting_model extends CI_Model
 	{
 		parent::__construct();
 
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-			$this->LINUX_OS = false;
-		}
-		else {
-			$this->LINUX_OS = true;
-		}
+		//$this->load->helper('custom_helper');
+		$this->LINUX_OS = os_type();
 	}
 
 	//-----------------------------------------------------

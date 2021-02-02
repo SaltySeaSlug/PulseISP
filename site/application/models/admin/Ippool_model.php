@@ -17,9 +17,23 @@
 			return $this->db->query("SELECT DISTINCT(pool_name), MIN(id) as id FROM radippool GROUP BY pool_name")->result_array();
 		}
 
-		public function link_pool_to_nas($nasId, $poolId) {
-			$query_nas = $this->db->get_where('radnas', ['id' => $nasId]);
-			return $this->db->insert('radnas_pool_names', ['nas_ip_address' => $nasIpAddress, 'pool_nmme' => $poolName]);
+		public function link_pool_to_nas($nasId, $poolId)
+		{
+			$nas = $this->db->query("SELECT nasname FROM radnas WHERE id = " . $nasId)->row()->nasname;
+			$pool = $this->db->query("SELECT pool_name FROM radippool WHERE id = " . $poolId)->row()->pool_name;
+			$link = $this->db->query("SELECT * FROM radnas_pool_names WHERE nas_ip_address ='\". $nas . \"'");
+			
+			if ($link->num_rows() > 0) {
+				// IF RECORD EXISTS UPDATE RECORD
+			}
+			else {
+				return $this->db->insert('radnas_pool_names', ['nas_ip_address' => $nas, 'pool_name' => $pool]);
+			}
+		}
+
+		public function unlink_pool_from_nas($nasId, $poolId) {
+			$nas = $this->db->query("SELECT nasname FROM radnas WHERE id = ".$nasId)->row()->nasname;
+			return $this->db->delete('radnas_pool_names', ['nas_ip_address' => $nas]);
 		}
 
 		public function get_ips_by_poolname($poolname) {

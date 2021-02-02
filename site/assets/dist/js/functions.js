@@ -573,7 +573,7 @@ function getChartUsage(period, url, interval){
 	$.ajax({
 		url: url,
 		type : 'GET',
-		data : {'action' : 'getChartUsageData', 'period' : period},
+		data : {'period' : period},
 		dataType : 'json',
 		beforeSend: function() { $("#lUChart").show(); $("#rStats").hide(); },
 		complete: function() { $('#lUChart').hide(); $("#rStats").show();
@@ -730,7 +730,7 @@ function getChartAuth(period, url, interval){
 	$.ajax({
 		url : url,
 		type : 'GET',
-		data : {'action' : 'getChartAuthData', 'period' : period},
+		data : {'period' : period},
 		dataType : 'json',
 		beforeSend: function() { $("#lUAChart").show(); $("#rAStats").hide(); },
 		complete: function() { $('#lUAChart').hide(); $("#rAStats").show(); },

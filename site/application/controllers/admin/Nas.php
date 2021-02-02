@@ -84,22 +84,22 @@ class Nas extends MY_Controller {
 				);
 
 				$data = $this->security->xss_clean($data);
-				$result = $this->nas_model->add_nas($data);
+				$nasId = $this->nas_model->add_nas($data);
 
-				if (empty($this->input->post('ippool')) && $this->input->post('ippool') > 0) {
-					$ippooldata = array(
-						'pool_name' => $this->input->post('ippool')
-					);
+				if (!empty($this->input->post('ippool')) && $this->input->post('ippool') > 0) { $ippooldata = array('pool_name' => $this->input->post('ippool'));
 					$ippooldata = $this->security->xss_clean($ippooldata);
-					$this->ippool_model->link_pool_to_nas($result['nasname'], $ippooldata['pool_name']);
+					$this->ippool_model->link_pool_to_nas($nasId, $ippooldata['pool_name']);
+				} else {
+					$this->ippool_model->unlink_pool_to_nas($nasId);
 				}
 
-				if($result > 0){
+				if($nasId > 0){
 
-					shell_exec("sudo /etc/init.d/freeradius restart 2>&1");
 
 					// Activity Log 
 					$this->activity_model->add_to_system_log("NAS device has been added successfully");
+					$this->activity_model->add_to_system_log("Freeradius restarted " . shell_exec("sudo /etc/init.d/freeradius restart 2>&1"));
+
 
 					//$this->session->set_flashdata('success', shell_exec("sudo /etc/init.d/freeradius restart"));
 					$this->session->set_flashdata('success', 'Nas Device has been added successfully!');
