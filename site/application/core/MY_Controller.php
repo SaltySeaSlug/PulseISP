@@ -7,7 +7,6 @@
 			parent::__construct();
 			$CI = & get_instance();
 			//$this->output->enable_profiler(TRUE);
-			$config['enable_develbar'] = FALSE;
 
 			$this->load->model('admin/setting_model', 'setting_model');
 			$this->load->library('gravatar');
