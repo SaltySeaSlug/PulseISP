@@ -29,13 +29,13 @@ class Profiles_components_model extends CI_Model{
 		$this->db->select('
 	    		ci_profile_components.id,
 				ci_profile_components.name,
-				radgroupreply.id as radgroupid,
-				radgroupreply.groupname as groupname,
-				radgroupreply.attribute as attribute,
-				radgroupreply.op as op,
-				radgroupreply.value as value
+				'.$this->config->item('CONFIG_DB_TBL_RADGROUPREPLY').'.id as radgroupid,
+				'.$this->config->item('CONFIG_DB_TBL_RADGROUPREPLY').'.groupname as groupname,
+				'.$this->config->item('CONFIG_DB_TBL_RADGROUPREPLY').'.attribute as attribute,
+				'.$this->config->item('CONFIG_DB_TBL_RADGROUPREPLY').'.op as op,
+				'.$this->config->item('CONFIG_DB_TBL_RADGROUPREPLY').'.value as value
 	    	');
-		$this->db->join('radgroupreply','radgroupreply.groupname = ci_profile_components.name','left');
+		$this->db->join($this->config->item('CONFIG_DB_TBL_RADGROUPREPLY'),''.$this->config->item('CONFIG_DB_TBL_RADGROUPREPLY').'.groupname = ci_profile_components.name','left');
 		return $this->db->get('ci_profile_components')->result_array();
 	}
 
@@ -57,14 +57,18 @@ class Profiles_components_model extends CI_Model{
 	public function link_dictionaryitem_to_profile_component($dictionaryitem, $target = "Reply")
 	{
 		if ($target == "Reply") {
-			$this->db->insert("radgroupreply", $dictionaryitem);
+			$this->db->insert($this->config->item('CONFIG_DB_TBL_RADGROUPREPLY'), $dictionaryitem);
 		} else {
 			$this->db->insert("radgroupcheck", $dictionaryitem);
 		}
 	}
 
 	public function get_all_vendors() {
-		return $this->db->query('SELECT DISTINCT vendor FROM raddictionary ORDER BY vendor ASC;')->result_array();
+		$this->db->distinct();
+		$this->db->select('vendor');
+		$this->db->order_by('vendor', 'ASC');
+		$this->db->from($this->config->item('CONFIG_DB_TBL_RADDICTIONARY'));
+		return $this->db->get()->result_array();
 	}
 }
 

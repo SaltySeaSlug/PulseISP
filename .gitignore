@@ -104,3 +104,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 /site_rev/
 /site/install/
+/site/application/config/production/

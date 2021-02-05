@@ -2,31 +2,61 @@
 
 class Data extends MY_Controller
 {
-
 	public function __construct()
 	{
+		header('Content-type: application/json');
 
 		parent::__construct();
+		auth_check(); // check login auth
+		$this->rbac->check_module_access();
+
 		$this->load->model('admin/Setting_model', 'setting_model');
-
-		header('Content-type: application/json');
-
 	}
 
 	//-------------------------------------------------------------------------
-
-	public function index()
-	{
-		echo 'Hello World!';
-	}
-
-
+	public function index()	{ }
 	//-------------------------------------------------------------------------
 
-	public function generate_account_code()
-	{
-		header('Content-type: application/json');
 
+	// Check if username exists
+	public function check_portal_username() {
+		$username = isset($_GET['un']) ? $_GET['un'] : null;
+		if (empty($username)) return false;
+
+		if ($this->db->where(['username' => $username])->from("ci_users")->count_all_results() == 0) {
+			echo json_encode(false);
+		} else {
+			echo json_encode(true);
+		}
+	}
+	public function check_admin_username() {
+		$username = isset($_GET['un']) ? $_GET['un'] : null;
+		if (empty($username)) return false;
+
+		if ($this->db->where(['username' => $username])->from("ci_admin")->count_all_results() == 0) {
+			echo json_encode(false);
+		} else {
+			echo json_encode(true);
+		}
+	}
+	public function check_data_account_username($username = null) {
+		$un = isset($_GET['un']) ? $_GET['un'] : null;
+
+		if (!empty($username)) {
+			$un = $username;
+		}
+
+		if (empty($un)) echo false;
+
+		if ($this->db->where(['username' => $un])->from("data_accounts")->count_all_results() == 0) {
+			echo false;
+		} else {
+			echo true;
+		}
+	}
+
+	// Generate
+	public function generate_user_account_code() {
 		$result = '';
 		$maxid = 0;
 		$accountCode = isset($_GET['ac']) ? $_GET['ac'] : null;
@@ -35,7 +65,6 @@ class Data extends MY_Controller
 
 
 		if (!empty($accountCode) || !empty($name)) {
-			//$accountCode = $_GET['ac'];
 			$CI =& get_instance();
 
 			if (!empty($accountCode)) {
@@ -71,34 +100,7 @@ class Data extends MY_Controller
 		$response_array['result'] = $result;
 		echo json_encode($response_array);
 	}
-
-
-	public function generate_username($firstname, $lastname, $realm, $count = 1)
-	{
-		$name = substr($firstname, 0, $count);
-		$surname = $lastname;
-		$username = $surname . '.' . $name . '@' . $realm;
-
-		if ($this->check_if_username_exists($username)) {
-			return $this->generate_username($firstname, $lastname, $realm, rand($count, 10));
-		} else {
-			return $username;
-
-		}
-	}
-
-	public function check_if_username_exists($username)
-	{
-		if ($this->db->where(['username' => $username])->from("ci_users")->count_all_results() == 0) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	public function generate_ppp_username()
-	{
-		header('Content-type: application/json');
+	public function generate_data_account_username() {
 		$result = '';
 		$name = isset($_GET['firstname']) ? $_GET['firstname'] : null;
 		$surname = isset($_GET['lastname']) ? $_GET['lastname'] : null;
@@ -117,19 +119,39 @@ class Data extends MY_Controller
 		$response_array['result'] = $result;
 		echo json_encode($response_array);
 	}
+	private function generate_username($firstname, $lastname, $realm, $count = 1) {
+		$name = substr($firstname, 0, $count);
+		$surname = $lastname;
+		$username = $surname . '.' . $name . (!empty($realm) ? '@' . $realm : '');
 
-	public function check_username()
-	{
-		header('Content-type: application/json');
-
-		$username = isset($_GET['username']) ? $_GET['username'] : null;
-
-		if ($this->db->where(['username' => $username])->from("ci_users")->count_all_results() == 0) {
-			echo json_encode(false);
+		if ($this->check_data_account_username($username)) {
+			return $this->generate_username($firstname, $lastname, $realm, rand($count, str_word_count($name)));
 		} else {
-			echo json_encode(true);
+			return $username;
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public function get_vendor_attributes()
 	{
@@ -149,7 +171,6 @@ class Data extends MY_Controller
 
 		echo json_encode($attributes);
 	}
-
 	public function get_attribute_defaults(){
 		header('Content-type: application/json');
 		$attributeid = isset($_GET['attribute']) ? $_GET['attribute'] : null;
@@ -243,7 +264,6 @@ class Data extends MY_Controller
 
 		echo json_encode($json_data);
 	}
-
 	public function getChartAuthData()
 	{
 		$action = isset($_GET['action']) ? $_GET['action'] : null;
@@ -314,7 +334,6 @@ class Data extends MY_Controller
 
 		echo json_encode($json_data);
 	}
-
 }
 
 

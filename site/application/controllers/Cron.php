@@ -12,6 +12,9 @@ class Cron extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		//auth_check(); // check login auth
+		//$this->rbac->check_module_access();
+
 		//$this->load->library('input');
 		$this->load->model('Cron_model', 'cron_model');
 	}

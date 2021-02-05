@@ -58,22 +58,12 @@ $(document).ready(function(){
 							</div>
 						</div>
 					</div>
+					<?php if(isset($dir)&&!empty($dir)){
+						$this->load->view('language/dir_list_view');
+					} ?>
+				</div>
 
-					<div class="card">
-						<div class="card-header">
-							<h5 class="card-title mt-1"><i class="fa fa-th mr-1"></i>Blank Card _ Files</h5>
-							<div class="card-tools">
-								<button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse" title="Collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-							</div>
-						</div>
-						<div class="card-body">
-
-							<?php if(isset($dir)&&!empty($dir)){
-								$this->load->view('language/dir_list_view');
-							} ?>
-
+				<div class="col-lg-4 connectedSortable">
 
 							<?php if(isset($files)&&!empty($files)){ ?>
 								<div class="card">
@@ -102,8 +92,6 @@ $(document).ready(function(){
 								<div class="card files"><?php echo $this->lang->line('language_no_files');?></div>
 							<?php } ?>
 
-						</div>
-					</div>
 				</div>
 			</div>
 

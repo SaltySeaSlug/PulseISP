@@ -17,7 +17,8 @@ class Nas extends MY_Controller {
 	//-----------------------------------------------------------
 	public function index(){
 
-		$this->load->view('admin/includes/_header');
+		$data['title'] = "Nas Devices";
+		$this->load->view('admin/includes/_header', $data);
 		$this->load->view('admin/nas/nas_list');
 		$this->load->view('admin/includes/_footer');
 	}

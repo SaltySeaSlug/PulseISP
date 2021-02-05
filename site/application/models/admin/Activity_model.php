@@ -38,14 +38,17 @@ class Activity_model extends CI_Model{
 	public function add_to_system_log($message, $activity = 4){
 		$data = array(
 			'activity_id' => $activity,
-			'user_id' => ($this->session->userdata('user_id') != '') ? $this->session->userdata('user_id') : 0,
-			'admin_id' => ($this->session->userdata('admin_id') != '') ? $this->session->userdata('admin_id') : 0,
+			'user_id' => ($this->session->userdata('user_id') != '') ? $this->session->userdata('user_id') : null,
+			'admin_id' => ($this->session->userdata('admin_id') != '') ? $this->session->userdata('admin_id') : null,
 			'description' => json_encode($message),
 			'ip_address' => getRealIpAddr(),
 			'created_at' => date('Y-m-d H:i:s')
 		);
 		$this->db->insert('ci_activity_log',$data);
 		return true;
+	}
+	public function get_audit_trail(){
+		return $this->db->get('ci_audit_trails')->result_array();
 	}
 
 	

@@ -12,6 +12,7 @@ class Users extends MY_Controller {
 		$this->load->model('admin/Setting_model', 'setting_model');
 		$this->load->model('admin/PPP_model', 'ppp_model');
 		$this->load->model('admin/Profiles_components_model', 'profiles_components_model');
+		$this->load->model('admin/Ippool_model', 'ippool_model');
 	}
 
 	//-----------------------------------------------------------
@@ -64,9 +65,7 @@ class Users extends MY_Controller {
 
 	public function add(){
 		
-		$this->rbac->check_operation_access(); // check opration permission
-
-		$data['general_settings'] = $this->setting_model->get_general_settings();
+		$this->rbac->check_operation_access(); // check operation permission
 
 		if($this->input->post('submit')){
 			$this->form_validation->set_rules('username', 'Username', 'trim|required');
@@ -84,34 +83,97 @@ class Users extends MY_Controller {
 				redirect(base_url('admin/users/add'),'refresh');
 			}
 			else{
-				$data = array(
+
+				$userData = array(
+					'id_number' => $this->input->post('profile-input-id-number'),
 					'firstname' => $this->input->post('firstname'),
 					'lastname' => $this->input->post('lastname'),
 					'email' => $this->input->post('email'),
 					'mobile_no' => $this->input->post('mobile_no'),
 					'physical_address' => $this->input->post('physical_address'),
-					'postal_address' => $this->input->post('postal_address'),
 					'gps_coordinates' => $this->input->post('gps_coordinates'),
 					'account_code' => $this->input->post('profile-input-account-code'),
-					'created_at' => date('Y-m-d : h:m:s'),
-					//'updated_at' => date('Y-m-d : h:m:s'),
+					'created_at' => date('Y-m-d : h:m:s')
 				);
-				$data_ppp = array(
+				$accountData = array(
 					'username' => $this->input->post('username'),
-					'password' =>  $this->input->post('password'),
-					'passwordtype' => $this->input->post('passwordtype'),
-					'profileid' => $this->input->post('profileid'),
-					'ipaddresstype' => $this->input->post('ipaddresstype'),
-					'dhcppool' => $this->input->post('dhcppool'),
-					'staticip' => $this->input->post('staticip'),
-					'start_date' => date('Y-m-d H:i:s')
+					'password' => $this->input->post('password'),
+				);
+				$radReplyData = array(
+
+				);
+				$radCheckData = array(
+					'username' => $this->input->post('username'),
+					'attribute' => 'Cleartext-Password',
+					'value' => $this->input->post('password'),
+					'op' => ':='
+					//'passwordtype' => $this->input->post('passwordtype')
 				);
 
-				$data = $this->security->xss_clean($data);
-				$userid = $this->user_model->add_user_return_id($data);
-				$pppid = $this->ppp_model->add_ppp_account_return_id($userid, $data_ppp);
+				if ($this->input->post('summary-input-type') == 1) {
+					$userData[] = array(
+						'company-name' => $this->input->post('company-name'),
+						'company-registration' => $this->input->post('company-registration'),
+						'company-vat-number' => $this->input->post('company-vat-number')
+					);
+				}
+				else {}
 
-				if($pppid > 0) {
+				if ($this->input->post('cb_data_account') == true) {
+					if ($this->input->post('profileid') != -1) {
+						$accountData[] = array(
+							'profileid' => $this->input->post('profileid')
+						);
+					}
+					else {}
+
+					if ($this->input->post('ipaddresstype') == 'static') {
+						$accountData[] = array(
+							'staticip' => $this->input->post('staticip')
+						);
+						$radReplyData[] = array(
+							'username' => $this->input->post('username'),
+							'attribute' => 'Framed-IP-Address',
+							'value' => $this->input->post('staticip'),
+							'op' => ':='
+						);
+					}
+					else {$radReplyData[] = array(
+						'username' => $this->input->post('username'),
+						'attribute' => 'Pool-Name',
+						'value' => 'GET_FIRST_AVAILABLE_POOL_NAME',
+						'op' => ':='
+					);}
+				}
+				else {}
+
+				// Bool (allow portal login) *pending
+				// Data Portal (username) *pending
+				// Data portal (password) *pending
+
+
+
+				$userData = $this->security->xss_clean($userData);
+				$accountData = $this->security->xss_clean($accountData);
+				$radReplyData = $this->security->xss_clean($radReplyData);
+				$radCheckData = $this->security->xss_clean($radCheckData);
+
+				// Add User and return ID (ci_users)
+				$userId = $this->user_model->add_user1($userData, true);
+				// Add Data Account and return ID (data_accounts)
+				$dataAccountId = $this->ppp_model->add_data_account($accountData, true);
+				// Link Data Account to User (link_users_data_accounts)
+				$this->ppp_model->link_data_account_to_user($userId, $dataAccountId);
+				//(radcheck)(radreply)
+				$this->ppp_model->add_attributes_to_radreply($radReplyData);
+				$this->ppp_model->add_attributes_to_radcheck($radCheckData);
+
+
+
+				//$userid = $this->user_model->add_user_return_id($data);
+				//$pppid = $this->ppp_model->add_ppp_account_return_id($userid, $data_ppp);
+
+				/*if($pppid > 0) {
 					// Activity Log
 					$this->activity_model->add_to_log(1, "PPP has been added successfully");
 					$this->session->set_flashdata('success', 'PPP has been added successfully!');
@@ -122,11 +184,14 @@ class Users extends MY_Controller {
 
 					$this->session->set_flashdata('success', 'User has been added successfully!');
 					redirect(base_url('admin/users'));
-				}
+				}*/
 			}
 		}
 		else{
+			$data['general_settings'] = $this->setting_model->get_general_settings();
+
 			$data['profiles'] = $this->profiles_components_model->get_all_profiles();
+			$data['ipAddresses'] = $this->ippool_model->get_all_unallocated_ips();
 			$this->load->view('admin/includes/_header');
 			$this->load->view('admin/users/user_add', $data);
 			$this->load->view('admin/includes/_footer');

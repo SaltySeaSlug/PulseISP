@@ -4,48 +4,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>
-    <?= isset($title)? strip_tags($title).' - ' : 'Title -' ?> <?= strip_tags($this->general_settings['application_name']); ?>
-  </title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Custom Favicon -->
-  <?= isset($this->general_settings['favicon']) ? '<link href="' . base_url().$this->general_settings['favicon'] . '" rel="icon" type="image/x-icon" />' : '' ?>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/fontawesome-5/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/ionicons/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/dist/css/adminlte.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/iCheck/flat/blue.css">
-  <!-- Morris chart -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/morris/morris.css">
-  <!-- jvectormap -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
-  <!-- Date Picker -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/datepicker/datepicker3.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/daterangepicker/daterangepicker-bs3.css">
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-  <!-- DropZone -->
-  <link rel="stylesheet" href="<?= base_url()?>assets/plugins/dropzone/dropzone.css">
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="PulseISP">
+	<meta name="keywords" content="pulseisp,radius,freeradius,pppoe">
+	<meta name="author" content="Unitech Solutions TTL (PTY) LTD">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title><?= strip_tags($this->general_settings['application_name']); ?><?= isset($title)? ' | '.strip_tags($title) : '' ?></title>
+
+	<!-- Custom Favicon -->
+	<?= isset($this->general_settings['favicon']) ? '<link href="' . base_url().$this->general_settings['favicon'] . '" rel="icon" type="image/x-icon" />' : '' ?>
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/fontawesome-5/css/all.min.css">
+	<!-- Ionicons -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/ionicons/ionicons.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/dist/css/adminlte.css">
+	<!-- overlayScrollbars -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+	<!-- iCheck -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/iCheck/flat/blue.css">
+	<!-- Morris chart -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/morris/morris.css">
+	<!-- jvectormap -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+	<!-- Date Picker -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/datepicker/datepicker3.css">
+	<!-- Daterange picker -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/daterangepicker/daterangepicker-bs3.css">
+	<!-- bootstrap wysihtml5 - text editor -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+	<!-- DropZone -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/dropzone/dropzone.css">
 	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/toastr/toastr.min.css">
 	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/select2/select2.css">
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css">
+	<!-- jQuery -->
+	<script src="<?= base_url()?>assets/plugins/jquery/jquery.min.js"></script>
 
-  <?php if($this->general_settings['use_google_font']) { ?>
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <?php } ?>
-  <!-- jQuery -->
-  <script src="<?= base_url()?>assets/plugins/jquery/jquery.min.js"></script>
-
-
+	<?php if($this->general_settings['use_google_font']) { ?>
+		<!-- Google Font: Source Sans Pro -->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+	<?php } ?>
 
 </head>
 
@@ -59,7 +60,7 @@
   
   <?php if(!isset($navbar)): ?>
 
-  <nav class="main-header navbar navbar-expand bg-white navbar-light navbar-white border-bottom">
+  <nav class="main-header navbar navbar-expand border-bottom navbar-dark">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">

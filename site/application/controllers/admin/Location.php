@@ -5,6 +5,9 @@ class Location extends MY_Controller
 	function __construct()
 	{
 		parent ::__construct();
+		auth_check(); // check login auth
+		$this->rbac->check_module_access();
+
 		$this->load->library('datatable'); // loaded my custom serverside datatable library
 		$this->load->model('admin/location_model', 'location_model');
 	}

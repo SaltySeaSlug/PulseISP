@@ -226,6 +226,7 @@
   var $text_sm_brand_container = $('<div />', { class: 'mb-1' }).append($text_sm_brand_checkbox).append('<span>Brand small text</span>')
   $container.append($text_sm_brand_container)
 
+
   var $dark_mode_checkbox = $('<input />', {
     type: 'checkbox',
     value: 1,
@@ -233,10 +234,17 @@
     class: 'mr-1'
   }).on('click', function () {
     if ($(this).is(':checked')) {
-      $('body').addClass('dark-mode')
+    	$('body').addClass('dark-mode')
+		//$('.main-header').addClass('navbar-dark')
+		$('.main-sidebar').addClass('sidebar-dark-orange')
     } else {
-      $('body').removeClass('dark-mode')
-    }
+		$('body').removeClass('dark-mode')
+		$('.main-header').removeClass('navbar-dark').removeClass('navbar-light')
+
+		sidebar_skins.forEach(function (skin) {
+			$('.main-sidebar').removeClass(skin)
+		})
+	}
   })
   var $dark_mode_container = $('<div />', { class: 'mb-4' }).append($dark_mode_checkbox).append('<span>Dark Mode</span>')
   $container.append($dark_mode_container)

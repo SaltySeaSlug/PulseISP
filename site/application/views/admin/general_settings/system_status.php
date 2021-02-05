@@ -2,6 +2,37 @@
 <div class="content-wrapper">
 	<!-- Main content -->
 	<section class="content">
+		<!--<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6"><h1>Server Performance</h1></div>
+				</div>
+			</div>
+		</section>
+		<br>
+		<div class="row">
+			<table class="table table-condensed table-sm">
+				<tbody>
+					<tr>
+						<th>Ram Allocated</th>
+						<td>61.5%</td>
+						<th>Disk Usage</th>
+						<td>14.8%</td>
+						<th>System Load</th>
+						<td>3.56</td>
+						<th>Open File Limit</th>
+						<td>1048576</td>
+						<th>Open Files</th>
+						<td>22</td>
+						<th>Open Tables</th>
+						<td>4000</td>
+						<th>Threads Connected</th>
+						<td>100</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>-->
+
 		<div class="card card-primary card-outline color-palette-bo">
 			<div class="card-header">
 				<div class="d-inline-block">
@@ -23,8 +54,7 @@
 					</table>
 			</div>
 		</div>
-
-			<div class="card card-primary card-outline color-palette-bo">
+		<div class="card card-primary card-outline color-palette-bo">
 				<div class="card-header">
 					<div class="d-inline-block">
 						<h3 class="card-title mt-2"> <i class="fad fa-tasks mr-2"></i> System Information </h3>
@@ -45,7 +75,6 @@
 					</table>
 				</div>
 			</div>
-
 		<div class="card card-primary card-outline color-palette-bo">
 			<div class="card-header">
 				<div class="d-inline-block">
@@ -80,5 +109,6 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
 	</section>
 </div>

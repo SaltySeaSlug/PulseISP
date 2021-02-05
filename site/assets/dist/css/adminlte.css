@@ -11569,6 +11569,8 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
   color: #fff;
 }
 
+
+
 .dark-mode .breadcrumb-item.active,
 .dark-mode .breadcrumb-item + .breadcrumb-item::before {
   color: #adb5bd;
@@ -16935,8 +16937,21 @@ body.text-sm .input-group-text {
   color: #fff;
 }
 
+.dark-mode a {
+	color: #fd7e14;
+}
+
+.dark-mode .btn-navbar {
+	background-color: #fd7e14;
+}
+
+.dark-mode .form-control {
+	/*color: #fd7e14;*/
+	border: 1px solid #fd7e14;
+}
+
 .dark-mode .form-control:not(.form-control-navbar):not(.is-invalid):not(:focus) {
-  border-color: #6c757d;
+  border-color: #fd7e14;
 }
 
 .dark-mode select {
@@ -29641,7 +29656,7 @@ blockquote.quote-gray-dark h6 {
 }
 
 .dark-mode a:not(.btn):hover {
-  color: #3395ff;
+  color: #b95334;
 }
 
 .dark-mode .attachment-block {

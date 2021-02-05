@@ -7,6 +7,7 @@ class Extras extends MY_Controller {
 
 		parent::__construct();
 		auth_check(); // check login auth
+		$this->rbac->check_module_access();
 	}
 
 	//---------------------------------------------------------------

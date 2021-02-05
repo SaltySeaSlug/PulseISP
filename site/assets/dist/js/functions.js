@@ -967,7 +967,7 @@ function geocodePlaceId(geocoder, map, infowindow) {
 }
 
 
-function initAutocomplete() {
+function initAutocomplete_() {
 	var placeSearch, autocomplete;
 
 	// Create the autocomplete object, restricting the search predictions to
@@ -983,15 +983,15 @@ function initAutocomplete() {
 	// address fields in the form.
 	autocomplete.addListener('place_changed', fillInAddress);
 }
-function fillInAddress() {
-	var componentForm = {
+function fillInAddress_() {
+	/*var componentForm = {
 		street_number: 'short_name',
 		route: 'long_name',
 		locality: 'long_name',
 		administrative_area_level_1: 'short_name',
 		country: 'long_name',
 		postal_code: 'short_name'
-	};
+	};*/
 
 	// Get the place details from the autocomplete object.
 	var place = autocomplete.getPlace();
@@ -1011,7 +1011,7 @@ function fillInAddress() {
 		}
 	}
 }
-function geolocate() {
+function geolocate_() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			var geolocation = {
@@ -1025,7 +1025,7 @@ function geolocate() {
 	}
 }
 
-function initMap1() {
+function initMap111() {
 	var map = new google.maps.Map(document.getElementById('map'), {
 		center: {lat: -33.8688, lng: 151.2195},
 		zoom: 13
@@ -1253,7 +1253,7 @@ function drawMarkerGoogleMap(map, gps) {
 	gmarker.setMap(gmap);
 }
 
-function initMap() {
+function initMap11() {
 	var map = new google.maps.Map(document.getElementById('google-map'), {
 		zoom: 3,
 		center: {lat: 0, lng: -180},
@@ -1275,6 +1275,35 @@ function initMap() {
 	flightPath.setMap(map);
 }
 
+
+var map;
+var service;
+var infowindow;
+
+function initMap() {
+	var sydney = new google.maps.LatLng(-33.867, 151.195);
+
+	infowindow = new google.maps.InfoWindow();
+
+	map = new google.maps.Map(
+		document.getElementById('google-map'), {center: sydney, zoom: 15});
+
+	var request = {
+		query: 'Museum of Contemporary Art Australia',
+		fields: ['name', 'geometry'],
+	};
+
+	var service = new google.maps.places.PlacesService(map);
+
+	service.findPlaceFromQuery(request, function(results, status) {
+		if (status === google.maps.places.PlacesServiceStatus.OK) {
+			for (var i = 0; i < results.length; i++) {
+				//createMarker(results[i]);
+			}
+			map.setCenter(results[0].geometry.location);
+		}
+	});
+}
 
 
 
@@ -1344,49 +1373,72 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 
 	if (options != null && options.input !== undefined) {
 
-		let input = document.getElementById(options.input);
-		let autocomplete = new google.maps.places.Autocomplete(input);
+		try {
+			let input = document.getElementById(options.input);
+			let autocomplete = new google.maps.places.Autocomplete(input);
 
-		autocomplete.setTypes([]);
-		autocomplete.bindTo('bounds', contact_map);
-		autocomplete.setOptions({strictBounds: true});
-		if (options.country !== undefined) {
-			//if (debug) console.log('Setting Restrictions ' + map + ' output.country ' + options.country);
+			autocomplete.setTypes([]);
+			autocomplete.bindTo('bounds', contact_map);
+			autocomplete.setOptions({strictBounds: true});
+			if (options.country !== undefined) {
+				//if (debug) console.log('Setting Restrictions ' + map + ' output.country ' + options.country);
 
-			autocomplete.setComponentRestrictions({'country': options.country});
+				autocomplete.setComponentRestrictions({'country': options.country});
+			}
+			autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
+			autocomplete.addListener('place_changed', function () {
+				//if (debug) console.log('Listener Place Changed ' + map);
+
+				let place = autocomplete.getPlace();
+
+				if (!place.geometry) return;
+
+				if (place.geometry.viewport) {
+					//if (debug) console.log('Listener Place Changed ' + map + ' viewport ' + place.geometry.viewport);
+
+					contact_map.fitBounds(place.geometry.viewport);
+					contact_marker.setPosition(place.geometry.location);
+					document.getElementById(options.output).value = place.geometry.location.toString().substring(1, place.geometry.location.toString().length - 1);
+
+				} else {
+					//if (debug) console.log('Listener Place Changed ' + map + ' location ' + place.geometry.location);
+
+					contact_marker.setPosition(place.geometry.location);
+					contact_map.setCenter(place.geometry.location);
+					contact_map.setZoom(zoom);
+					document.getElementById(options.output).value = place.geometry.location.toString().substring(1, place.geometry.location.toString().length - 1);
+
+				}
+
+				if (options.output !== undefined) {
+					//document.getElementById(options.output).value = contact_marker.getPosition();
+					//if (debug) console.log('Listener Place Changed ' + map + ' output.value ' + document.getElementById(options.output).value);
+				}
+
+				//contact_marker.setPosition(place.geometry.location);
+
+				// Get the place details from the autocomplete object.
+
+				for (const component in componentForm) {
+					console.log(component);
+					document.getElementById(component).value = "";
+					document.getElementById(component).disabled = false;
+				}
+
+				// Get each component of the address from the place details,
+				// and then fill-in the corresponding field on the form.
+				for (const component of place.address_components) {
+					const addressType = component.types[0];
+
+					if (componentForm[addressType]) {
+						const val = component[componentForm[addressType]];
+						document.getElementById(addressType).value = val;
+					}
+				}
+			});
+		} catch (e) {
+			
 		}
-		autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
-		autocomplete.addListener('place_changed', function () {
-			//if (debug) console.log('Listener Place Changed ' + map);
-
-			let place = autocomplete.getPlace();
-
-			if (!place.geometry) return;
-
-			if (place.geometry.viewport) {
-				//if (debug) console.log('Listener Place Changed ' + map + ' viewport ' + place.geometry.viewport);
-
-				contact_map.fitBounds(place.geometry.viewport);
-				contact_marker.setPosition(place.geometry.location);
-				document.getElementById(options.output).value = place.geometry.location;
-
-			} else {
-				//if (debug) console.log('Listener Place Changed ' + map + ' location ' + place.geometry.location);
-
-				contact_marker.setPosition(place.geometry.location);
-				contact_map.setCenter(place.geometry.location);
-				contact_map.setZoom(zoom);
-				document.getElementById(options.output).value = place.geometry.location;
-
-			}
-
-			if (options.output !== undefined) {
-				//document.getElementById(options.output).value = contact_marker.getPosition();
-				//if (debug) console.log('Listener Place Changed ' + map + ' output.value ' + document.getElementById(options.output).value);
-			}
-
-			//contact_marker.setPosition(place.geometry.location);
-		});
 	}
 	if (options != null && options.location !== undefined) {
 
@@ -1477,3 +1529,63 @@ function IsValidEmail(input) {
 	alert("You have entered an invalid email address!")
 	return false
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function generatePassword(passwordLength) {
+	var numberChars = "0123456789";
+	var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var lowerChars = "abcdefghijklmnopqrstuvwxyz";
+	var allChars = numberChars + upperChars + lowerChars;
+	var randPasswordArray = Array(passwordLength);
+	randPasswordArray[0] = numberChars;
+	randPasswordArray[1] = upperChars;
+	randPasswordArray[2] = lowerChars;
+	randPasswordArray = randPasswordArray.fill(allChars, 3);
+	return shuffleArray(randPasswordArray.map(function(x) { return x[Math.floor(Math.random() * x.length)] })).join('');
+}
+
+function shuffleArray(array) {
+	for (var i = array.length - 1; i > 0; i--) {
+		var j = Math.floor(Math.random() * (i + 1));
+		var temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
+	}
+	return array;
+}
+

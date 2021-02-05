@@ -9,13 +9,13 @@ class General_settings extends MY_Controller {
 		$this->rbac->check_module_access();
 		
 		$this->load->model('admin/setting_model', 'setting_model');
+		$this->load->model('admin/Activity_model', 'activity_model');
 	}
 
 	//-------------------------------------------------------------------------
 	// General Setting View
 	public function index()
 	{
-		
 		$data['general_settings'] = $this->setting_model->get_general_settings();
 		$data['languages'] = $this->setting_model->get_all_languages();
 
@@ -60,7 +60,8 @@ class General_settings extends MY_Controller {
 			'created_date' => date('Y-m-d : h:m:s'),
 			'updated_date' => date('Y-m-d : h:m:s'),
 			'use_google_font' => $this->input->post('use_google_font'),
-			'google_api' => $this->input->post('google_api'),
+			'google_api_key' => $this->input->post('google_maps_api'),
+			'google_places_is_active' => $this->input->post('cb_google_places_status') ? true : false,
 			'radius_secret' => $this->input->post('radius_secret'),
 			'realm_suffix' => $this->input->post('realm_suffix')
 		);

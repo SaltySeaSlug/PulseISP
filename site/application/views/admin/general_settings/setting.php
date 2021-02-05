@@ -34,6 +34,10 @@
 					<li class="nav-item">
 						<a class="nav-link" id="pills-radius-tab" data-toggle="pill" href="#radius" role="tab" aria-controls="company" aria-selected="false">Radius Settings</a>
 					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" id="pills-application-tab" data-toggle="pill" href="#application" role="tab" aria-controls="application" aria-selected="false">Application Settings</a>
+					</li>
                 </ul>
 
                  <!-- Tab panes -->
@@ -41,28 +45,7 @@
 
                     <!-- General Setting -->
                     <div role="tabpanel" class="tab-pane active" id="main">
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('favicon') ?> (25*25)</label><br/>
-                            <?php if(!empty($general_settings['favicon'])): ?>
-                               <p><img src="<?= base_url($general_settings['favicon']); ?>" class="favicon"></p>
-                           <?php endif; ?>
-                           <input type="file" name="favicon" accept=".png, .jpg, .jpeg, .gif, .svg">
-                           <p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small></p>
-                           <input type="hidden" name="old_favicon" value="<?php echo html_escape($general_settings['favicon']); ?>">
-                       </div>
-                       <div class="form-group">
-                           <label class="control-label"><?= trans('logo') ?></label><br/>
-                           <?php if(!empty($general_settings['logo'])): ?>
-                               <p><img src="<?= base_url($general_settings['logo']); ?>" class="logo" width="150"></p>
-                           <?php endif; ?>
-                           <input type="file" name="logo" accept=".png, .jpg, .jpeg, .gif, .svg">
-                           <p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small></p>
-                           <input type="hidden" name="old_logo" value="<?php echo html_escape($general_settings['logo']); ?>">
-                       </div>
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('application_name') ?></label>
-                            <input type="text" class="form-control" name="application_name" placeholder="application name" value="<?php echo html_escape($general_settings['application_name']); ?>">
-                        </div>
+
                         <div class="form-group">
                             <label class="control-label"><?= trans('timezone') ?></label>
                             <select class="form-control" name="timezone">
@@ -104,17 +87,15 @@
                               </select>
                         </div>
 						<div class="form-group">
-							<label class="control-label"><?= trans('google_api') ?></label>
-							<input type="text" class="form-control" name="google_api"
-								   placeholder="Google API"
-								   value="<?php echo html_escape($general_settings['google_api']); ?>">
+							<label class="control-label"><?= trans('google_maps_api') ?></label>
+							<input type="text" class="form-control" name="google_maps_api" placeholder="Google Maps API Key" value="<?php echo html_escape($general_settings['google_api_key']); ?>">
 						</div>
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('copyright') ?></label>
-                            <input type="text" class="form-control" name="copyright"
-                            placeholder="Copyright"
-                            value="<?php echo html_escape($general_settings['copyright']); ?>">
-                        </div>
+
+						<div class="form-group">
+							<label class="control-label mr-2">Google Places Active</label>
+							<input data-toggle="switch" id="cb_google_places_status" name="cb_google_places_status" type="checkbox">
+						</div>
+
                     </div>
 
                     <!-- Email Setting -->
@@ -226,6 +207,37 @@
 						</div>
 					</div>
 
+
+					<!-- Application Settings -->
+					<div role="tabpanel" class="tab-pane" id="application">
+						<div class="form-group">
+							<label class="control-label"><?= trans('favicon') ?> (25*25)</label><br/>
+							<?php if(!empty($general_settings['favicon'])): ?>
+								<p><img src="<?= base_url($general_settings['favicon']); ?>" class="favicon"></p>
+							<?php endif; ?>
+							<input type="file" name="favicon" accept=".png, .jpg, .jpeg, .gif, .svg">
+							<p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small></p>
+							<input type="hidden" name="old_favicon" value="<?php echo html_escape($general_settings['favicon']); ?>">
+						</div>
+						<div class="form-group">
+							<label class="control-label"><?= trans('logo') ?></label><br/>
+							<?php if(!empty($general_settings['logo'])): ?>
+								<p><img src="<?= base_url($general_settings['logo']); ?>" class="logo" width="150"></p>
+							<?php endif; ?>
+							<input type="file" name="logo" accept=".png, .jpg, .jpeg, .gif, .svg">
+							<p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small></p>
+							<input type="hidden" name="old_logo" value="<?php echo html_escape($general_settings['logo']); ?>">
+						</div>
+						<div class="form-group">
+							<label class="control-label"><?= trans('application_name') ?></label>
+							<input type="text" class="form-control" name="application_name" placeholder="application name" value="<?php echo html_escape($general_settings['application_name']); ?>">
+						</div>
+						<div class="form-group">
+							<label class="control-label"><?= trans('copyright') ?></label>
+							<input type="text" class="form-control" name="copyright" placeholder="Copyright" value="<?php echo html_escape($general_settings['copyright']); ?>">
+						</div>
+					</div>
+
 					<div class="box-footer">
                     <input type="submit" name="submit" value="<?= trans('save_changes') ?>" class="btn btn-primary pull-right">
                 </div>	
@@ -240,5 +252,22 @@
     $('#myTabs a').click(function (e) {
      e.preventDefault()
      $(this).tab('show')
+
  })
+
+	$(document).ready(function() {
+		$('[data-toggle="switch"]').bootstrapSwitch();
+		$('#cb_google_places_status').bootstrapSwitch('state', <?php echo ($general_settings['google_places_is_active'] == 1) ? 'true' : 'false'; ?>);
+
+
+		$('#cb_google_places_status').on('switchChange.bootstrapSwitch', function (event, state) {
+			if (state === false) { $("#grp_google_places").hide();}
+			else { $("#grp_google_places").show();}
+		});
+
+		//$('#cb_google_places_status').on('change.bootstrapSwitch', function(e) {
+		//	console.log(e.target.checked);
+		//});
+
+	});
 </script>

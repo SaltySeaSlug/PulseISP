@@ -3,13 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2021 at 04:29 PM
+-- Generation Time: Feb 05, 2021 at 02:30 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+02:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -20,6 +20,8 @@ SET time_zone = "+02:00";
 --
 -- Database: `pulseisp_db`
 --
+CREATE DATABASE IF NOT EXISTS `pulseisp_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `pulseisp_db`;
 
 -- --------------------------------------------------------
 
@@ -27,12 +29,14 @@ SET time_zone = "+02:00";
 -- Table structure for table `ci_activity_log`
 --
 
+DROP TABLE IF EXISTS `ci_activity_log`;
 CREATE TABLE `ci_activity_log` (
                                    `id` int(11) NOT NULL,
                                    `activity_id` tinyint(4) NOT NULL,
-                                   `user_id` int(11) NOT NULL,
-                                   `admin_id` int(11) NOT NULL,
+                                   `user_id` int(11) DEFAULT NULL,
+                                   `admin_id` int(11) DEFAULT NULL,
                                    `description` varchar(255) DEFAULT NULL,
+                                   `ip_address` varchar(64) DEFAULT NULL,
                                    `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -42,20 +46,11 @@ CREATE TABLE `ci_activity_log` (
 -- Table structure for table `ci_activity_status`
 --
 
+DROP TABLE IF EXISTS `ci_activity_status`;
 CREATE TABLE `ci_activity_status` (
                                       `id` int(11) NOT NULL,
                                       `description` varchar(225) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ci_activity_status`
---
-
-INSERT INTO `ci_activity_status` (`id`, `description`) VALUES
-(1, 'Add'),
-(2, 'Delete'),
-(3, 'Update'),
-(4, 'Misc');
 
 -- --------------------------------------------------------
 
@@ -63,6 +58,7 @@ INSERT INTO `ci_activity_status` (`id`, `description`) VALUES
 -- Table structure for table `ci_admin`
 --
 
+DROP TABLE IF EXISTS `ci_admin`;
 CREATE TABLE `ci_admin` (
                             `admin_id` int(11) NOT NULL,
                             `admin_role_id` int(11) NOT NULL,
@@ -99,6 +95,7 @@ INSERT INTO `ci_admin` (`admin_id`, `admin_role_id`, `username`, `firstname`, `l
 -- Table structure for table `ci_admin_roles`
 --
 
+DROP TABLE IF EXISTS `ci_admin_roles`;
 CREATE TABLE `ci_admin_roles` (
                                   `admin_role_id` int(11) NOT NULL,
                                   `admin_role_title` varchar(30) NOT NULL,
@@ -122,9 +119,32 @@ INSERT INTO `ci_admin_roles` (`admin_role_id`, `admin_role_title`, `admin_role_s
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ci_audit_trails`
+--
+
+DROP TABLE IF EXISTS `ci_audit_trails`;
+CREATE TABLE `ci_audit_trails` (
+                                   `id` int(11) NOT NULL,
+                                   `user_id` int(11) DEFAULT NULL,
+                                   `admin_id` int(11) DEFAULT NULL,
+                                   `event` enum('insert','update','delete') NOT NULL,
+                                   `table_name` varchar(128) NOT NULL,
+                                   `old_values` text DEFAULT NULL,
+                                   `new_values` text NOT NULL,
+                                   `url` varchar(255) NOT NULL,
+                                   `name` varchar(128) NOT NULL,
+                                   `ip_address` varchar(45) NOT NULL,
+                                   `user_agent` varchar(255) NOT NULL,
+                                   `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ci_cities`
 --
 
+DROP TABLE IF EXISTS `ci_cities`;
 CREATE TABLE `ci_cities` (
                              `id` int(11) NOT NULL,
                              `name` varchar(30) NOT NULL,
@@ -139,6 +159,7 @@ CREATE TABLE `ci_cities` (
 -- Table structure for table `ci_companies`
 --
 
+DROP TABLE IF EXISTS `ci_companies`;
 CREATE TABLE `ci_companies` (
                                 `id` int(11) NOT NULL,
                                 `name` varchar(100) NOT NULL,
@@ -155,6 +176,7 @@ CREATE TABLE `ci_companies` (
 -- Table structure for table `ci_countries`
 --
 
+DROP TABLE IF EXISTS `ci_countries`;
 CREATE TABLE `ci_countries` (
                                 `id` int(11) NOT NULL,
                                 `sortname` varchar(3) NOT NULL,
@@ -170,6 +192,7 @@ CREATE TABLE `ci_countries` (
 -- Table structure for table `ci_currency`
 --
 
+DROP TABLE IF EXISTS `ci_currency`;
 CREATE TABLE `ci_currency` (
                                `name` char(20) NOT NULL,
                                `code` char(3) NOT NULL,
@@ -301,6 +324,7 @@ INSERT INTO `ci_currency` (`name`, `code`, `symbol`) VALUES
 -- Table structure for table `ci_email_templates`
 --
 
+DROP TABLE IF EXISTS `ci_email_templates`;
 CREATE TABLE `ci_email_templates` (
                                       `id` int(11) NOT NULL,
                                       `name` varchar(255) NOT NULL,
@@ -325,6 +349,7 @@ INSERT INTO `ci_email_templates` (`id`, `name`, `slug`, `subject`, `body`, `last
 -- Table structure for table `ci_email_template_variables`
 --
 
+DROP TABLE IF EXISTS `ci_email_template_variables`;
 CREATE TABLE `ci_email_template_variables` (
                                                `id` int(11) NOT NULL,
                                                `template_id` int(11) NOT NULL,
@@ -347,6 +372,7 @@ INSERT INTO `ci_email_template_variables` (`id`, `template_id`, `variable_name`)
 -- Table structure for table `ci_general_settings`
 --
 
+DROP TABLE IF EXISTS `ci_general_settings`;
 CREATE TABLE `ci_general_settings` (
                                        `id` int(11) NOT NULL,
                                        `favicon` varchar(255) DEFAULT NULL,
@@ -377,6 +403,8 @@ CREATE TABLE `ci_general_settings` (
                                        `contact_number` varchar(20) NOT NULL,
                                        `terms` varchar(2048) NOT NULL,
                                        `use_google_font` tinyint(1) DEFAULT NULL,
+                                       `google_api_key` varchar(255) DEFAULT NULL,
+                                       `google_places_is_active` tinyint(1) NOT NULL DEFAULT 0,
                                        `radius_secret` varchar(255) DEFAULT NULL,
                                        `realm_suffix` varchar(255) DEFAULT NULL,
                                        `created_date` datetime DEFAULT NULL,
@@ -387,8 +415,8 @@ CREATE TABLE `ci_general_settings` (
 -- Dumping data for table `ci_general_settings`
 --
 
-INSERT INTO `ci_general_settings` (`id`, `favicon`, `logo`, `application_name`, `timezone`, `currency`, `default_language`, `copyright`, `email_from`, `smtp_host`, `smtp_port`, `smtp_user`, `smtp_pass`, `facebook_link`, `twitter_link`, `google_link`, `youtube_link`, `linkedin_link`, `instagram_link`, `recaptcha_secret_key`, `recaptcha_site_key`, `recaptcha_lang`, `company_name`, `address_line_1`, `address_line_2`, `email_address`, `contact_number`, `terms`, `use_google_font`, `radius_secret`, `realm_suffix`, `created_date`, `updated_date`) VALUES
-(1, 'assets/img/fe84f0f94bd2023cd663f5c73baad88e.png', 'assets/img/dc48701e5a6a300744b873b63f772101.png', 'Pulse<b>ISP</b>', 'Africa/Johannesburg', 'ZAR', 2, '<strong><a href=\"http://www.domain.co.za\">Private Company</a> © 2020</strong> | All rights reserved.', '', 'smtp.gmail.com', 587, NULL, NULL, 'https://facebook.com', 'https://twitter.com', 'https://google.com', 'https://youtube.com', 'https://linkedin.com', 'https://instagram.com', '', '', 'en', 'Private Company', '', '', '', '', '', 1, NULL, 'unity', '2021-01-21 00:00:00', '2021-01-21 00:00:00');
+INSERT INTO `ci_general_settings` (`id`, `favicon`, `logo`, `application_name`, `timezone`, `currency`, `default_language`, `copyright`, `email_from`, `smtp_host`, `smtp_port`, `smtp_user`, `smtp_pass`, `facebook_link`, `twitter_link`, `google_link`, `youtube_link`, `linkedin_link`, `instagram_link`, `recaptcha_secret_key`, `recaptcha_site_key`, `recaptcha_lang`, `company_name`, `address_line_1`, `address_line_2`, `email_address`, `contact_number`, `terms`, `use_google_font`, `google_api_key`, `google_places_is_active`, `radius_secret`, `realm_suffix`, `created_date`, `updated_date`) VALUES
+(1, 'assets/img/728064d13b7b822aac1d272b680efd8b.png', 'assets/img/6b57fc06c4eedc72e25cd0371f2fa497.png', 'Pulse<b>ISP</b>', 'Africa/Johannesburg', 'ZAR', 2, 'Powered by <strong><a href=\"http://www.domain.co.za\">Unitech Solutions TTL</b></a> © 2020</strong> | All rights reserved.', '', 'smtp.gmail.com', 587, '', '', 'https://facebook.com', 'https://twitter.com', 'https://google.com', 'https://youtube.com', 'https://linkedin.com', 'https://instagram.com', '', '', 'en', 'Private Company', '', '', '', '', '', 1, 'AIzaSyALvut2D0YOiTju4qQtVPRxBdCf2XKU2o8', 1, '', 'unity', '2021-02-04 00:00:00', '2021-02-04 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -396,6 +424,7 @@ INSERT INTO `ci_general_settings` (`id`, `favicon`, `logo`, `application_name`, 
 -- Table structure for table `ci_language`
 --
 
+DROP TABLE IF EXISTS `ci_language`;
 CREATE TABLE `ci_language` (
                                `id` int(11) NOT NULL,
                                `name` varchar(225) NOT NULL,
@@ -404,273 +433,18 @@ CREATE TABLE `ci_language` (
                                `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `ci_language`
---
-
-INSERT INTO `ci_language` (`id`, `name`, `short_name`, `status`, `created_at`) VALUES
-(2, 'English', 'en', 1, '2019-09-16 01:13:17'),
-(3, 'French', 'fr', 1, '2019-09-16 08:11:08');
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `ci_language_keys`
 --
 
+DROP TABLE IF EXISTS `ci_language_keys`;
 CREATE TABLE `ci_language_keys` (
                                     `key` varchar(255) NOT NULL,
                                     `filename` varchar(255) NOT NULL,
                                     `comment` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ci_language_keys`
---
-
-INSERT INTO `ci_language_keys` (`key`, `filename`, `comment`) VALUES
-('contact', 'site_lang.php', ''),
-('logout', 'site_lang.php', ''),
-('search', 'site_lang.php', ''),
-('invoice', 'site_lang.php', ''),
-('dashboard', 'site_lang.php', ''),
-('dashboard_v1', 'site_lang.php', ''),
-('dashboard_v2', 'site_lang.php', ''),
-('dashboard_v3', 'site_lang.php', ''),
-('admin', 'site_lang.php', ''),
-('admin_list', 'site_lang.php', ''),
-('add_new_admin', 'site_lang.php', ''),
-('profile', 'site_lang.php', ''),
-('view_profile', 'site_lang.php', ''),
-('change_password', 'site_lang.php', ''),
-('role_and_permissions', 'site_lang.php', ''),
-('module_setting', 'site_lang.php', ''),
-('users', 'site_lang.php', ''),
-('users_list', 'site_lang.php', ''),
-('add_new_user', 'site_lang.php', ''),
-('activity_log', 'site_lang.php', ''),
-('settings', 'site_lang.php', ''),
-('general_settings', 'site_lang.php', ''),
-('email_template_settings', 'site_lang.php', ''),
-('codeigniter_examples', 'site_lang.php', ''),
-('simple_datatable', 'site_lang.php', ''),
-('ajax_datatable', 'site_lang.php', ''),
-('pagination', 'site_lang.php', ''),
-('advance_search', 'site_lang.php', ''),
-('file_upload', 'site_lang.php', ''),
-('multiple_files_upload', 'site_lang.php', ''),
-('backup_and_export', 'site_lang.php', ''),
-('invoicing_system', 'site_lang.php', ''),
-('invoice_list', 'site_lang.php', ''),
-('add_new_invoice', 'site_lang.php', ''),
-('database_joins_example', 'site_lang.php', ''),
-('serverside_join', 'site_lang.php', ''),
-('simple_join', 'site_lang.php', ''),
-('language_setting', 'site_lang.php', ''),
-('locations', 'site_lang.php', ''),
-('country', 'site_lang.php', ''),
-('state', 'site_lang.php', ''),
-('city', 'site_lang.php', ''),
-('widgets', 'site_lang.php', ''),
-('charts', 'site_lang.php', ''),
-('charts_js', 'site_lang.php', ''),
-('charts_flot', 'site_lang.php', ''),
-('charts_inline', 'site_lang.php', ''),
-('ui_elements', 'site_lang.php', ''),
-('general', 'site_lang.php', ''),
-('icons', 'site_lang.php', ''),
-('buttons', 'site_lang.php', ''),
-('forms', 'site_lang.php', ''),
-('general_elements', 'site_lang.php', ''),
-('advanced_elements', 'site_lang.php', ''),
-('editors', 'site_lang.php', ''),
-('tables', 'site_lang.php', ''),
-('simple_tables', 'site_lang.php', ''),
-('data_tables', 'site_lang.php', ''),
-('mailbox', 'site_lang.php', ''),
-('inbox', 'site_lang.php', ''),
-('compose', 'site_lang.php', ''),
-('read', 'site_lang.php', ''),
-('pages', 'site_lang.php', ''),
-('login', 'site_lang.php', ''),
-('register', 'site_lang.php', ''),
-('lock_screen', 'site_lang.php', ''),
-('extras', 'site_lang.php', ''),
-('error_404', 'site_lang.php', ''),
-('error_500', 'site_lang.php', ''),
-('blank_page', 'site_lang.php', ''),
-('starter_page', 'site_lang.php', ''),
-('miscellaneous', 'site_lang.php', ''),
-('documentation', 'site_lang.php', ''),
-('labels', 'site_lang.php', ''),
-('important', 'site_lang.php', ''),
-('warning', 'site_lang.php', ''),
-('informational', 'site_lang.php', ''),
-('signin_to_start_your_session', 'site_lang.php', ''),
-('signin', 'site_lang.php', ''),
-('username', 'site_lang.php', ''),
-('password', 'site_lang.php', ''),
-('remember_me', 'site_lang.php', ''),
-('i_forgot_my_password', 'site_lang.php', ''),
-('register_new_membership', 'site_lang.php', ''),
-('firstname', 'site_lang.php', ''),
-('lastname', 'site_lang.php', ''),
-('email', 'site_lang.php', ''),
-('confirm', 'site_lang.php', ''),
-('i_agree_to_the', 'site_lang.php', ''),
-('terms', 'site_lang.php', ''),
-('i_already_have_membership', 'site_lang.php', ''),
-('forgot_password', 'site_lang.php', ''),
-('submit', 'site_lang.php', ''),
-('you_remember_password', 'site_lang.php', ''),
-('reset_password', 'site_lang.php', ''),
-('reset', 'site_lang.php', ''),
-('home', 'site_lang.php', ''),
-('user_registrations', 'site_lang.php', ''),
-('active_users', 'site_lang.php', ''),
-('inactive_users', 'site_lang.php', ''),
-('unique_visitors', 'site_lang.php', ''),
-('more_info', 'site_lang.php', ''),
-('sales', 'site_lang.php', ''),
-('visitors', 'site_lang.php', ''),
-('area', 'site_lang.php', ''),
-('donut', 'site_lang.php', ''),
-('online', 'site_lang.php', ''),
-('direct_chat', 'site_lang.php', ''),
-('send', 'site_lang.php', ''),
-('type_message', 'site_lang.php', ''),
-('sales_graph', 'site_lang.php', ''),
-('to_do_list', 'site_lang.php', ''),
-('add_item', 'site_lang.php', ''),
-('calendar', 'site_lang.php', ''),
-('mobile_no', 'site_lang.php', ''),
-('select_admin_role', 'site_lang.php', ''),
-('select_role', 'site_lang.php', ''),
-('add_admin', 'site_lang.php', ''),
-('edit_admin', 'site_lang.php', ''),
-('all_admin_types', 'site_lang.php', ''),
-('all_status', 'site_lang.php', ''),
-('active', 'site_lang.php', ''),
-('inactive', 'site_lang.php', ''),
-('search_from_here', 'site_lang.php', ''),
-('id', 'site_lang.php', ''),
-('user', 'site_lang.php', ''),
-('role', 'site_lang.php', ''),
-('status', 'site_lang.php', ''),
-('select_status', 'site_lang.php', ''),
-('action', 'site_lang.php', ''),
-('update_profile', 'site_lang.php', ''),
-('new_password', 'site_lang.php', ''),
-('confirm_password', 'site_lang.php', ''),
-('add_new_module', 'site_lang.php', ''),
-('operations', 'site_lang.php', ''),
-('sub_module', 'site_lang.php', ''),
-('controller_name', 'site_lang.php', ''),
-('module_name', 'site_lang.php', ''),
-('fa_icon', 'site_lang.php', ''),
-('module_list', 'site_lang.php', ''),
-('sort_order', 'site_lang.php', ''),
-('add_module', 'site_lang.php', ''),
-('update_module', 'site_lang.php', ''),
-('lang_index_message', 'site_lang.php', ''),
-('admin_role', 'site_lang.php', ''),
-('permission', 'site_lang.php', ''),
-('add_new_role', 'site_lang.php', ''),
-('back', 'site_lang.php', ''),
-('edit_role', 'site_lang.php', ''),
-('admin_permissions', 'site_lang.php', ''),
-('permission_access', 'site_lang.php', ''),
-('created_date', 'site_lang.php', ''),
-('email_verification', 'site_lang.php', ''),
-('add_user', 'site_lang.php', ''),
-('address', 'site_lang.php', ''),
-('edit_user', 'site_lang.php', ''),
-('update_user', 'site_lang.php', ''),
-('users_activity_log', 'site_lang.php', ''),
-('activity', 'site_lang.php', ''),
-('date', 'site_lang.php', ''),
-('time', 'site_lang.php', ''),
-('general_setting', 'site_lang.php', ''),
-('email_setting', 'site_lang.php', ''),
-('google_setting', 'site_lang.php', ''),
-('favicon', 'site_lang.php', ''),
-('logo', 'site_lang.php', ''),
-('application_name', 'site_lang.php', ''),
-('allowed_types', 'site_lang.php', ''),
-('timezone', 'site_lang.php', ''),
-('default_language', 'site_lang.php', ''),
-('currency', 'site_lang.php', ''),
-('copyright', 'site_lang.php', ''),
-('save_changes', 'site_lang.php', ''),
-('email_from', 'site_lang.php', ''),
-('smtp_host', 'site_lang.php', ''),
-('smtp_port', 'site_lang.php', ''),
-('smtp_user', 'site_lang.php', ''),
-('smtp_password', 'site_lang.php', ''),
-('site_key', 'site_lang.php', ''),
-('secret_key', 'site_lang.php', ''),
-('language', 'site_lang.php', ''),
-('email_templates', 'site_lang.php', ''),
-('select_a_template', 'site_lang.php', ''),
-('preview', 'site_lang.php', ''),
-('variables', 'site_lang.php', ''),
-('title', 'site_lang.php', ''),
-('area_chart', 'site_lang.php', ''),
-('donut_chart', 'site_lang.php', ''),
-('line_chart', 'site_lang.php', ''),
-('bar_chart', 'site_lang.php', ''),
-('users_area_chart', 'site_lang.php', ''),
-('payment_line_chart', 'site_lang.php', ''),
-('admin_donut_chart', 'site_lang.php', ''),
-('payment_bar_chart', 'site_lang.php', ''),
-('simple_table_example', 'site_lang.php', ''),
-('datatable_example', 'site_lang.php', ''),
-('pagination_example', 'site_lang.php', ''),
-('advance_search_example', 'site_lang.php', ''),
-('file_upload_example', 'site_lang.php', ''),
-('multiple_file_upload_example', 'site_lang.php', ''),
-('export_as_pdf', 'site_lang.php', ''),
-('export_as_csv', 'site_lang.php', ''),
-('max_allowed_size', 'site_lang.php', ''),
-('max_files', 'site_lang.php', ''),
-('multiple_files_uploader', 'site_lang.php', ''),
-('dynamic_charts', 'site_lang.php', ''),
-('database_backup', 'site_lang.php', ''),
-('download_and_create_backup', 'site_lang.php', ''),
-('client', 'site_lang.php', ''),
-('amount', 'site_lang.php', ''),
-('due_date', 'site_lang.php', ''),
-('bill_from', 'site_lang.php', ''),
-('bill_to', 'site_lang.php', ''),
-('company_name', 'site_lang.php', ''),
-('address_line', 'site_lang.php', ''),
-('customer', 'site_lang.php', ''),
-('billing_date', 'site_lang.php', ''),
-('product', 'site_lang.php', ''),
-('quantity', 'site_lang.php', ''),
-('price', 'site_lang.php', ''),
-('tax', 'site_lang.php', ''),
-('total', 'site_lang.php', ''),
-('subtotal', 'site_lang.php', ''),
-('discount', 'site_lang.php', ''),
-('client_note', 'site_lang.php', ''),
-('terms_and_conditions', 'site_lang.php', ''),
-('edit_invoice', 'site_lang.php', ''),
-('download', 'site_lang.php', ''),
-('send_email', 'site_lang.php', ''),
-('nas_devices', 'site_lang.php', ''),
-('nas_list', 'site_lang.php', ''),
-('name', 'site_lang.php', ''),
-('ip_address', 'site_lang.php', ''),
-('identifier', 'site_lang.php', ''),
-('add_new_nas', 'site_lang.php', ''),
-('edit_nas', 'site_lang.php', ''),
-('update_nas', 'site_lang.php', ''),
-('ip_pool', 'site_lang.php', ''),
-('dashboard_test', 'site_lang.php', ''),
-('social_setting', 'site_lang.php', ''),
-('company_setting', 'site_lang.php', ''),
-('use_google_font', 'site_lang.php', '');
 
 -- --------------------------------------------------------
 
@@ -678,6 +452,7 @@ INSERT INTO `ci_language_keys` (`key`, `filename`, `comment`) VALUES
 -- Table structure for table `ci_module`
 --
 
+DROP TABLE IF EXISTS `ci_module`;
 CREATE TABLE `ci_module` (
                              `module_id` int(11) NOT NULL,
                              `module_name` varchar(255) NOT NULL,
@@ -714,7 +489,8 @@ INSERT INTO `ci_module` (`module_id`, `module_name`, `controller_name`, `fa_icon
 (25, 'profile', 'profile', 'fad fa-user', 'access', 20),
 (26, 'activity_log', 'activity', 'fad fa-flag-alt', 'access', 11),
 (27, 'nas_devices', 'nas', 'fad fa-server', 'access|add|delete', 2),
-(28, 'ip_pool', 'ip_pool', 'fad fa-dice-d12', 'access|add|edit|view|delete', 6);
+(28, 'ip_pool', 'ip_pool', 'fad fa-dice-d12', 'access|add|edit|view|delete', 6),
+(29, 'profiles_components', 'profiles_components', 'fad fa-eye', 'add|view|access', 0);
 
 -- --------------------------------------------------------
 
@@ -722,6 +498,7 @@ INSERT INTO `ci_module` (`module_id`, `module_name`, `controller_name`, `fa_icon
 -- Table structure for table `ci_module_access`
 --
 
+DROP TABLE IF EXISTS `ci_module_access`;
 CREATE TABLE `ci_module_access` (
                                     `id` int(11) NOT NULL,
                                     `admin_role_id` int(11) NOT NULL,
@@ -803,7 +580,10 @@ INSERT INTO `ci_module_access` (`id`, `admin_role_id`, `module`, `operation`) VA
 (102, 1, 'nas', 'add'),
 (103, 1, 'nas', 'delete'),
 (104, 1, 'ip_pool', 'add'),
-(105, 1, 'extras', 'access');
+(105, 1, 'extras', 'access'),
+(106, 1, 'profiles_components', 'add'),
+(107, 1, 'profiles_components', 'view'),
+(108, 1, 'profiles_components', 'access');
 
 -- --------------------------------------------------------
 
@@ -811,6 +591,7 @@ INSERT INTO `ci_module_access` (`id`, `admin_role_id`, `module`, `operation`) VA
 -- Table structure for table `ci_payments`
 --
 
+DROP TABLE IF EXISTS `ci_payments`;
 CREATE TABLE `ci_payments` (
                                `id` int(11) NOT NULL,
                                `admin_id` int(11) NOT NULL,
@@ -836,9 +617,36 @@ CREATE TABLE `ci_payments` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ci_profiles`
+--
+
+DROP TABLE IF EXISTS `ci_profiles`;
+CREATE TABLE `ci_profiles` (
+                               `id` int(11) NOT NULL,
+                               `name` varchar(255) NOT NULL,
+                               `is_active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ci_profile_components`
+--
+
+DROP TABLE IF EXISTS `ci_profile_components`;
+CREATE TABLE `ci_profile_components` (
+                                         `id` int(11) NOT NULL,
+                                         `name` varchar(255) NOT NULL,
+                                         `is_active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ci_states`
 --
 
+DROP TABLE IF EXISTS `ci_states`;
 CREATE TABLE `ci_states` (
                              `id` int(11) NOT NULL,
                              `name` varchar(30) NOT NULL,
@@ -853,6 +661,7 @@ CREATE TABLE `ci_states` (
 -- Table structure for table `ci_sub_module`
 --
 
+DROP TABLE IF EXISTS `ci_sub_module`;
 CREATE TABLE `ci_sub_module` (
                                  `id` int(11) NOT NULL,
                                  `parent` int(11) NOT NULL,
@@ -917,7 +726,8 @@ INSERT INTO `ci_sub_module` (`id`, `parent`, `name`, `link`, `sort_order`) VALUE
 (71, 10, 'multiple_files_upload', 'multi_file_upload', 6),
 (72, 10, 'dynamic_charts', 'charts', 7),
 (73, 10, 'locations', 'locations', 8),
-(76, 9, 'dashboard_test', 'index_1', 4);
+(76, 9, 'dashboard_test', 'index_1', 4),
+(77, 8, 'system_status', 'system_status', 0);
 
 -- --------------------------------------------------------
 
@@ -925,6 +735,7 @@ INSERT INTO `ci_sub_module` (`id`, `parent`, `name`, `link`, `sort_order`) VALUE
 -- Table structure for table `ci_uploaded_files`
 --
 
+DROP TABLE IF EXISTS `ci_uploaded_files`;
 CREATE TABLE `ci_uploaded_files` (
                                      `id` int(11) NOT NULL,
                                      `name` varchar(225) NOT NULL,
@@ -937,6 +748,7 @@ CREATE TABLE `ci_uploaded_files` (
 -- Table structure for table `ci_users`
 --
 
+DROP TABLE IF EXISTS `ci_users`;
 CREATE TABLE `ci_users` (
                             `id` int(11) NOT NULL,
                             `username` varchar(50) NOT NULL,
@@ -961,75 +773,73 @@ CREATE TABLE `ci_users` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_radippool_ppp_accounts`
+-- Table structure for table `data_accounts`
 --
 
-CREATE TABLE `link_radippool_ppp_accounts` (
-                                               `id` int(11) NOT NULL,
-                                               `ippool_id` int(11) DEFAULT NULL,
-                                               `ppp_id` int(11) DEFAULT NULL,
-                                               `type` enum('static','dynamic','','') NOT NULL DEFAULT 'dynamic',
-                                               `start_date` datetime NOT NULL DEFAULT current_timestamp(),
-                                               `end_date` datetime DEFAULT NULL
+DROP TABLE IF EXISTS `data_accounts`;
+CREATE TABLE `data_accounts` (
+                                 `id` int(11) NOT NULL,
+                                 `profileid` int(11) DEFAULT NULL,
+                                 `username` varchar(128) NOT NULL,
+                                 `password` varchar(128) NOT NULL,
+                                 `staticip` varchar(24) DEFAULT NULL,
+                                 `startdate` datetime DEFAULT NULL,
+                                 `enddate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_users_ppp_accounts`
+-- Table structure for table `data_accounts_stats`
 --
 
-CREATE TABLE `link_users_ppp_accounts` (
-                                           `id` int(11) NOT NULL,
-                                           `user_id` int(11) DEFAULT NULL,
-                                           `ppp_id` int(11) DEFAULT NULL,
-                                           `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-                                           `start_date` datetime DEFAULT current_timestamp(),
-                                           `end_date` datetime DEFAULT NULL
+DROP TABLE IF EXISTS `data_accounts_stats`;
+CREATE TABLE `data_accounts_stats` (
+                                       `id` int(11) NOT NULL,
+                                       `radacct_id` int(11) NOT NULL,
+                                       `username` varchar(64) NOT NULL DEFAULT '',
+                                       `realmid` int(11) DEFAULT NULL,
+                                       `nasipaddress` varchar(15) NOT NULL DEFAULT '',
+                                       `nasidentifier` varchar(64) DEFAULT NULL,
+                                       `framedipaddress` varchar(15) NOT NULL DEFAULT '',
+                                       `calledstationid` varchar(64) DEFAULT NULL,
+                                       `callingstationid` varchar(50) NOT NULL DEFAULT '',
+                                       `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+                                       `acctinputoctets` bigint(20) NOT NULL,
+                                       `acctoutputoctets` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ppp_accounts`
+-- Table structure for table `link_radippool_data_accounts`
 --
 
-CREATE TABLE `ppp_accounts` (
-                                `id` int(11) NOT NULL,
-                                `profileid` int(11) DEFAULT NULL,
-                                `username` varchar(128) NOT NULL,
-                                `password` varchar(128) NOT NULL,
-                                `staticip` varchar(24) DEFAULT NULL,
-                                `startdate` datetime DEFAULT NULL,
-                                `enddate` datetime DEFAULT NULL
+DROP TABLE IF EXISTS `link_radippool_data_accounts`;
+CREATE TABLE `link_radippool_data_accounts` (
+                                                `id` int(11) NOT NULL,
+                                                `ippool_id` int(11) DEFAULT NULL,
+                                                `ppp_id` int(11) DEFAULT NULL,
+                                                `type` enum('static','dynamic','','') NOT NULL DEFAULT 'dynamic',
+                                                `start_date` datetime NOT NULL DEFAULT current_timestamp(),
+                                                `end_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ppp_accounts`
---
-
-INSERT INTO `ppp_accounts` (`id`, `profileid`, `username`, `password`, `staticip`, `startdate`, `enddate`) VALUES
-(1, NULL, 'test@test', '', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ppp_accounts_stats`
+-- Table structure for table `link_users_data_accounts`
 --
 
-CREATE TABLE `ppp_accounts_stats` (
-                                      `id` int(11) NOT NULL,
-                                      `radacct_id` int(11) NOT NULL,
-                                      `username` varchar(64) NOT NULL DEFAULT '',
-                                      `realmid` int(11) DEFAULT NULL,
-                                      `nasipaddress` varchar(15) NOT NULL DEFAULT '',
-                                      `nasidentifier` varchar(64) DEFAULT NULL,
-                                      `framedipaddress` varchar(15) NOT NULL DEFAULT '',
-                                      `calledstationid` varchar(64) DEFAULT NULL,
-                                      `callingstationid` varchar(50) NOT NULL DEFAULT '',
-                                      `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-                                      `acctinputoctets` bigint(20) NOT NULL,
-                                      `acctoutputoctets` bigint(20) NOT NULL
+DROP TABLE IF EXISTS `link_users_data_accounts`;
+CREATE TABLE `link_users_data_accounts` (
+                                            `id` int(11) NOT NULL,
+                                            `user_id` int(11) DEFAULT NULL,
+                                            `ppp_id` int(11) DEFAULT NULL,
+                                            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+                                            `is_active` tinyint(1) NOT NULL DEFAULT 1,
+                                            `start_date` datetime DEFAULT current_timestamp(),
+                                            `end_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1038,6 +848,7 @@ CREATE TABLE `ppp_accounts_stats` (
 -- Table structure for table `radacct`
 --
 
+DROP TABLE IF EXISTS `radacct`;
 CREATE TABLE `radacct` (
                            `radacctid` bigint(21) NOT NULL,
                            `acctsessionid` varchar(64) NOT NULL DEFAULT '',
@@ -1073,9 +884,10 @@ CREATE TABLE `radacct` (
 --
 -- Triggers `radacct`
 --
+DROP TRIGGER IF EXISTS `radacct_after_update_add_data_accounts_stats`;
 DELIMITER $$
-CREATE TRIGGER `radacct_after_update_add_ppp_accounts_stats` AFTER UPDATE ON `radacct` FOR EACH ROW BEGIN
-    INSERT INTO ppp_accounts_stats
+CREATE TRIGGER `radacct_after_update_add_data_accounts_stats` AFTER UPDATE ON `radacct` FOR EACH ROW BEGIN
+    INSERT INTO data_accounts_stats
     SET
         radacct_id        = OLD.radacctid,
         username          = OLD.username,
@@ -1088,11 +900,12 @@ CREATE TRIGGER `radacct_after_update_add_ppp_accounts_stats` AFTER UPDATE ON `ra
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `radacct_before_insert_check_username_exists`;
 DELIMITER $$
 CREATE TRIGGER `radacct_before_insert_check_username_exists` BEFORE INSERT ON `radacct` FOR EACH ROW BEGIN
     IF NEW.username NOT IN (
         SELECT A.username
-        FROM ppp_accounts A
+        FROM data_accounts A
         WHERE (NEW.username = A.username)
     ) THEN
         CALL `Insert not allowed`;
@@ -1100,6 +913,7 @@ CREATE TRIGGER `radacct_before_insert_check_username_exists` BEFORE INSERT ON `r
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `radacct_clean_string`;
 DELIMITER $$
 CREATE TRIGGER `radacct_clean_string` BEFORE INSERT ON `radacct` FOR EACH ROW BEGIN
     SET NEW.nasportid = REPLACE(NEW.nasportid, "=3D28", "[");
@@ -1114,6 +928,7 @@ DELIMITER ;
 -- Table structure for table `radcheck`
 --
 
+DROP TABLE IF EXISTS `radcheck`;
 CREATE TABLE `radcheck` (
                             `id` int(11) UNSIGNED NOT NULL,
                             `username` varchar(64) NOT NULL DEFAULT '',
@@ -1128,6 +943,7 @@ CREATE TABLE `radcheck` (
 -- Table structure for table `raddictionary`
 --
 
+DROP TABLE IF EXISTS `raddictionary`;
 CREATE TABLE `raddictionary` (
                                  `id` int(10) NOT NULL,
                                  `type` varchar(30) DEFAULT NULL,
@@ -1147,6 +963,7 @@ CREATE TABLE `raddictionary` (
 -- Table structure for table `radgroupcheck`
 --
 
+DROP TABLE IF EXISTS `radgroupcheck`;
 CREATE TABLE `radgroupcheck` (
                                  `id` int(11) UNSIGNED NOT NULL,
                                  `groupname` varchar(64) NOT NULL DEFAULT '',
@@ -1161,6 +978,7 @@ CREATE TABLE `radgroupcheck` (
 -- Table structure for table `radgroupreply`
 --
 
+DROP TABLE IF EXISTS `radgroupreply`;
 CREATE TABLE `radgroupreply` (
                                  `id` int(11) UNSIGNED NOT NULL,
                                  `groupname` varchar(64) NOT NULL DEFAULT '',
@@ -1175,6 +993,7 @@ CREATE TABLE `radgroupreply` (
 -- Table structure for table `radippool`
 --
 
+DROP TABLE IF EXISTS `radippool`;
 CREATE TABLE `radippool` (
                              `id` int(11) UNSIGNED NOT NULL,
                              `pool_name` varchar(30) NOT NULL,
@@ -1190,8 +1009,9 @@ CREATE TABLE `radippool` (
 --
 -- Triggers `radippool`
 --
+DROP TRIGGER IF EXISTS `link_radippool_data_accounts`;
 DELIMITER $$
-CREATE TRIGGER `link_radippool_ppp_accounts` AFTER UPDATE ON `radippool` FOR EACH ROW BEGIN
+CREATE TRIGGER `link_radippool_data_accounts` AFTER UPDATE ON `radippool` FOR EACH ROW BEGIN
     DECLARE type VARCHAR(10);
 
 /* CHECK TYPE */
@@ -1201,28 +1021,28 @@ CREATE TRIGGER `link_radippool_ppp_accounts` AFTER UPDATE ON `radippool` FOR EAC
         SET type = 'dynamic';
     END IF;
 
-    IF (SELECT count(*) FROM link_radippool_ppp_accounts WHERE link_radippool_ppp_accounts.ippool_id= OLD.id AND link_radippool_ppp_accounts.end_date IS NULL) = 1
+    IF (SELECT count(*) FROM link_radippool_data_accounts WHERE link_radippool_data_accounts.ippool_id= OLD.id AND link_radippool_data_accounts.end_date IS NULL) = 1
     THEN
-        UPDATE link_radippool_ppp_accounts SET link_radippool_ppp_accounts.end_date= CURRENT_TIMESTAMP WHERE link_radippool_ppp_accounts.ippool_id=OLD.id;
+        UPDATE link_radippool_data_accounts SET link_radippool_data_accounts.end_date= CURRENT_TIMESTAMP WHERE link_radippool_data_accounts.ippool_id=OLD.id;
         /*ELSE
         INSERT INTO tbl2 (stn) VALUES (NEW.stn);*/
     END IF;
 
 
     /* UPDATE RECORD IF EXISTS
-    UPDATE link_users_ppp_accounts
-        SET link_radippool_ppp_accounts.end_date = CURRENT_TIMESTAMP
-        WHERE link_radippool_ppp_accounts.ippool_id = OLD.id AND link_radippool_ppp_accounts.end_date IS NULL;*/
+    UPDATE link_users_data_accounts
+        SET link_radippool_data_accounts.end_date = CURRENT_TIMESTAMP
+        WHERE link_radippool_data_accounts.ippool_id = OLD.id AND link_radippool_data_accounts.end_date IS NULL;*/
 
 /* INSERT NEW RECORD */
-    IF (SELECT A.id FROM ppp_accounts A WHERE (NEW.username = A.username)) IS NOT NULL THEN
-        INSERT INTO link_radippool_ppp_accounts
+    IF (SELECT A.id FROM data_accounts A WHERE (NEW.username = A.username)) IS NOT NULL THEN
+        INSERT INTO link_radippool_data_accounts
         SET
-            link_radippool_ppp_accounts.ippool_id = OLD.id,
-            link_radippool_ppp_accounts.ppp_id = (SELECT A.id
-                                                  FROM ppp_accounts A
-                                                  WHERE (NEW.username = A.username)),
-            link_radippool_ppp_accounts.type = type;
+            link_radippool_data_accounts.ippool_id = OLD.id,
+            link_radippool_data_accounts.ppp_id = (SELECT A.id
+                                                   FROM data_accounts A
+                                                   WHERE (NEW.username = A.username)),
+            link_radippool_data_accounts.type = type;
     END IF;
 END
 $$
@@ -1234,6 +1054,7 @@ DELIMITER ;
 -- Table structure for table `radnas`
 --
 
+DROP TABLE IF EXISTS `radnas`;
 CREATE TABLE `radnas` (
                           `id` int(10) NOT NULL,
                           `nasname` varchar(128) DEFAULT NULL,
@@ -1267,6 +1088,7 @@ CREATE TABLE `radnas` (
 -- Table structure for table `radnas_pool_names`
 --
 
+DROP TABLE IF EXISTS `radnas_pool_names`;
 CREATE TABLE `radnas_pool_names` (
                                      `id` int(11) UNSIGNED NOT NULL,
                                      `nas_ip_address` varchar(128) NOT NULL DEFAULT '',
@@ -1279,6 +1101,7 @@ CREATE TABLE `radnas_pool_names` (
 -- Table structure for table `radpostauth`
 --
 
+DROP TABLE IF EXISTS `radpostauth`;
 CREATE TABLE `radpostauth` (
                                `id` int(11) NOT NULL,
                                `username` varchar(64) NOT NULL DEFAULT '',
@@ -1296,6 +1119,7 @@ CREATE TABLE `radpostauth` (
 -- Table structure for table `radreply`
 --
 
+DROP TABLE IF EXISTS `radreply`;
 CREATE TABLE `radreply` (
                             `id` int(11) UNSIGNED NOT NULL,
                             `username` varchar(64) NOT NULL DEFAULT '',
@@ -1310,6 +1134,7 @@ CREATE TABLE `radreply` (
 -- Table structure for table `radusergroup`
 --
 
+DROP TABLE IF EXISTS `radusergroup`;
 CREATE TABLE `radusergroup` (
                                 `id` int(11) UNSIGNED NOT NULL,
                                 `username` varchar(64) NOT NULL DEFAULT '',
@@ -1344,6 +1169,12 @@ ALTER TABLE `ci_admin`
 --
 ALTER TABLE `ci_admin_roles`
     ADD PRIMARY KEY (`admin_role_id`);
+
+--
+-- Indexes for table `ci_audit_trails`
+--
+ALTER TABLE `ci_audit_trails`
+    ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `ci_cities`
@@ -1407,6 +1238,18 @@ ALTER TABLE `ci_payments`
     ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `ci_profiles`
+--
+ALTER TABLE `ci_profiles`
+    ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ci_profile_components`
+--
+ALTER TABLE `ci_profile_components`
+    ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `ci_states`
 --
 ALTER TABLE `ci_states`
@@ -1432,29 +1275,29 @@ ALTER TABLE `ci_users`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `link_radippool_ppp_accounts`
+-- Indexes for table `data_accounts`
 --
-ALTER TABLE `link_radippool_ppp_accounts`
+ALTER TABLE `data_accounts`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `link_users_ppp_accounts`
+-- Indexes for table `data_accounts_stats`
 --
-ALTER TABLE `link_users_ppp_accounts`
-    ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `ppp_accounts`
---
-ALTER TABLE `ppp_accounts`
-    ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `ppp_accounts_stats`
---
-ALTER TABLE `ppp_accounts_stats`
+ALTER TABLE `data_accounts_stats`
     ADD PRIMARY KEY (`id`),
     ADD KEY `user_stats_index` (`radacct_id`,`username`,`realmid`,`nasipaddress`,`nasidentifier`,`callingstationid`);
+
+--
+-- Indexes for table `link_radippool_data_accounts`
+--
+ALTER TABLE `link_radippool_data_accounts`
+    ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `link_users_data_accounts`
+--
+ALTER TABLE `link_users_data_accounts`
+    ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `radacct`
@@ -1554,25 +1397,31 @@ ALTER TABLE `radusergroup`
 -- AUTO_INCREMENT for table `ci_activity_log`
 --
 ALTER TABLE `ci_activity_log`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_activity_status`
 --
 ALTER TABLE `ci_activity_status`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_admin`
 --
 ALTER TABLE `ci_admin`
-    MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+    MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `ci_admin_roles`
 --
 ALTER TABLE `ci_admin_roles`
     MODIFY `admin_role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `ci_audit_trails`
+--
+ALTER TABLE `ci_audit_trails`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_cities`
@@ -1584,7 +1433,7 @@ ALTER TABLE `ci_cities`
 -- AUTO_INCREMENT for table `ci_companies`
 --
 ALTER TABLE `ci_companies`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_countries`
@@ -1614,25 +1463,37 @@ ALTER TABLE `ci_general_settings`
 -- AUTO_INCREMENT for table `ci_language`
 --
 ALTER TABLE `ci_language`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_module`
 --
 ALTER TABLE `ci_module`
-    MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+    MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `ci_module_access`
 --
 ALTER TABLE `ci_module_access`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT for table `ci_payments`
 --
 ALTER TABLE `ci_payments`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ci_profiles`
+--
+ALTER TABLE `ci_profiles`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `ci_profile_components`
+--
+ALTER TABLE `ci_profile_components`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_states`
@@ -1644,43 +1505,43 @@ ALTER TABLE `ci_states`
 -- AUTO_INCREMENT for table `ci_sub_module`
 --
 ALTER TABLE `ci_sub_module`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `ci_uploaded_files`
 --
 ALTER TABLE `ci_uploaded_files`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_users`
 --
 ALTER TABLE `ci_users`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `link_radippool_ppp_accounts`
---
-ALTER TABLE `link_radippool_ppp_accounts`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- AUTO_INCREMENT for table `link_users_ppp_accounts`
---
-ALTER TABLE `link_users_ppp_accounts`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ppp_accounts`
+-- AUTO_INCREMENT for table `data_accounts`
 --
-ALTER TABLE `ppp_accounts`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `data_accounts`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ppp_accounts_stats`
+-- AUTO_INCREMENT for table `data_accounts_stats`
 --
-ALTER TABLE `ppp_accounts_stats`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `data_accounts_stats`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `link_radippool_data_accounts`
+--
+ALTER TABLE `link_radippool_data_accounts`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `link_users_data_accounts`
+--
+ALTER TABLE `link_users_data_accounts`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `radacct`
@@ -1692,7 +1553,7 @@ ALTER TABLE `radacct`
 -- AUTO_INCREMENT for table `radcheck`
 --
 ALTER TABLE `radcheck`
-    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `raddictionary`
@@ -1716,13 +1577,13 @@ ALTER TABLE `radgroupreply`
 -- AUTO_INCREMENT for table `radippool`
 --
 ALTER TABLE `radippool`
-    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=512;
+    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `radnas`
 --
 ALTER TABLE `radnas`
-    MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+    MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `radnas_pool_names`

@@ -157,7 +157,7 @@
 			</div>
 		<?php } ?>
 					<!-- LANGUAGE KEYS -->
-		<div class="card files">
+		<div class="card">
 		<?php if($this->config->item('comments')==1) { ?><a href="#" onclick="$('.comments').toggle();"><?php echo $this->lang->line('language_sh_comments');?></a><br/><?php } ?>
 			<?php echo form_open(site_url('/language/save_language_file'));?>
 			<div id="results"></div>

@@ -6,6 +6,8 @@ class Profile extends MY_Controller {
 		
 		parent::__construct();
 		auth_check(); // check login auth
+		$this->rbac->check_module_access();
+
 		$this->load->model('admin/admin_model', 'admin_model');
 	}
 

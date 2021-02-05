@@ -9,121 +9,145 @@
 					<h3 class="card-title p-3 mt-1"><i class="fad fa-plus mr-2"></i><?= trans('add_new_user') ?></h3>
 				</div>
 				<ul class="nav nav-pills ml-auto p-2">
-					<li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">User Account</a></li>
-					<li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Data Account</a></li>
-					<li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Portal Login</a></li>
 					<li class="nav-item ml-2"><a href="<?= base_url('admin/users'); ?>" class="btn btn-success"><i class="fad fa-list mr-2"></i><?= trans('users_list') ?></a></li>
 				</ul>
 			</div><!-- /.card-header -->
 			<?php echo form_open(base_url('admin/users/add'), 'class="form-horizontal"');  ?>
 
 			<div class="card-body">
-
+				<ul class="nav nav-tabs mb-3">
+					<li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">User Account</a></li>
+					<li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Data Account</a></li>
+					<li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Portal Login</a></li>
+				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="tab_1">
 						<div class="form">
-							<div class="form-group">
-								<label for="summary-input-type">Type</label>
-								<select type="text" class="form-control" id="summary-input-type" tabindex="-1" aria-hidden="true" onchange="customerType(this.value)">
-									<option value="0">Individual</option>
-									<option value="1">Company</option>
-								</select>
+							<div class="form-group row">
+								<label class="col-md-2 col-sm-3 col-form-label" for="summary-input-type">Type</label>
+								<div class="col-md-10 col-sm-9">
+									<select type="text" class="form-control" id="summary-input-type" tabindex="-1" aria-hidden="true" onchange="customerType(this.value)">
+										<option value="0">Individual</option>
+										<option value="1">Company</option>
+									</select>
+
+									<!--<div class="btn-group btn-group-toggle" data-toggle="buttons">
+										<label class="btn btn-secondary active">
+											<input type="radio" name="options" id="option1" autocomplete="off" onchange="customerType(0)" checked> Individual
+										</label>
+										<label class="btn btn-secondary">
+											<input type="radio" name="options" id="option2" autocomplete="off" onchange="customerType(1)"> Company
+										</label>
+									</div>-->
+								</div>
 							</div>
 
-							<div id="summary-company_type" class="row" style="display: none">
-								<div class="col-sm-12 col-md-12 col-lg-12">
-									<div class="form-group">
-										<label for="company-name">Company Name</label>
-										<input type="text" class="form-control" id="company-name" placeholder="Company Name" autocomplete="off">
-									</div>
+							<div id="summary-company_type" style="display: none">
+								<div class="form-group row">
+									<label class="col-md-2 col-sm-3 col-form-label" for="company-name">Company Name</label>
+									<div class="col-md-10 col-sm-9"><input type="text" class="form-control" id="company-name" placeholder="Company Name" autocomplete="off"></div>
 								</div>
-								<div class="col-sm-12 col-md-6 col-lg-6">
-									<div class="form-group">
-										<label for="company-registration">Company Registration</label>
-										<input type="text" class="form-control" id="company-registration" placeholder="Company Registration" autocomplete="off">
-									</div>
+								<div class="form-group row">
+									<label class="col-md-2 col-sm-3 col-form-label" for="company-registration">Registration</label>
+									<div class="col-md-10 col-sm-9"><input type="text" class="form-control" id="company-registration" placeholder="Company Registration" autocomplete="off"></div>
 								</div>
-								<div class="col-sm-12 col-md-6 col-lg-6">
-									<div class="form-group">
-										<label for="company-vat-number">VAT Number</label>
-										<input type="text" class="form-control" id="company-vat-number" placeholder="VAT Number" autocomplete="off">
-									</div>
+								<div class="form-group row">
+									<label class="col-md-2 col-sm-3 col-form-label" for="company-vat-number">VAT Number</label>
+									<div class="col-md-10 col-sm-9"><input type="text" class="form-control" id="company-vat-number" placeholder="VAT Number" autocomplete="off"></div>
 								</div>
 							</div>
 							<!-- IDENTITY NUMBER -->
-							<div class="col-sm-12 col-md-12">
-								<div class="form-group">
-									<label for="profile-input-id-number">ID Number</label>
-									<input name="id_number" type="text" class="form-control" id="profile-input-id-number" autocomplete="off">
-								</div>
+							<div class="form-group row">
+								<label class="col-md-2 col-sm-3 col-form-label" for="profile-input-id-number">ID Number</label>
+								<div class="col-md-10 col-sm-9"><input name="id_number" type="text" class="form-control" id="profile-input-id-number" autocomplete="off"></div>
 							</div>
 							<!-- NAME -->
-							<div class="form-group">
-								<label for="firstname" class="col-md-2 control-label"><?= trans('firstname') ?></label>
-								<div class="col-md-12 col-lg-12">
-									<input type="text" name="firstname" class="form-control" id="firstname" placeholder="">
-								</div>
+							<div class="form-group row">
+								<label class="col-md-2 col-sm-3 col-form-label" for="firstname"><?= trans('firstname') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="text" name="firstname" class="form-control" id="firstname" placeholder=""></div>
 							</div>
 							<!-- SURNAME -->
-							<div class="form-group">
-								<label for="lastname" class="col-md-2 control-label"><?= trans('lastname') ?></label>
-								<div class="col-md-12 col-lg-12">
-									<input type="text" name="lastname" class="form-control" id="lastname" placeholder="">
-								</div>
+							<div class="form-group row">
+								<label class="col-md-2 col-sm-3 col-form-label" for="lastname"><?= trans('lastname') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="text" name="lastname" class="form-control" id="lastname" placeholder=""></div>
 							</div>
 							<!-- EMAIL ADDRESS -->
-							<div class="form-group">
-								<label for="email" class="col-md-2 control-label"><?= trans('email') ?></label>
-								<div class="col-md-12">
-									<input type="email" name="email" class="form-control" id="email" placeholder="">
-								</div>
+							<div class="form-group row">
+								<label class="col-md-2 col-sm-3 col-form-label" for="email"><?= trans('email') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="email" name="email" class="form-control" id="email" placeholder=""></div>
 							</div>
 							<!-- CONTACT NUMBER -->
-							<div class="form-group">
-								<label for="mobile_no" class="col-md-2 control-label"><?= trans('mobile_no') ?></label>
-								<div class="col-md-12">
-									<input type="number" name="mobile_no" class="form-control" id="mobile_no" placeholder="">
-								</div>
+							<div class="form-group row">
+								<label class="col-md-2 col-sm-3 col-form-label" for="mobile_no"><?= trans('mobile_no') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="tel" name="mobile_no" class="form-control" id="mobile_no" placeholder=""></div>
 							</div>
 							<!-- ADDRESS -->
-							<div class="form-group">
-								<div class="col-sm-12 col-md-12">
-									<div class="form-group">
-										<label for="physical_address">Physical Address</label>
-										<div class="input-group">
-											<input name="physical_address" class="form-control" id="physical_address" type="text" autocomplete="off">
-											<?php if (!empty($this->general_settings['google_api'])) { ?>
-												<span class="input-group-append"><button id="btn-view-on-map" type="button" class="btn btn-info btn-flat" onclick="showContactAddress($('#physical_address').val()); return false;" title="This displays a rough estimate based on address, gps coordinates are more precise">View on Map</button></span>
-											<?php } ?>
-										</div>
+							<?php if (!empty($this->general_settings['google_places_is_active'])) { ?>
+							<div class="form-group row">
+								<!-- GOOGLE PLACES API -->
+								<label class="col-md-2 col-sm-3 col-form-label" for="autocomplete">Search Address</label>
+								<div class="col-md-10 col-sm-9">
+									<div class="input-group">
+										<input class="form-control" name="autocomplete" id="autocomplete" type="text">
+										<?php if (!empty($this->general_settings['google_api_key'])) { ?>
+											<input id="btn-view-on-map" type="button" class="btn btn-info btn-flat" onclick="showContactAddress(); return false;" title="This displays a rough estimate based on address, gps coordinates are more precise" value="View on Map">
+										<?php } ?>
 									</div>
 								</div>
 							</div>
-
-							<?php if (!empty($this->general_settings['google_api'])) { ?>
-							<div class="form-group">
-								<div class="col-lg-12">
-									<div id="google-map" style="border: 1px solid rgb(204, 204, 204); border-radius: 4px; height: 199px; position: relative; overflow: hidden;"></div>
-									<small style="margin-left: 0px;">Drag the marker to mark the exact location on the map.</small>
-									<div class="input-group" id="gps_marker_group">
-										<input name="marker_gps_coordinates" class="form-control ml-0 no-border border-transparent bg-transparent font-size-0" id="marker_gps_coordinates" type="text" autocomplete="off" readonly disabled>
-											<span class="input-group-append"><input id="btn-copy-from-map" type="button" class="btn btn-info btn-flat" onclick="copyGPSCoordinates($('#marker_gps_coordinates').val()); return false;" value="Use GPS Coordinates"></input></span>
+							<?php } ?>
+							<!-- MAP -->
+							<?php if (!empty($this->general_settings['google_api_key'])) { ?>
+								<div class="row">
+								<div class="col-sm-7 col-md-6">
+									<div class="form-group row">
+										<label class="col-sm-5 col-md-4 col-form-label" for="street_number">Number</label>
+										<div class="col-sm-7 col-md-8"><input class="form-control" name="street_number" id="street_number" type="text" autocomplete="off"></div>
 									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-md-4 col-form-label" for="route">Street Address</label>
+										<div class="col-sm-7 col-md-8"><input class="form-control" name="route" id="route" type="text" autocomplete="off"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-md-4 col-form-label" for="locality">City</label>
+										<div class="col-sm-7 col-md-8"><input class="form-control" name="locality" id="locality" type="text" autocomplete="off"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-md-4 col-form-label" for="administrative_area_level_1">State</label>
+										<div class="col-sm-7 col-md-8"><input class="form-control" name="administrative_area_level_1" id="administrative_area_level_1" type="text" autocomplete="off"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-md-4 col-form-label" for="postal_code">Postal Code</label>
+										<div class="col-sm-7 col-md-8"><input class="form-control" name="postal_code" id="postal_code" type="text" autocomplete="off"></div>
+									</div>
+									<div class="form-group row">
+										<label class="col-sm-5 col-md-4 col-form-label" for="country">Country</label>
+										<div class="col-sm-7 col-md-8"><input class="form-control" name="country" id="country" type="text" autocomplete="off"></div>
+									</div>
+								</div>
+								<div class="col-sm-5 col-md-6">
+									<div id="google-map" style="border: 1px solid rgb(204, 204, 204); border-radius: 4px; height: 284px; width: 100%; overflow: hidden;"></div>
+									<small>Drag the marker to mark the exact location on the map.</small>
+									<input name="marker_gps_coordinates" class="form-control ml-0 mt-0 no-border font-size-0 bg-transparent border-transparent" id="marker_gps_coordinates" type="text" autocomplete="off" readonly disabled hidden>
 								</div>
 							</div>
 							<?php } ?>
 
 							<!-- GPS COORDINATES -->
-							<div class="form-group">
-								<label for="gps_coordinates" class="col-md-2 control-label">GPS Coordinates</label>
-								<div class="col-md-12">
-									<input name="gps_coordinates" class="form-control" id="gps_coordinates" type="text" autocomplete="off">
+							<div class="form-group row">
+								<!-- GOOGLE PLACES API -->
+								<label class="col-md-2 col-sm-3 col-form-label">GPS Coordinates</label>
+								<div class="col-md-10 col-sm-9">
+									<div class="input-group">
+										<input class="form-control" name="gps_coordinates" id="gps_coordinates" type="text" autocomplete="off">
+									</div>
 								</div>
 							</div>
+
 							<!-- ACCOUNT CODE -->
-							<div class="form-group">
-								<label for="account_code" class="col-md-2 control-label">Account Code</label>
-								<div class="col-md-12">
+							<div class="form-group row">
+								<label class="col-md-2 col-sm-3 col-form-label" for="account_code">Account Code</label>
+								<div class="col-md-10 col-sm-9">
 									<div class="input-group">
 										<input name="account_code" type="text" class="form-control" id="profile-input-account-code" autocomplete="off" value="" required>
 										<span class="input-group-append"><button id="account_code_btn" onclick="generateAccountCode()" type="button" class="btn btn-default btn-flat">Generate</button></span>
@@ -134,117 +158,48 @@
 					</div>
 					<!-- /.tab-pane -->
 					<div class="tab-pane" id="tab_2">
-						<div class="row mb-2 ml-2">
-							<input class="tgl tgl-light tgl_checkbox" data-id="data_account" id="cb_data_account" type="checkbox">
-							<label class="tgl-btn" for="cb_data_account"></label><i class="ml-2">Create data account</i>
+						<div class="row m-0 mb-4">
+							<input data-toggle="switch" class="tgl_checkbox" data-id="data_account" id="cb_data_account" type="checkbox"
+								   data-on-text="Disable Data Account"
+								   data-off-text="Create Data Account"
+								   data-size="large">
 						</div>
-						<div class="form" id="data_account_form">
-							<!-- USERNAME -->
-							<div class="form-group">
-								<label for="username" class="col-md-2 control-label"><?= trans('username') ?></label>
-								<div class="col-md-12">
-									<div class="input-group">
-										<input name="username" type="text" class="form-control" id="username" placeholder="" autocomplete="off" value="" required>
-										<span class="input-group-append"><button id="ppp_username_btn" onclick="generatePPPUsername()" type="button" class="btn btn-default btn-flat">Generate</button></span>
-									</div>
-								</div>
-							</div>
-							<!-- PASSWORD -->
-							<div class="form-group">
-								<label for="password" class="col-md-2 control-label"><?= trans('password') ?></label>
-								<div class="col-md-12">
-									<input type="password" name="password" class="form-control" id="password" placeholder="">
-								</div>
-							</div>
-							<!-- PASSWORD TYPE -->
-							<div class="form-group">
-								<label for="passwordtype" class="col-md-2 control-label">Password Type</label>
-								<div class="col-md-12">
-									<select class="form-control select2tag" id="passwordtype" name="passwordtype">
-										<option value='Cleartext-Password'>Cleartext-Password</option>
-										<option value='User-Password'>User-Password</option>
-										<option value='Crypt-Password'>Crypt-Password</option>
-										<option value='MD5-Password'>MD5-Password</option>
-										<option value='SHA1-Password'>SHA1-Password</option>
-										<option value='CHAP-Password'>CHAP-Password</option>
-									</select>
-								</div>
-							</div>
-							<!-- PROFILE -->
-							<div class="form-group">
-								<label for="profileid" class="col-md-2 control-label">Profile</label>
-								<div class="col-md-12">
-									<select class="form-control select2tag" id="profileid" name="profileid" style="width: 100%;" tabindex="-1" aria-hidden="true">
-										<option value="-1">None</option>
-										<?php foreach ($profiles as $profile) { ?>
-											<option value="<?php echo $profile['id']; ?>"><?php echo $profile['name']; ?></option>
-										<?php } ?>
-									</select>
-								</div>
-							</div>
-							<!-- IP ADDRESS TYPE -->
-							<div class="form-group">
-								<label for="ipaddresstype" class="col-md-2 control-label">IP Address Type</label>
-								<div class="col-md-12">
-									<select class="form-control select2tag" id="ipaddresstype" name="ipaddresstype">
-										<option>None</option>
-										<option value='dhcp'>DHCP</option>
-										<option value='static'>Static</option>
-									</select>
-								</div>
-							</div>
-							<!-- DHCP POOL -->
-							<div id="dhcpgroup" class="form-group">
-								<label for="dhcppool" class="col-md-2 control-label">IP Pools</label>
-								<div class="col-md-12">
-									<select class="form-control select2tag" id="dhcppool" name="dhcppool">
-										<option value="None">None</option>
-										<?php foreach ($ipAddresses as $ipaddress) { ?>
-											<option value="<?php echo $ipaddress['framedipaddress']; ?>"><?php echo $ipaddress['framedipaddress']; ?><?php echo " (".$ipaddress['pool_name'].")"; ?></option>
-										<?php } ?>
-									</select>
-								</div>
-							</div>
-							<!-- IP ADDRESS -->
-							<div id="staticgroup" class="form-group">
-								<label for="staticip" class="col-md-2 control-label">Static IP Address</label>
-								<div class="col-md-12">
-									<select class="form-control select2tag" id="staticip" name="staticip">
-										<option value="None">None</option>
-										<?php foreach ($ipAddresses as $ipaddress) { ?>
-											<option value="<?php echo $ipaddress['framedipaddress']; ?>"><?php echo $ipaddress['framedipaddress']; ?><?php echo " (".$ipaddress['pool_name'].")"; ?></option>
-										<?php } ?>
-									</select>
-								</div>
-							</div>
-						</div>
+
+						<?php $this->load->view('admin/data_accounts/add'); ?>
+
 					</div>
 					<!-- /.tab-pane -->
 					<div class="tab-pane" id="tab_3">
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-						Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-						when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-						It has survived not only five centuries, but also the leap into electronic typesetting,
-						remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-						sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-						like Aldus PageMaker including versions of Lorem Ipsum.
+						<form>
+							<!-- USERNAME -->
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="portal_username"><?= trans('username') ?></label>
+								<div class="col-sm-10">
+									<input name="portal_username" type="text" class="form-control" id="portal_username" placeholder="" autocomplete="off" value="" required>
+								</div>
+							</div>
+							<!-- PASSWORD -->
+							<div class="form-group row">
+								<label class="col-sm-2 col-form-label" for="portal_password"><?= trans('password') ?></label>
+								<div class="col-sm-10">
+									<input type="password" name="portal_password" class="form-control" id="portal_password" placeholder="">
+								</div>
+							</div>
+						</form>
 					</div>
 					<!-- /.tab-pane -->
 				</div>
-
-				<!-- /.tab-content -->
-			</div><!-- /.card-body -->
+			</div>
 
 			<div class="card-footer">
 				<div class="form-group">
 					<div class="col-md-12">
 						<input type="submit" name="submit" value="<?= trans('add_user') ?>" class="btn btn-primary pull-right">
 					</div>
-				</div>			</div>
-
+				</div>
+			</div>
 			<?php echo form_close( ); ?>
 		</div>
-
 	</section>
   </div>
 
@@ -254,10 +209,36 @@
 
 
   <script>
+	  const componentForm = {
+		  street_number: "short_name",
+		  route: "long_name",
+		  locality: "long_name",
+		  administrative_area_level_1: "short_name",
+		  country: "long_name",
+		  postal_code: "short_name",
+	  };
+
 	  $(document).ready(function() {
 		  $('#dhcpgroup').hide();
 		  $('#staticgroup').hide();
 		  $("#data_account_form").hide();
+
+		  $('[data-toggle="switch"]').bootstrapSwitch();
+
+		  $('#cb_data_account').on('switchChange.bootstrapSwitch', function (event, state) {
+			  (state === false) ? $('#data_account_form').hide() : $('#data_account_form').show();
+		  });
+
+		  <?php if (!empty($this->general_settings['google_api_key'])) { ?>
+			  let options = {
+				  country: "ZA",
+				  location: "ZA",
+				  input: 'autocomplete',
+				  output: 'gps_coordinates',
+				  outputgrp: 'gps_marker_group'
+			  };
+			  buildGoogleMap('google-map', '0,0', false, options);
+		  <?php } ?>
 
 		  $(function() {
 			  $('#ipaddresstype').change(function(){
@@ -273,40 +254,15 @@
 			  $('#profile-input-account-code').attr("readonly", "true");
 			  $('#account_code_btn').attr("disabled", "true");
 		  }
-
 		  $( "#summary-input-type" ).change(function() {
 			  $("#firstname").removeClass("is-invalid");
 			  $("#lastname").removeClass("is-invalid");
 			  $("#company-name").removeClass("is-invalid");
 		  });
-
-		  <?php if (!empty($this->general_settings['google_api'])) { ?>
-
-		  let options = {
-			  country: "ZA",
-			  location: "ZA",
-			  input: 'physical_address',
-			  output: 'marker_gps_coordinates',
-			  outputgrp: 'gps_marker_group'
-		  };
-		  buildGoogleMap('google-map', '0,0', false, options);
-		  google.maps.event.addDomListener(document.getElementById('physical_address'), 'keydown', function(event) {
-			  if (event.keyCode === 13) {
-				  event.preventDefault();
-			  }
-		  });
-		  <?php } ?>
-	  });
-	  $("body").on("change",".tgl_checkbox",function(){
-		  if ($(this).is(':checked') === false) {
-			  $("#data_account_form").hide();
-		  } else {
-			  $("#data_account_form").show();
-		  }
 	  });
 
 	  function setActiveTab(tab) {
-		  $('.nav-pills .nav-item .nav-link').removeClass('active');
+		  $('.nav-item .nav-link').removeClass('active');
 		  $('.tab-content .tab-pane').removeClass('active');
 
 		  $('a[href="#' + tab + '"]').closest('a').addClass('active');
@@ -314,75 +270,75 @@
 	  }
 	  function generateAccountCode() {
 
-	  	if ($('#summary-input-type').val() == 0) {
-			let fname = $('#firstname').val().trim().toLowerCase();
+		  if ($('#summary-input-type').val() == 0) {
+			  let fname = $('#firstname').val().trim().toLowerCase();
 
-			if ($('#firstname').val().trim().length <= 0) {
-				$('#firstname').addClass("is-invalid");
-				return;
-			}
-			if ($('#firstname').val().trim().length >= 3) {
-				$.ajax({
-					type: "GET",
-					url: "<?php echo base_url("data/generate_account_code"); ?>",
-					dataType: "json",
-					data: {"name": fname},
-					success: function (data) {
-						if (data.status == 'OK') {
-							$('#profile-input-account-code').val(data.result);
-							$('#account_code_btn').attr("disabled", "true");
-							$('#firstname').removeClass("is-invalid")
-						} else if (data.status == 'ERR') {
-							$('#firstname').addClass("is-invalid");
-						} else {
-							alert("Error");
-						}
-					},
-					error: function (error) {
-						alert(error);
-					}
-				});
-			} else {
-				$('#profile-input-account-code').val('');
-				$('#account_code_btn').removeAttr("disabled");
-			}
-		}
-	  	if ($('#summary-input-type').val() == 1) {
-			let fname = $('#company-name').val().trim().toLowerCase();
+			  if ($('#firstname').val().trim().length <= 0) {
+				  $('#firstname').addClass("is-invalid");
+				  return;
+			  }
+			  if ($('#firstname').val().trim().length >= 3) {
+				  $.ajax({
+					  type: "GET",
+					  url: "<?php echo base_url("data/generate_user_account_code"); ?>",
+					  dataType: "json",
+					  data: {"name": fname},
+					  success: function (data) {
+						  if (data.status == 'OK') {
+							  $('#profile-input-account-code').val(data.result);
+							  $('#account_code_btn').attr("disabled", "true");
+							  $('#firstname').removeClass("is-invalid")
+						  } else if (data.status == 'ERR') {
+							  $('#firstname').addClass("is-invalid");
+						  } else {
+							  alert("Error");
+						  }
+					  },
+					  error: function (error) {
+						  alert(error);
+					  }
+				  });
+			  } else {
+				  $('#profile-input-account-code').val('');
+				  $('#account_code_btn').removeAttr("disabled");
+			  }
+		  }
+		  if ($('#summary-input-type').val() == 1) {
+			  let fname = $('#company-name').val().trim().toLowerCase();
 
-			if ($('#company-name').val().trim().length <= 0) {
-				$('#company-name').addClass("is-invalid");
-				return;
-			}
-			if ($('#company-name').val().trim().length >= 3) {
-				$.ajax({
-					type: "GET",
-					url: "<?php echo base_url("data/generate_account_code"); ?>",
-					dataType: "json",
-					data: {"name": fname},
-					success: function (data) {
-						if (data.status == 'OK') {
-							$('#profile-input-account-code').val(data.result);
-							$('#account_code_btn').attr("disabled", "true");
-							$('#company-name').removeClass("is-invalid")
-						} else if (data.status == 'ERR') {
-							$('#company-name').addClass("is-invalid");
-						} else {
-							alert("Error");
-						}
-					},
-					error: function (error) {
-						alert(error);
-					}
-				});
-			} else {
-				$('#profile-input-account-code').val('');
-				$('#account_code_btn').removeAttr("disabled");
-			}
-		}
-	  	else {
+			  if ($('#company-name').val().trim().length <= 0) {
+				  $('#company-name').addClass("is-invalid");
+				  return;
+			  }
+			  if ($('#company-name').val().trim().length >= 3) {
+				  $.ajax({
+					  type: "GET",
+					  url: "<?php echo base_url("data/generate_user_account_code"); ?>",
+					  dataType: "json",
+					  data: {"name": fname},
+					  success: function (data) {
+						  if (data.status == 'OK') {
+							  $('#profile-input-account-code').val(data.result);
+							  $('#account_code_btn').attr("disabled", "true");
+							  $('#company-name').removeClass("is-invalid")
+						  } else if (data.status == 'ERR') {
+							  $('#company-name').addClass("is-invalid");
+						  } else {
+							  alert("Error");
+						  }
+					  },
+					  error: function (error) {
+						  alert(error);
+					  }
+				  });
+			  } else {
+				  $('#profile-input-account-code').val('');
+				  $('#account_code_btn').removeAttr("disabled");
+			  }
+		  }
+		  else {
 
-		}
+		  }
 
 
 	  }
@@ -402,7 +358,7 @@
 
 		  $.ajax({
 			  type: "GET",
-			  url: "<?php echo base_url("data/generate_ppp_username"); ?>",
+			  url: "<?php echo base_url("data/generate_data_account_username"); ?>",
 			  dataType: "json",
 			  data: {"firstname": fname, "lastname": lname},
 			  success: function (data) {
@@ -427,9 +383,9 @@
 
 		  $.ajax({
 			  type: "GET",
-			  url: "<?php echo base_url("data/check_username"); ?>",
+			  url: "<?php echo base_url("data/check_data_account_username"); ?>",
 			  dataType: "json",
-			  data: {"username": fname},
+			  data: {"un": fname},
 			  success: function (data) {
 				  if (data == false) {
 					  $('#username').removeClass("is-invalid");
@@ -459,19 +415,8 @@
 			  $("#company-name").removeClass("is-invalid");
 		  }
 	  }
-	  function copyGPSCoordinates(gpsmarker){
-		  if ($('#marker_gps_coordinates').val() === '')
-		  {
-			  alert('Please drag the marker to obtain gps coordinates');
-			  return ;
-		  }
-		  else {
-			  $('#gps_coordinates').val($('#marker_gps_coordinates').val());
-			  $("#physical_address").removeClass("is-invalid");
-			  $("#gps_coordinates").removeClass("is-invalid");
-		  }
-	  }
-	  function showContactAddress(address) {
+	  function showContactAddress() {
+		  let address = $('#autocomplete').val();
 
 		  if ($('#gps_coordinates').val() !== '') {
 			  address = $('#gps_coordinates').val();
@@ -525,7 +470,6 @@
 		  }
 	  }
 
-
 	  (function($){
 		  $.fn.extend({
 			  donetyping: function(callback,timeout){
@@ -568,7 +512,7 @@
 	  });
 	  $('#firstname').donetyping(function(){
 		  if ($('#firstname').val().trim().length > 0 && $('#lastname').val().trim().length > 0) {
-	  		generatePPPUsername();
+			  generatePPPUsername();
 		  }
 	  });
 	  $('#lastname').donetyping(function(){

@@ -70,19 +70,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
 */
+$CI =& get_instance();
+
 $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'radius',
-	'password' => '-Utl-3gCA03sG7vX',
-	'database' => 'pulseisp_db',
-	'dbdriver' => 'mysqli',
+	'hostname' => $CI->config->item('CONFIG_DB_HOST'),
+	'username' => $CI->config->item('CONFIG_DB_USER'),
+	'password' => $CI->config->item('CONFIG_DB_PASS'),
+	'database' => $CI->config->item('CONFIG_DB_NAME'),
+	'dbdriver' => $CI->config->item('CONFIG_DB_ENGINE'),
 	'dbprefix' => '',
 	'pconnect' => FALSE,
-	'db_debug' => TRUE, /*(ENVIRONMENT !== 'production'),*/
+	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',

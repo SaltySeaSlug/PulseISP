@@ -17,7 +17,7 @@
   <!-- /.control-sidebar -->
 <?php endif; ?>
 
-  
+
 </div>
 <!-- ./wrapper -->
 
@@ -30,15 +30,12 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url() ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 <!-- Slimscroll -->
 <script src="<?= base_url() ?>assets/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<?= base_url() ?>assets/plugins/fastclick/fastclick.js"></script>
-
 <!-- overlayScrollbars -->
 <script src="<?= base_url() ?>assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-
 <!-- AdminLTE App -->
 <script src="<?= base_url() ?>assets/dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -47,15 +44,15 @@
 <script src="<?= base_url() ?>assets/plugins/notify/notify.min.js"></script>
 <!-- DROPZONE -->
 <script src="<?= base_url() ?>assets/plugins/dropzone/dropzone.js" type="text/javascript"></script>
-
 <script src="<?= base_url() ?>assets/dist/js/functions.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/plugins/select2/select2.full.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js" type="text/javascript"></script>
+<script src="<?= base_url() ?>assets/plugins/bootstrap-switch/js/bootstrap-switch.js" type="text/javascript"></script>
 
 
-<?php if (!empty($this->general_settings['google_api'])) { ?>
-	<script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->general_settings['google_api']; ?>&libraries=places"></script>
+<?php if (!empty($this->general_settings['google_api_key'])) { ?>
+	<script defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->general_settings['google_api_key']; ?><?php echo $this->general_settings['google_places_is_active'] == true ? '&libraries=places' : '' ?>"></script>
 <?php } ?>
 
 <script>

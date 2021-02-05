@@ -6,7 +6,7 @@
 		}
 
 		public function add_nas($data){
-			$this->db->insert('radnas', $data);
+			$this->db->insert($this->config->item('CONFIG_DB_TBL_RADNAS'), $data);
 			return $this->db->insert_id();
 		}
 
@@ -15,14 +15,14 @@
 		public function get_all_nas_devices(){
 			$this->db->select('*');
 			//$this->db->where('is_admin',0);
-			return $this->db->get('radnas')->result_array();
+			return $this->db->get($this->config->item('CONFIG_DB_TBL_RADNAS'))->result_array();
 		}
 
 
 		//---------------------------------------------------
 		// Get user detial by ID
 		public function get_nas_by_id($id){
-			$query = $this->db->get_where('radnas', array('id' => $id));
+			$query = $this->db->get_where($this->config->item('CONFIG_DB_TBL_RADNAS'), array('id' => $id));
 			return $result = $query->row_array();
 		}
 
@@ -30,7 +30,7 @@
 		// Edit user Record
 		public function edit_nas($data, $id){
 			$this->db->where('id', $id);
-			$this->db->update('radnas', $data);
+			$this->db->update($this->config->item('CONFIG_DB_TBL_RADNAS'), $data);
 			return true;
 		}
 
@@ -41,7 +41,7 @@
 		{		
 			$this->db->set('is_active', $this->input->post('status'));
 			$this->db->where('id', $this->input->post('id'));
-			$this->db->update('radnas');
+			$this->db->update($this->config->item('CONFIG_DB_TBL_RADNAS'));
 		}
 
 		function update_last_contact()

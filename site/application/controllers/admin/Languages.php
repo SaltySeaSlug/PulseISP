@@ -5,8 +5,9 @@ class Languages extends MY_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-
+		auth_check(); // check login auth
 		$this->rbac->check_module_access();
+
 		$this->load->model('admin/languages_model', 'languages_model');
 	}
 
