@@ -1,0 +1,21 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+$config['run_setup'] = FALSE;
+
+$config['CONFIG_DB_ENGINE'] = 'mysqli';
+$config['CONFIG_DB_HOST'] = 'localhost';
+$config['CONFIG_DB_USER'] = 'radius';
+$config['CONFIG_DB_PASS'] = 'F0R5lEX6yFs-DjO9';
+$config['CONFIG_DB_NAME'] = 'pulseisp_db';
+
+$config['CONFIG_DB_TBL_RADCHECK'] = 'radcheck';
+$config['CONFIG_DB_TBL_RADREPLY'] = 'radreply';
+$config['CONFIG_DB_TBL_RADGROUPREPLY'] = 'radgroupreply';
+$config['CONFIG_DB_TBL_RADGROUPCHECK'] = 'radgroupcheck';
+$config['CONFIG_DB_TBL_RADHG'] = 'radhuntgroup';
+$config['CONFIG_DB_TBL_RADUSERGROUP'] = 'radusergroup';
+$config['CONFIG_DB_TBL_RADNAS'] = 'radnas';
+$config['CONFIG_DB_TBL_RADPOSTAUTH'] = 'radpostauth';
+$config['CONFIG_DB_TBL_RADACCT'] = 'radacct';
+$config['CONFIG_DB_TBL_RADIPPOOL'] = 'radippool';
+$config['CONFIG_DB_TBL_RADDICTIONARY'] = 'raddictionary';

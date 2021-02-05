@@ -495,6 +495,9 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 ######################################################################################################################## Import Database
 
 ######################################################################################################################## Copy web GUI to Apache public folder
+MYSQL_HOST='localhost'
+MYSQL_PORT=
+
 apt-get install -y curl php-cli php-mbstring git unzip
 curl -sS https://getcomposer.org/installer -o composer-setup.php
 sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
@@ -508,12 +511,19 @@ sudo composer -n install
 
 mkdir ${WWW_PATH:?}/application/config/production
 
-cp $TEMP_DIR/templates/site/database.php.template ${WWW_PATH:?}/application/config/production/database.php
+cp $TEMP_DIR/templates/site/custom_config.php.template ${WWW_PATH:?}/application/config/production/custom_config.php
 #cp $TEMP_DIR/templates/site/nas_add.php.template $WWW_PATH/application/views/nas/nas_add.php
 
-sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/production/database.php
-sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/production/database.php
-sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/production/database.php
+sed -i "s/\$configValues\['CONFIG_DB_HOST'\] = .*;/\$configValues\['CONFIG_DB_HOST'\] = '$MYSQL_HOST';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+#sed -i "s/\$configValues\['CONFIG_DB_PORT'\] = .*;/\$configValues\['CONFIG_DB_PORT'\] = '$MYSQL_PORT';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+sed -i "s/\$configValues\['CONFIG_DB_PASS'\] = .*;/\$configValues\['CONFIG_DB_PASS'\] = '$MYSQL_RAD_PASS';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+sed -i "s/\$configValues\['CONFIG_DB_USER'\] = .*;/\$configValues\['CONFIG_DB_USER'\] = '$MYSQL_RAD_USER';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+sed -i "s/\$configValues\['CONFIG_DB_NAME'\] = .*;/\$configValues\['CONFIG_DB_NAME'\] = '$MYSQL_DB';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+
+
+#sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/production/custom_config.php
+#sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/production/custom_config.php
+#sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/production/custom_config.php
 
 sed -i "s/\define('ENVIRONMENT', isset(\$_SERVER['CI_ENV']) ? \$_SERVER['CI_ENV'] : 'development');/define('ENVIRONMENT', isset(\$_SERVER['CI_ENV']) ? \$_SERVER['CI_ENV'] : 'production');/g" ${WWW_PATH:?}/index.php
 
