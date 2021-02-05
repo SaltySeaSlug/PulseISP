@@ -94,34 +94,34 @@ fi
 ######################################################################################################################## Set timezone
 timedatectl set-timezone Africa/Johannesburg
 
-#croncmd="/usr/bin/php $WWW_PATH/crons/cron.freeradius_cleansession.php 2>&1 >/dev/null"
+#croncmd="/usr/bin/php ${WWW_PATH:?}/crons/cron.freeradius_cleansession.php 2>&1 >/dev/null"
 #cronjob="* * * * * $croncmd"
 #( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 # remove
 #( crontab -l | grep -v -F "$croncmd" ) | crontab -
 ######################################################################################################################## Verify Temp Directory
-echo -e "$COL_YELLOW Verifying $TEMP_DIR directory. $COL_RESET"
+echo -e "$COL_YELLOW Verifying ${TEMP_DIR:?} directory. $COL_RESET"
 sleep 1
-if [ ! -d "$TEMP_DIR" ]; then
-    echo -e "$COL_RED $TEMP_DIR folder not found. $COL_RESET"
+if [ ! -d "${TEMP_DIR:?}" ]; then
+    echo -e "$COL_RED ${TEMP_DIR:?} folder not found. $COL_RESET"
     echo -e "$COL_MAGENTA Creating directory. $COL_RESET"
     echo -e "$COL_GREEN OK. $COL_RESET"
-    mkdir $TEMP_DIR
+    mkdir ${TEMP_DIR:?}
 else
     echo -e "$COL_GREEN OK. $COL_RESET"
 fi
-cd $TEMP_DIR || echo "Failure";
+cd ${TEMP_DIR:?} || echo "Failure";
 
 rm -fr "${TEMP_DIR:?}/"*
 rm -fr "${TEMP_DIR:?}/".??*
 
 ######################################################################################################################## Verify Installation URL
 echo -e "$COL_YELLOW Checking if install url is accessible. $COL_RESET"
-cd $TEMP_DIR || echo "Unable to access directory."
+cd ${TEMP_DIR:?} || echo "Unable to access directory."
 
 wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 0 -q https://raw.githubusercontent.com/SaltySeaSlug/PulseISP/main/.gitignore
 
-if [ ! -f $TEMP_DIR/.gitignore ]; then
+if [ ! -f ${TEMP_DIR:?}/.gitignore ]; then
     echo
     echo -e "$COL_RED ERROR: Unable to contact $INSTALL_URL, or possibly internet is not working or your IP is in black list at destination server $COL_RESET"
     echo -e "$COL_RED ERROR: Please check manual if $INSTALL_URL is accessible or not or if it have required files $COL_RESET"
@@ -192,7 +192,7 @@ apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt auto
 echo -e "$COL_YELLOW Install base packages $COL_RESET"
 
 apt install -y cron openssh-server vim sysstat man-db wget rsync
-git clone "$INSTALL_URL" "$TEMP_DIR"
+git clone "$INSTALL_URL" "${TEMP_DIR:?}"
 
 ######################################################################################################################## Start Test Code (26-01-2020)
 ######################################################################################################################## Install NTP service
@@ -254,14 +254,14 @@ mkdir ${WWW_PATH}
 mkdir -p /var/lib/php/sessions
 chown root:www-data /var/lib/php/sessions
 chmod 770 /var/lib/php/sessions
-cp $TEMP_DIR/templates/ubuntu/apache/default.template /etc/apache2/sites-available/
-cp $TEMP_DIR/templates/ubuntu/apache/apache2.conf.template /etc/apache2/apache2.conf
-cp $TEMP_DIR/templates/ubuntu/apache/ports.conf.template /etc/apache2/ports.conf
-cp $TEMP_DIR/templates/ubuntu/apache/mpm_prefork.conf.template  /etc/apache2/mods-available/mpm_prefork.conf
-cp $TEMP_DIR/templates/ubuntu/apache/ssl.conf.template  /etc/apache2/mods-available/ssl.conf
-cp $TEMP_DIR/templates/ubuntu/apache/status.conf.template  /etc/apache2/mods-available/status.conf
-cp $TEMP_DIR/templates/ubuntu/php/php.ini.template /etc/php/7.4/apache2/php.ini
-cp $TEMP_DIR/templates/ubuntu/php/php.ini.template /etc/php/7.4/fpm/php.ini
+cp ${TEMP_DIR:?}/templates/ubuntu/apache/default.template /etc/apache2/sites-available/
+cp ${TEMP_DIR:?}/templates/ubuntu/apache/apache2.conf.template /etc/apache2/apache2.conf
+cp ${TEMP_DIR:?}/templates/ubuntu/apache/ports.conf.template /etc/apache2/ports.conf
+cp ${TEMP_DIR:?}/templates/ubuntu/apache/mpm_prefork.conf.template  /etc/apache2/mods-available/mpm_prefork.conf
+cp ${TEMP_DIR:?}/templates/ubuntu/apache/ssl.conf.template  /etc/apache2/mods-available/ssl.conf
+cp ${TEMP_DIR:?}/templates/ubuntu/apache/status.conf.template  /etc/apache2/mods-available/status.conf
+cp ${TEMP_DIR:?}/templates/ubuntu/php/php.ini.template /etc/php/7.4/apache2/php.ini
+cp ${TEMP_DIR:?}/templates/ubuntu/php/php.ini.template /etc/php/7.4/fpm/php.ini
 
 ######################################################################################################################## Setup Apache Variables
 echo -e "$COL_YELLOW Setup Apache Variables $COL_RESET"
@@ -319,7 +319,7 @@ echo -e "$COL_YELLOW Modify Firewall Rules $COL_RESET"
 
 ufw allow to any port 1812 proto udp && sudo ufw allow to any port 1813 proto udp
 iptables -I INPUT -p tcp --dport 80 -j ACCEPT && ufw allow 80 && ufw allow 443
-sudo bash -c "echo -e '<?php\nphpinfo();\n?>' > $WWW_PATH/info.php"
+sudo bash -c "echo -e '<?php\nphpinfo();\n?>' > ${WWW_PATH:?}/info.php"
 
 ######################################################################################################################## MySQL Server Package Installation Tasks
 echo -e "$COL_YELLOW MySQL Server Package Installation Tasks $COL_RESET"
@@ -354,7 +354,7 @@ echo -e "$COL_YELLOW Set some security for MySQL $COL_RESET"
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;"
-mysql $MYSQL_DB < $TEMP_DIR/db/$MYSQL_SCHEME
+mysql $MYSQL_DB < ${TEMP_DIR:?}/db/$MYSQL_SCHEME
 
 mysql -e "DELETE FROM mysql.user WHERE User='';"
 mysql -e "DELETE FROM mysql.user WHERE User='$MYSQL_USR' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
@@ -367,7 +367,7 @@ systemctl restart mysql
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Set MySQL root password in /root/.my.cnf
-cp ${$TEMP_DIR:?}/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
+cp ${TEMP_DIR:?}/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
 sed -i "s/\$mysqlrootpassword/$MYSQL_PASS/g" /root/.my.cnf
 sed -i "s/\$mysqlrootusername/$MYSQL_USR/g" /root/.my.cnf
 
@@ -442,17 +442,17 @@ FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
 
 ######################################################################################################################## Copy over templates
-cp $TEMP_DIR/templates/freeradius/mods-available/sql.template ${$FREERADIUS_PATH:?}/mods-available/sql
-#cp $TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
-cp $TEMP_DIR/templates/freeradius/sites-available/default.template ${$FREERADIUS_PATH:?}/sites-available/default
-cp $TEMP_DIR/templates/freeradius/clients.conf.template ${$FREERADIUS_PATH:?}/clients.conf
-cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template ${$FREERADIUS_PATH:?}/mods-config/sql/ippool/mysql/queries.conf
-cp $TEMP_DIR/templates/freeradius/mods-config/sql.main.mysql.queries.config.template ${$FREERADIUS_PATH:?}/mods-config/sql/main/mysql/queries.conf
+cp ${TEMP_DIR:?}/templates/freeradius/mods-available/sql.template ${FREERADIUS_PATH:?}/mods-available/sql
+#cp ${TEMP_DIR:?}/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
+cp ${TEMP_DIR:?}/templates/freeradius/sites-available/default.template ${FREERADIUS_PATH:?}/sites-available/default
+cp ${TEMP_DIR:?}/templates/freeradius/clients.conf.template ${FREERADIUS_PATH:?}/clients.conf
+cp ${TEMP_DIR:?}/templates/freeradius/mods-config/ippool.mysql.queries.conf.template ${FREERADIUS_PATH:?}/mods-config/sql/ippool/mysql/queries.conf
+cp ${TEMP_DIR:?}/templates/freeradius/mods-config/sql.main.mysql.queries.config.template ${FREERADIUS_PATH:?}/mods-config/sql/main/mysql/queries.conf
 
 
-sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" ${$FREERADIUS_PATH:?}/mods-available/sql
-sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" ${$FREERADIUS_PATH:?}/mods-available/sql
-sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" ${$FREERADIUS_PATH:?}/mods-available/sql
+sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" ${FREERADIUS_PATH:?}/mods-available/sql
+sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" ${FREERADIUS_PATH:?}/mods-available/sql
+sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" ${FREERADIUS_PATH:?}/mods-available/sql
 
 ######################################################################################################################## Start Test Code (2020-01-26)
 #ln -s /etc/freeradius/3.0/sites-enabled/status status /etc/freeradius/3.0/sites-available/status status
@@ -460,13 +460,13 @@ sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" ${$FREERADIUS_PATH:?}/mods-available/sql
 #sed -i 's/password = "radpass"/password = "'$RADIUS_PWD'"/' /etc/freeradius/3.0/mods-available/sql.conf
 #sed -i 's/#port = 3306/port = 3306/' /etc/freeradius/3.0/mods-available/sql.conf
 
-sed -i -e 's/$INCLUDE sql.conf/\n$INCLUDE sql.conf/g' ${$FREERADIUS_PATH:?}/radiusd.conf
-sed -i -e 's|$INCLUDE sql/mysql/counter.conf|\n$INCLUDE sql/mysql/counter.conf|g' ${$FREERADIUS_PATH:?}/radiusd.conf
-sed -i -e 's|authorize {|authorize {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/inner-tunnel
-sed -i -e 's|session {|session {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/inner-tunnel
-sed -i -e 's|authorize {|authorize {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/default
-sed -i -e 's|session {|session {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/default
-sed -i -e 's|accounting {|accounting {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/default
+sed -i -e 's/$INCLUDE sql.conf/\n$INCLUDE sql.conf/g' ${FREERADIUS_PATH:?}/radiusd.conf
+sed -i -e 's|$INCLUDE sql/mysql/counter.conf|\n$INCLUDE sql/mysql/counter.conf|g' ${FREERADIUS_PATH:?}/radiusd.conf
+sed -i -e 's|authorize {|authorize {\nsql|' ${FREERADIUS_PATH:?}/sites-available/inner-tunnel
+sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/inner-tunnel
+sed -i -e 's|authorize {|authorize {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
+sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
+sed -i -e 's|accounting {|accounting {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
 
 ######################################################################################################################## End Test Code (2020-01-26)
 
@@ -474,11 +474,11 @@ sed -i -e 's|accounting {|accounting {\nsql|' ${$FREERADIUS_PATH:?}/sites-availa
 
 
 
-sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${$FREERADIUS_PATH:?}/clients.conf
+sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH:?}/clients.conf
 
 ######################################################################################################################## Setup Symbolic Links
-ln -s ${$FREERADIUS_PATH:?}/mods-available/sql ${$FREERADIUS_PATH:?}/mods-enabled/
-ln -s ${$FREERADIUS_PATH:?}/mods-available/sqlippool ${$FREERADIUS_PATH:?}/mods-enabled/
+ln -s ${FREERADIUS_PATH:?}/mods-available/sql ${FREERADIUS_PATH:?}/mods-enabled/
+ln -s ${FREERADIUS_PATH:?}/mods-available/sqlippool ${FREERADIUS_PATH:?}/mods-enabled/
 
 #ln -s /etc/freeradius/3.0/mods-available/sqlcounter /etc/freeradius/3.0/mods-enabled/
 #ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
@@ -511,7 +511,7 @@ sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 
 rm -fr "${WWW_PATH:?}/"*
-cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
+cp -fr ${TEMP_DIR:?}/site/. ${WWW_PATH:?}/
 
 cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
@@ -560,7 +560,7 @@ sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
 
 #chmod 777 var/www/html/application/config/database.php
 #chmod 777 /var/www/html/application/session
-#rm $WWW_PATH/install
+#rm ${WWW_PATH:?}/install
 #rm /var/www/html/install
 
 ######################################################################################################################## Configure Rights
@@ -689,16 +689,16 @@ cat /root/setup_report
 2 ) echo "Selected: Update"
 #----------------------------------------------------------------------- DOWNLOADING
 
-git clone "$INSTALL_URL" "$TEMP_DIR"
+git clone "$INSTALL_URL" "${TEMP_DIR:?}"
 
 mkdir $BACKUP_DIR
 
-cp $WWW_PATH/application/config/database.php /backup/database.php
+cp ${WWW_PATH:?}/application/config/database.php /backup/database.php
 
 rm -fr "${WWW_PATH:?}/"*
-cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
+cp -fr ${TEMP_DIR:?}/site/. ${WWW_PATH:?}/
 
-cp /backup/database.php $WWW_PATH/application/config/database.php
+cp /backup/database.php ${WWW_PATH:?}/application/config/database.php
 
 #rm -fr "/backup"
 #rm -fr ${WWW_PATH}/install
