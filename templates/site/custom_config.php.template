@@ -4,9 +4,10 @@ $config['run_setup'] = FALSE;
 
 $config['CONFIG_DB_ENGINE'] = 'mysqli';
 $config['CONFIG_DB_HOST'] = 'localhost';
-$config['CONFIG_DB_USER'] = 'radius';
-$config['CONFIG_DB_PASS'] = 'F0R5lEX6yFs-DjO9';
-$config['CONFIG_DB_NAME'] = 'pulseisp_db';
+$config['CONFIG_DB_PORT'] = '3306';
+$config['CONFIG_DB_USER'] = '';
+$config['CONFIG_DB_PASS'] = '';
+$config['CONFIG_DB_NAME'] = '';
 
 $config['CONFIG_DB_TBL_RADCHECK'] = 'radcheck';
 $config['CONFIG_DB_TBL_RADREPLY'] = 'radreply';

@@ -325,10 +325,18 @@ sudo bash -c "echo -e '<?php\nphpinfo();\n?>' > $WWW_PATH/info.php"
 echo -e "$COL_YELLOW MySQL Server Package Installation Tasks $COL_RESET"
 
 ######################################################################################################################## MySQL Variables
-MYSQL_USR="root"
-MYSQL_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
+# Server details
+MYSQL_HOST='localhost'
+MYSQL_PORT=3306
 MYSQL_DB="pulseisp_db"
 MYSQL_SCHEME="pulseisp_db.sql"
+
+# Current details
+MYSQL_USR="root"
+MYSQL_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
+# New user details
 MYSQL_RAD_USER="radius"
 MYSQL_RAD_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
@@ -344,8 +352,8 @@ chown mysql:mysql /var/lib/mysqltmp
 echo -e "$COL_YELLOW Set some security for MySQL $COL_RESET"
 
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
-mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql -e "CREATE DATABASE $MYSQL_DB;"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
 mysql $MYSQL_DB < $TEMP_DIR/db/$MYSQL_SCHEME
 
 mysql -e "DELETE FROM mysql.user WHERE User='';"
@@ -359,7 +367,7 @@ systemctl restart mysql
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Set MySQL root password in /root/.my.cnf
-cp $TEMP_DIR/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
+cp ${$TEMP_DIR:?}/templates/ubuntu/mysql/dot.my.cnf.template /root/.my.cnf
 sed -i "s/\$mysqlrootpassword/$MYSQL_PASS/g" /root/.my.cnf
 sed -i "s/\$mysqlrootusername/$MYSQL_USR/g" /root/.my.cnf
 
@@ -384,7 +392,7 @@ apt-get update
 apt-get install -y holland python3-mysqldb
 
 ######################################################################################################################## Copy over templates and configure backup directory
-cp $TEMP_DIR/templates/ubuntu/holland/default.conf.template /etc/holland/backupsets/default.conf
+cp ${TEMP_DIR:?}/templates/ubuntu/holland/default.conf.template /etc/holland/backupsets/default.conf
 
 ######################################################################################################################## Setup nightly cronjob
 echo "30 3 * * * root /usr/sbin/holland -q bk" > /etc/cron.d/holland
@@ -404,7 +412,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get install -y phpmyadmin
 
 ######################################################################################################################## Copy over templates
-cp $TEMP_DIR/templates/ubuntu/phpmyadmin/phpMyAdmin.conf.template /etc/phpmyadmin/phpMyAdmin.conf
+cp ${TEMP_DIR:?}/templates/ubuntu/phpmyadmin/phpMyAdmin.conf.template /etc/phpmyadmin/phpMyAdmin.conf
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Setup PHPMyAdmin variables
@@ -428,23 +436,23 @@ systemctl restart apache2
 ########################################################################################################################
 
 ######################################################################################################################## FreeRadius Variables
-FREERADIUS_PATH="/etc/freeradius"
+FREERADIUS_PATH="/etc/freeradius/3.0"
 FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
 apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
 
 ######################################################################################################################## Copy over templates
-cp $TEMP_DIR/templates/freeradius/mods-available/sql.template /etc/freeradius/3.0/mods-available/sql
+cp $TEMP_DIR/templates/freeradius/mods-available/sql.template ${$FREERADIUS_PATH:?}/mods-available/sql
 #cp $TEMP_DIR/templates/freeradius/mods-available/sqlcounter.template /etc/freeradius/3.0/mods-available/sqlcounter
-cp $TEMP_DIR/templates/freeradius/sites-available/default.template /etc/freeradius/3.0/sites-available/default
-cp $TEMP_DIR/templates/freeradius/clients.conf.template /etc/freeradius/3.0/clients.conf
-cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template /etc/freeradius/3.0/mods-config/sql/ippool/mysql/queries.conf
-cp $TEMP_DIR/templates/freeradius/mods-config/sql.main.mysql.queries.config.template /etc/freeradius/3.0/mods-config/sql/main/mysql/queries.conf
+cp $TEMP_DIR/templates/freeradius/sites-available/default.template ${$FREERADIUS_PATH:?}/sites-available/default
+cp $TEMP_DIR/templates/freeradius/clients.conf.template ${$FREERADIUS_PATH:?}/clients.conf
+cp $TEMP_DIR/templates/freeradius/mods-config/ippool.mysql.queries.conf.template ${$FREERADIUS_PATH:?}/mods-config/sql/ippool/mysql/queries.conf
+cp $TEMP_DIR/templates/freeradius/mods-config/sql.main.mysql.queries.config.template ${$FREERADIUS_PATH:?}/mods-config/sql/main/mysql/queries.conf
 
 
-sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" /etc/freeradius/3.0/mods-available/sql
-sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" /etc/freeradius/3.0/mods-available/sql
-sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-available/sql
+sed -i "s/\$MYSQL_RAD_USER/$MYSQL_RAD_USER/g" ${$FREERADIUS_PATH:?}/mods-available/sql
+sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" ${$FREERADIUS_PATH:?}/mods-available/sql
+sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" ${$FREERADIUS_PATH:?}/mods-available/sql
 
 ######################################################################################################################## Start Test Code (2020-01-26)
 #ln -s /etc/freeradius/3.0/sites-enabled/status status /etc/freeradius/3.0/sites-available/status status
@@ -452,13 +460,13 @@ sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" /etc/freeradius/3.0/mods-available/sql
 #sed -i 's/password = "radpass"/password = "'$RADIUS_PWD'"/' /etc/freeradius/3.0/mods-available/sql.conf
 #sed -i 's/#port = 3306/port = 3306/' /etc/freeradius/3.0/mods-available/sql.conf
 
-sed -i -e 's/$INCLUDE sql.conf/\n$INCLUDE sql.conf/g' /etc/freeradius/3.0/radiusd.conf
-sed -i -e 's|$INCLUDE sql/mysql/counter.conf|\n$INCLUDE sql/mysql/counter.conf|g' /etc/freeradius/3.0/radiusd.conf
-sed -i -e 's|authorize {|authorize {\nsql|' /etc/freeradius/3.0/sites-available/inner-tunnel
-sed -i -e 's|session {|session {\nsql|' /etc/freeradius/3.0/sites-available/inner-tunnel
-sed -i -e 's|authorize {|authorize {\nsql|' /etc/freeradius/3.0/sites-available/default
-sed -i -e 's|session {|session {\nsql|' /etc/freeradius/3.0/sites-available/default
-sed -i -e 's|accounting {|accounting {\nsql|' /etc/freeradius/3.0/sites-available/default
+sed -i -e 's/$INCLUDE sql.conf/\n$INCLUDE sql.conf/g' ${$FREERADIUS_PATH:?}/radiusd.conf
+sed -i -e 's|$INCLUDE sql/mysql/counter.conf|\n$INCLUDE sql/mysql/counter.conf|g' ${$FREERADIUS_PATH:?}/radiusd.conf
+sed -i -e 's|authorize {|authorize {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/inner-tunnel
+sed -i -e 's|session {|session {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/inner-tunnel
+sed -i -e 's|authorize {|authorize {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/default
+sed -i -e 's|session {|session {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/default
+sed -i -e 's|accounting {|accounting {\nsql|' ${$FREERADIUS_PATH:?}/sites-available/default
 
 ######################################################################################################################## End Test Code (2020-01-26)
 
@@ -466,11 +474,11 @@ sed -i -e 's|accounting {|accounting {\nsql|' /etc/freeradius/3.0/sites-availabl
 
 
 
-sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" /etc/freeradius/3.0/clients.conf
+sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${$FREERADIUS_PATH:?}/clients.conf
 
 ######################################################################################################################## Setup Symbolic Links
-ln -s /etc/freeradius/3.0/mods-available/sql /etc/freeradius/3.0/mods-enabled/
-ln -s /etc/freeradius/3.0/mods-available/sqlippool /etc/freeradius/3.0/mods-enabled/
+ln -s ${$FREERADIUS_PATH:?}/mods-available/sql ${$FREERADIUS_PATH:?}/mods-enabled/
+ln -s ${$FREERADIUS_PATH:?}/mods-available/sqlippool ${$FREERADIUS_PATH:?}/mods-enabled/
 
 #ln -s /etc/freeradius/3.0/mods-available/sqlcounter /etc/freeradius/3.0/mods-enabled/
 #ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
@@ -495,8 +503,7 @@ ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
 ######################################################################################################################## Import Database
 
 ######################################################################################################################## Copy web GUI to Apache public folder
-MYSQL_HOST='localhost'
-MYSQL_PORT=
+
 
 apt-get install -y curl php-cli php-mbstring git unzip
 curl -sS https://getcomposer.org/installer -o composer-setup.php
@@ -509,34 +516,37 @@ cp -fr $TEMP_DIR/site/. ${WWW_PATH:?}/
 cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
 
-mkdir ${WWW_PATH:?}/application/config/production
+# Check if production directory exists, if not create
+if [ ! -d "${WWW_PATH:?}/application/config/production" ]
+then
+  mkdir ${WWW_PATH:?}/application/config/production
+fi
 
-cp $TEMP_DIR/templates/site/custom_config.php.template ${WWW_PATH:?}/application/config/production/custom_config.php
-#cp $TEMP_DIR/templates/site/nas_add.php.template $WWW_PATH/application/views/nas/nas_add.php
+# Check if session directory exists, if not create
+if [ ! -d "${WWW_PATH:?}/application/session" ]
+then
+  mkdir ${WWW_PATH:?}/application/session
+fi
 
-sed -i "s/\$configValues\['CONFIG_DB_HOST'\] = .*;/\$configValues\['CONFIG_DB_HOST'\] = '$MYSQL_HOST';/" ${WWW_PATH:?}/application/config/production/custom_config.php
-#sed -i "s/\$configValues\['CONFIG_DB_PORT'\] = .*;/\$configValues\['CONFIG_DB_PORT'\] = '$MYSQL_PORT';/" ${WWW_PATH:?}/application/config/production/custom_config.php
-sed -i "s/\$configValues\['CONFIG_DB_PASS'\] = .*;/\$configValues\['CONFIG_DB_PASS'\] = '$MYSQL_RAD_PASS';/" ${WWW_PATH:?}/application/config/production/custom_config.php
-sed -i "s/\$configValues\['CONFIG_DB_USER'\] = .*;/\$configValues\['CONFIG_DB_USER'\] = '$MYSQL_RAD_USER';/" ${WWW_PATH:?}/application/config/production/custom_config.php
-sed -i "s/\$configValues\['CONFIG_DB_NAME'\] = .*;/\$configValues\['CONFIG_DB_NAME'\] = '$MYSQL_DB';/" ${WWW_PATH:?}/application/config/production/custom_config.php
-
-
-#sed -i "s/\$mysqlrootuser/$MYSQL_RAD_USER/g" ${WWW_PATH:?}/application/config/production/custom_config.php
-#sed -i "s/\$mysqlrootpass/$MYSQL_RAD_PASS/g" ${WWW_PATH:?}/application/config/production/custom_config.php
-#sed -i "s/\$mysqldatabase/$MYSQL_DB/g" ${WWW_PATH:?}/application/config/production/custom_config.php
-
-sed -i "s/\define('ENVIRONMENT', isset(\$_SERVER['CI_ENV']) ? \$_SERVER['CI_ENV'] : 'development');/define('ENVIRONMENT', isset(\$_SERVER['CI_ENV']) ? \$_SERVER['CI_ENV'] : 'production');/g" ${WWW_PATH:?}/index.php
-
-#sed -i "s/\$$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" $WWW_PATH/application/views/nas/nas_add.php
+if [ -d "${WWW_PATH:?}/application/config/development" ]
+then
+  rmdir -fr ${WWW_PATH:?}/application/config/development
+fi
 
 
-#currentUser="$(whoami)"
-#usermod -a -G $WWW_USR "$currentUser"
-#chgrp -R $WWW_USR /var/www
-#chmod -R g+w /var/www
+# Copy custom_config template to production folder
+cp ${TEMP_DIR:?}/templates/site/custom_config.php.template ${WWW_PATH:?}/application/config/production/custom_config.php
 
-#sudo usermod -a -G "$CURRENTUSER" $WWW_USR
-#sudo setfacl -R -m u:"$CURRENTUSER":rwx $WWW_PATH
+# Replace custom_config values
+sed -i "s/\$config\['CONFIG_DB_HOST'\] = .*;/\$config\['CONFIG_DB_HOST'\] = '$MYSQL_HOST';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+sed -i "s/\$config\['CONFIG_DB_PORT'\] = .*;/\$config\['CONFIG_DB_PORT'\] = '$MYSQL_PORT';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+sed -i "s/\$config\['CONFIG_DB_PASS'\] = .*;/\$config\['CONFIG_DB_PASS'\] = '$MYSQL_RAD_PASS';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+sed -i "s/\$config\['CONFIG_DB_USER'\] = .*;/\$config\['CONFIG_DB_USER'\] = '$MYSQL_RAD_USER';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+sed -i "s/\$config\['CONFIG_DB_NAME'\] = .*;/\$config\['CONFIG_DB_NAME'\] = '$MYSQL_DB';/" ${WWW_PATH:?}/application/config/production/custom_config.php
+
+# Set environment to production
+sed -i "/ENVIRONMENT/ s/\development/production/g" ${WWW_PATH:?}/index.php
+
 
 ######################################################################################################################## WRITE TO CONFIG FILE
 ######################################################################################################################## Set MySQL root password in /root/.my.cnf
@@ -580,12 +590,16 @@ chmod -R ug+rw ${WWW_PATH:?}/
 chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
 chown -R $USR_ROOT:root ${WWW_PATH}/
 
+# Set correct permissions for session folder
+chmod -R 0777 ${WWW_PATH:?}/application/session
+
 ######################################################################################################################## Install mail server
 #apt-get install sendmail
 #sendmailconfig -y
 ######################################################################################################################## RESTART
 systemctl restart freeradius
 systemctl restart apache2
+
 
 
 ########################################################################################################################

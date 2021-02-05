@@ -105,3 +105,4 @@ fabric.properties
 /site_rev/
 /site/install/
 /site/application/config/production/
+/site/application/config/development/
