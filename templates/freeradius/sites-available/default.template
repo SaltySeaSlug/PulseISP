@@ -285,8 +285,8 @@ authorize {
     #
     # Check if the User Calling-Station-Id is the same else reject
     #
-    if (&request:Calling-Station-Id != &control:Calling-Station-Id) {
-    update reply { Reply-Message := "Incorrect Mac" } reject }
+#    if (&request:Calling-Station-Id != &control:Calling-Station-Id) {
+#    update reply { Reply-Message := "Incorrect Mac" } reject }
 	#
 	#  Take a User-Name, and perform some checks on it, for spaces and other
 	#  invalid characters.  If the User-Name appears invalid, reject the

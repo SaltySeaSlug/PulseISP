@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['run_setup'] = FALSE;
-$configValues['PULSEISP_VERSION'] = '0.0.0.1';
-$configValues['FREERADIUS_VERSION'] = '3';
+$config['PULSEISP_VERSION'] = '0.0.0.1';
+$config['FREERADIUS_VERSION'] = '3';
 
 $config['CONFIG_DB_ENGINE'] = 'mysqli';
 $config['CONFIG_DB_HOST'] = 'localhost';
