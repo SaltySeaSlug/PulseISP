@@ -29,11 +29,6 @@ sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/SaltySeaSlug/Puls
 ```
 
 ### Demo
-1.  Create database 'pulseisp_db'
-2.  Import database schema
-3.  Copy files to your test environment (`e.g. http://localhost/pulseisp`)
-4.  Navigate to (`e.g. http://localhost/pulseisp`)
-
 > `NOTE: This is still a work in progress so everything may not work`
 
 ### Contributing
