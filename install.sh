@@ -352,8 +352,8 @@ chown mysql:mysql /var/lib/mysqltmp
 echo -e "$COL_YELLOW Set some security for MySQL $COL_RESET"
 
 mysql -e "CREATE USER '$MYSQL_RAD_USER'@'%' IDENTIFIED BY '$MYSQL_RAD_PASS';"
-mysql -e "CREATE DATABASE $MYSQL_DB;"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_RAD_USER'@'%';"
+mysql -e "CREATE DATABASE $MYSQL_DB;"
 mysql $MYSQL_DB < $TEMP_DIR/db/$MYSQL_SCHEME
 
 mysql -e "DELETE FROM mysql.user WHERE User='';"
