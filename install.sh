@@ -484,7 +484,7 @@ sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/inn
 sed -i -e 's|authorize {|authorize {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
 sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
 sed -i -e 's|accounting {|accounting {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
-sed -i -e "s/\adminsecret/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH}/sites-available/status
+sed -i "s/\adminsecret/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH}/sites-available/status
 sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH:?}/clients.conf
 
 # Install SNMP Native
