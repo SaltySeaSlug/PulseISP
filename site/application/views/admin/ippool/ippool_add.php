@@ -22,18 +22,79 @@
                   <?php $this->load->view('admin/includes/_messages.php') ?>
 
                   <?php echo form_open(base_url('admin/ip_pool/add'), 'class="form-horizontal"');  ?>
+					<!-- POOL NAME -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- DESCRIPTION -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- POOL TYPE -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<select>
+							<option>Auto Allocation (Radius Dynamic)</option>
+							<option>Manual Allocation (IP Accounting)</option>
+							<option>System Allocation (Capped, Suspended & Unauth)</option>
+						</select>
+					</div>
+					<!-- NETWORK SUBNETS , comma seperated -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- IPs IN RANGE -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- NUMBER OF IPs -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- EXCLUDED IPs -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- REALM -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- INCLUDED NAS ROUTERS (leave blank for all) -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- EXCLUDED NAS ROUTERS -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+					<!-- ENABLED -->
+					<div class="form-group">
+						<label for="poolname" class="col-md-12 control-label">Pool Name</label>
+						<input type="text" class="form-control" id="poolname" name="poolname" required>
+					</div>
+
+
+
+
+
 					<div class="form-group">
 						<label for="addunaddressableips" class="col-md-12 control-label"><?= trans('unaddressableips') ?></label>
 						<input type="checkbox" class="form-control" id="addunaddressableips" name="addunaddressableips">
 					</div>
-				</div>
-			  </div>
+
 					<div class="form-group">
 						<label for="poolname" class="col-md-12 control-label"><?= trans('ippool_name') ?></label>
 								<input type="text" class="form-control" id="poolname" name="poolname" required>
 							</div>
-						</div>
-					</div>
 					<div class="form-group">
 						<label for="iprange" class="col-md-12 control-label"><?= trans('ip_range') ?></label>
 						<div class="col-md-12">

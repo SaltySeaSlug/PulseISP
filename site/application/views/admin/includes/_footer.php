@@ -1,8 +1,8 @@
 <?php if(!isset($footer)): ?>
 
   <footer class="main-footer pt-0 pb-0 text-sm">
-	  <?php echo (ENVIRONMENT === 'development') ? 'Rendered in <strong>{elapsed_time}</strong> seconds | CodeIgniter Version <strong>' . CI_VERSION . '</strong> | '.ENVIRONMENT.' |' : ''; ?>
-	  <div class="badge"><?= $this->config->item('PULSEISP_VERSION'); ?></div>
+	  <?php echo (ENVIRONMENT === 'development') ? 'Rendered in <strong>{elapsed_time}</strong> seconds | CodeIgniter Version <strong>' . CI_VERSION . '</strong> | '.ENVIRONMENT.'' : ''; ?>
+	  <div class="badge"><?= $this->config->item('PULSEISP_VERSION'); ?>]</div>
 	  	<div class="float-right d-none d-sm-inline-block">
       <?= $this->general_settings['copyright']; ?>
     </div>

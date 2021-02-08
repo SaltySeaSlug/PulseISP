@@ -44,6 +44,7 @@ TEMP_DIR="/temp"
 INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
 BACKUP_DIR="/backup"
 
+FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
 ########################################################################################################################
 # CONSOLE COLOURS
@@ -194,7 +195,10 @@ echo -e "$COL_YELLOW Install base packages $COL_RESET"
 apt install -y cron openssh-server vim sysstat man-db wget rsync
 git clone "$INSTALL_URL" "${TEMP_DIR:?}"
 
+
 ######################################################################################################################## Start Test Code (26-01-2020)
+sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${TEMP_DIR}/db/$MYSQL_SCHEME
+
 ######################################################################################################################## Install NTP service
 apt-get -y install ntp ntpdate
 cp /usr/share/zoneinfo/Africa/Johannesburg /etc/localtime
@@ -235,7 +239,7 @@ session_save_path='/var/lib/php/sessions'
 ######################################################################################################################## Install Apache and PHP packages
 echo -e "$COL_YELLOW Install Apache and PHP packages $COL_RESET"
 
-apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils php-cli php-pear php-mysql php-gd php-dev php-curl php-opcache php-mail php-mail-mime php-db php-mbstring php-xml php-bcmath
+apt-get install -y libapache2-mod-php libapache2-mod-php apache2 apache2-utils php-cli php-pear php-mysql php-gd php-dev php-curl php-opcache php-mail php-mail-mime php-db php-mbstring php-xml php-bcmath php-snmp
 /usr/sbin/a2dismod mpm_event
 /usr/sbin/a2enmod access_compat alias auth_basic authn_core authn_file authz_core authz_groupfile authz_host authz_user autoindex deflate dir env filter mime mpm_prefork negotiation rewrite setenvif socache_shmcb ssl status php7.4 mpm_prefork
 /usr/sbin/phpenmod opcache
@@ -436,10 +440,15 @@ systemctl restart apache2
 ########################################################################################################################
 
 ######################################################################################################################## FreeRadius Variables
-FREERADIUS_PATH="/etc/freeradius/3.0"
-FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
-
 apt-get install -y freeradius freeradius-mysql freeradius-utils freeradius-rest
+
+FREERADIUS_VERSION=$(freeradius -v | sed -e '/^radiusd/!d' -e 's/.* \([0-9]\+\.[0-9]\+\).*$/\1/');
+
+case $FREERADIUS_VERSION in
+1.0) FREERADIUS_PATH="";;
+2.0) FREERADIUS_PATH="";;
+3.0) FREERADIUS_PATH="/etc/freeradius/3.0";;
+esac
 
 ######################################################################################################################## Copy over templates
 cp ${TEMP_DIR:?}/templates/freeradius/mods-available/sql.template ${FREERADIUS_PATH:?}/mods-available/sql
@@ -467,14 +476,16 @@ sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/inn
 sed -i -e 's|authorize {|authorize {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
 sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
 sed -i -e 's|accounting {|accounting {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
+#sed -i -e "s/\adminsecret/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH}/sites-enabled/status
+sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH:?}/clients.conf
 
+# Install SNMP Native
+#apt-get install snmpd snmp libsnmp-dev
 ######################################################################################################################## End Test Code (2020-01-26)
 
 
 
 
-
-sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH:?}/clients.conf
 
 ######################################################################################################################## Setup Symbolic Links
 ln -s ${FREERADIUS_PATH:?}/mods-available/sql ${FREERADIUS_PATH:?}/mods-enabled/
@@ -491,7 +502,7 @@ ln -s ${FREERADIUS_PATH:?}/mods-available/sqlippool ${FREERADIUS_PATH:?}/mods-en
 
 systemctl enable --now freeradius
 systemctl restart freeradius
-ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp
+ufw allow to any port 1812 proto udp && ufw allow to any port 1813 proto udp && ufw allow to any port 161 proto udp
 
 
 ########################################################################################################################

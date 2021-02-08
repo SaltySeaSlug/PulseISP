@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<meta name="description" content="PulseISP">
 	<meta name="keywords" content="pulseisp,radius,freeradius,pppoe">
 	<meta name="author" content="Unitech Solutions TTL (PTY) LTD">
@@ -20,6 +20,7 @@
 	<!-- Ionicons -->
 	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/ionicons/ionicons.min.css">
 	<!-- Theme style -->
+	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" href="<?= base_url()?>assets/dist/css/adminlte.css">
 	<!-- overlayScrollbars -->
 	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
@@ -93,7 +94,7 @@
     <ul class="navbar-nav ml-auto">
       <!-- Languages -->
       <?php  $languages = get_language_list(); ?>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown d-none d-sm-inline">
         <a class="nav-link" data-toggle="dropdown" href="#" title="<?= trans('languages') ?>">
           <i class="fad fa-globe"></i>
           <span class="badge badge-warning navbar-badge">
@@ -113,7 +114,7 @@
           <?php endforeach; ?>
       </li>
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown d-none d-sm-inline">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fad fa-comments"></i>
           <span class="badge badge-danger navbar-badge">3</span>
@@ -171,7 +172,7 @@
         </div>
       </li>
       <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown d-none d-sm-inline">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fad fa-bell"></i>
           <span class="badge badge-warning navbar-badge">15</span>
@@ -197,12 +198,12 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item d-none d-sm-inline">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
             class="fa fa-th-large"></i></a>
       </li>
       <!-- Fullscreen Button -->
-      <li class="nav-item">
+      <li class="nav-item d-none d-sm-inline">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
           <i class="fas fa-expand-arrows-alt"></i>
         </a>

@@ -87,7 +87,7 @@
   </div>
   <!-- /.login-box -->
 
-  <footer class="main-footer p-0 pr-2" style="position: fixed;bottom: 0;width: 100%;margin-left: 0;vertical-align: middle;text-align: right">
+  <footer class="main-footer p-0 pr-2 text-sm align-middle ml-0 position-fixed text-center text-md-right text-lg-right text-xl-right text-nowrap" style="bottom: 0;width: 100%">
     <?= $this->general_settings['copyright']; ?>
 </footer>
 </div>

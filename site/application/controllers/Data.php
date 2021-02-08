@@ -134,6 +134,34 @@ class Data extends MY_Controller
 
 
 
+	public function doSNMP(){
+		$snmp = new \OSS_SNMP\SNMP('100.99.1.255','public');
+		echo "All: " . $snmp->useMikrotik()->activePPPoECount();
+		echo "Unity: " . $snmp->useMikrotik()->activePPPoECount("unity");
+		echo "Hnet: " . $snmp->useMikrotik()->activePPPoECount("hnet");
+
+		echo "All: " . json_encode($snmp->useMikrotik()->activePPPoEList());
+		echo "Unity: " . json_encode($snmp->useMikrotik()->activePPPoEList("unity"));
+		echo "Hnet: " . json_encode($snmp->useMikrotik()->activePPPoEList("hnet"));
+
+		echo $snmp->useMikrotik()->model();
+		echo $snmp->useMikrotik()->identity();
+		echo $this->secondsToTime($snmp->useMikrotik()->uptime());
+		echo 'CPU Usage: ' . $snmp->useMikrotik()->getCPUUsage() . ' %';
+	}
+
+	public function freeradiusStatus() {
+		$output = null;
+		$output = shell_exec("echo 'Message-Authenticator = 0x00, FreeRADIUS-Statistics-Type = All' | radclient localhost:18121 status adminsecret -x");
+		echo "<pve>". json_encode($output) . "</pve>";
+	}
+
+	function secondsToTime($seconds) {
+		$dtF = new \DateTime('@0');
+		$dtT = new \DateTime("@$seconds");
+		return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+	}
+
 
 
 
