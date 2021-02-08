@@ -152,7 +152,7 @@ class Data extends MY_Controller
 
 	public function freeradiusStatus() {
 		$output = null;
-		$output = shell_exec("echo 'Message-Authenticator = 0x00, FreeRADIUS-Statistics-Type = All' | radclient localhost:18121 status adminsecret -x");
+		$output = shell_exec("echo 'Message-Authenticator = 0x00, FreeRADIUS-Statistics-Type = All' | radclient localhost:18121 status tSxbnRo0E1U4Mkt- -x");
 		echo "<pve>". json_encode($output) . "</pve>";
 	}
 

@@ -6,7 +6,7 @@ clear
 # Script Name   : PulseISP Installer
 # Description   : Automated Installer for PulseISP
 # Author        : Mark Cockbain
-# Email         : cockbainma@gmail.com
+# Email         : mark@unitechsol.co.za
 ########################################################################################################################
 
 
@@ -21,7 +21,6 @@ clear
 ########################################################################################################################
 # Variables
 ########################################################################################################################
-
 HTUSER=serverinfo
 HTPASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
 
@@ -45,6 +44,9 @@ INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
 BACKUP_DIR="/backup"
 
 FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
+APT_LOG="$> ${TEMP_DIR:?}/apt.log"
+DEBUG=true
 
 ########################################################################################################################
 # CONSOLE COLOURS
@@ -104,8 +106,8 @@ timedatectl set-timezone Africa/Johannesburg
 echo -e "$COL_YELLOW Verifying ${TEMP_DIR:?} directory. $COL_RESET"
 sleep 1
 if [ ! -d "${TEMP_DIR:?}" ]; then
-    echo -e "$COL_RED ${TEMP_DIR:?} folder not found. $COL_RESET"
-    echo -e "$COL_MAGENTA Creating directory. $COL_RESET"
+    #echo -e "$COL_RED ${TEMP_DIR:?} folder not found. $COL_RESET"
+    #echo -e "$COL_MAGENTA Creating directory. $COL_RESET"
     echo -e "$COL_GREEN OK. $COL_RESET"
     mkdir ${TEMP_DIR:?}
 else
@@ -187,16 +189,23 @@ echo
 ######################################################################################################################## Update System
 echo -e "$COL_YELLOW Update System $COL_RESET"
 
-apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y
+if [ $DEBUG ]; then apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y;
+else apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y "$APT_LOG"; fi
+
+#apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y
 
 ######################################################################################################################## Install base packages
 echo -e "$COL_YELLOW Install base packages $COL_RESET"
 
-apt install -y cron openssh-server vim sysstat man-db wget rsync
+if [ $DEBUG ]; then apt install -y cron openssh-server vim sysstat man-db wget rsync;
+else apt install -y cron openssh-server vim sysstat man-db wget rsync "$APT_LOG"; fi
+
+#apt install -y cron openssh-server vim sysstat man-db wget rsync
 git clone "$INSTALL_URL" "${TEMP_DIR:?}"
 
 
 ######################################################################################################################## Start Test Code (26-01-2020)
+# Replace variables in files with new ones
 sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${TEMP_DIR}/db/$MYSQL_SCHEME
 
 ######################################################################################################################## Install NTP service
@@ -464,7 +473,6 @@ sed -i "s/\$MYSQL_RAD_PASS/$MYSQL_RAD_PASS/g" ${FREERADIUS_PATH:?}/mods-availabl
 sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" ${FREERADIUS_PATH:?}/mods-available/sql
 
 ######################################################################################################################## Start Test Code (2020-01-26)
-#ln -s /etc/freeradius/3.0/sites-enabled/status status /etc/freeradius/3.0/sites-available/status status
 
 #sed -i 's/password = "radpass"/password = "'$RADIUS_PWD'"/' /etc/freeradius/3.0/mods-available/sql.conf
 #sed -i 's/#port = 3306/port = 3306/' /etc/freeradius/3.0/mods-available/sql.conf
@@ -476,7 +484,7 @@ sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/inn
 sed -i -e 's|authorize {|authorize {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
 sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
 sed -i -e 's|accounting {|accounting {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
-#sed -i -e "s/\adminsecret/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH}/sites-enabled/status
+sed -i -e "s/\adminsecret/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH}/sites-available/status
 sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH:?}/clients.conf
 
 # Install SNMP Native
@@ -490,6 +498,7 @@ sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${FREERADIUS_PATH:?}/clients
 ######################################################################################################################## Setup Symbolic Links
 ln -s ${FREERADIUS_PATH:?}/mods-available/sql ${FREERADIUS_PATH:?}/mods-enabled/
 ln -s ${FREERADIUS_PATH:?}/mods-available/sqlippool ${FREERADIUS_PATH:?}/mods-enabled/
+ln -s ${FREERADIUS_PATH:?}/sites-available/status ${FREERADIUS_PATH:?}/sites-enabled/status
 
 #ln -s /etc/freeradius/3.0/mods-available/sqlcounter /etc/freeradius/3.0/mods-enabled/
 #ln -s /etc/freeradius/3.0/mods-available/rest /etc/freeradius/3.0/mods-enabled/
@@ -541,7 +550,7 @@ fi
 
 if [ -d "${WWW_PATH:?}/application/config/development" ]
 then
-  rmdir -fr ${WWW_PATH:?}/application/config/development
+  rm -r ${WWW_PATH:?}/application/config/development
 fi
 
 
