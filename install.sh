@@ -431,7 +431,7 @@ cp ${TEMP_DIR:?}/templates/ubuntu/phpmyadmin/phpMyAdmin.conf.template /etc/phpmy
 ######################################################################################################################## Setup PHPMyAdmin variables
 echo "$HTUSER $HTPASS" > /root/.phpmyadminpass
 
-########################################################################################################################Set PHPMyAdmin before htaccess file
+######################################################################################################################## Set PHPMyAdmin before htaccess file
 htpasswd -b -c /etc/phpmyadmin/phpmyadmin-htpasswd $HTUSER "$HTPASS"
 
 ######################################################################################################################## Symlink in apache config and restart apache
