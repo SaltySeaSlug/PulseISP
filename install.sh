@@ -5,53 +5,13 @@ clear
 ########################################################################################################################
 # Script Name   : PulseISP Installer
 # Description   : Automated Installer for PulseISP
-# Author        : Mark Cockbain
+# Author        : Mark Cockbain | Unitech Solutions TTL
 # Email         : mark@unitechsol.co.za
 ########################################################################################################################
 
-
-
-
-
-
-
-
-
-
-########################################################################################################################
-# Variables
-########################################################################################################################
-HTUSER=serverinfo
-HTPASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
-
-# PulseISP root user and password
-USR_ROOT="pulseisp"
-USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
-
-# Apache user
-WWW_USR="www-data"
-WWW_PATH="/var/www/html/pulseisp/"
-
-# OS/System current executing user
-CURRENTUSER="$(whoami)"
-
-# OS Version/Distribution
-OS_VER=$(cat < /etc/issue | awk '{print $1}')
-
-# Global variables
-TEMP_DIR="/temp"
-INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
-BACKUP_DIR="/backup"
-
-FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
-
-APT_LOG="$> ${TEMP_DIR:?}/apt.log"
-DEBUG=true
-
-########################################################################################################################
-# CONSOLE COLOURS
-########################################################################################################################
-
+#----------------------------------------------------------------------------------------------------------------------#
+# Console Colours
+#----------------------------------------------------------------------------------------------------------------------#
 ESC_SEQ="\x1b["
 COL_RESET=$ESC_SEQ"39;49;00m"
 COL_RED=$ESC_SEQ"31;01m"
@@ -62,6 +22,40 @@ COL_MAGENTA=$ESC_SEQ"35;01m"
 COL_CYAN=$ESC_SEQ"36;01m"
 DIVIDER="$COL_BLUE +-------------------------------------------------------------+ $COL_RESET"
 
+#----------------------------------------------------------------------------------------------------------------------#
+# Variables
+#----------------------------------------------------------------------------------------------------------------------#
+
+# .htaccess username and password
+HTUSER=serverinfo
+HTPASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
+# Ubuntu username and password
+USR_ROOT="pulseisp"
+USR_ROOT_PWD=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
+# Apache
+WWW_USR="www-data"
+WWW_PATH="/var/www/html/pulseisp/"
+
+# Freeradius Secret
+FREERADIUS_SECRET=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
+
+# OS Version/Distribution
+OS_VER=$(cat < /etc/issue | awk '{print $1}')
+
+# Global variables
+TEMP_DIR="/temp"
+INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
+BACKUP_DIR="/backup"
+
+
+
+APT_LOG="$> ${TEMP_DIR:?}/apt.log"
+DEBUG=true
+
+
+
 clear
 
 ######################################################################################################################## MENU
@@ -71,9 +65,9 @@ echo -e "$DIVIDER"
 echo
 
 
-########################################################################################################################
+#----------------------------------------------------------------------------------------------------------------------#
 # Pre system checks
-########################################################################################################################
+#----------------------------------------------------------------------------------------------------------------------#
 
 ######################################################################################################################## Checking permissions
 echo -e "$COL_YELLOW Verifying user permissions. $COL_RESET"
@@ -583,8 +577,8 @@ sed -i "s/\$freeradiussecret/$FREERADIUS_SECRET/g" /root/.misc.cnf
 #rm ${WWW_PATH:?}/install
 #rm /var/www/html/install
 
-######################################################################################################################## Configure Rights
-
+######################################################################################################################## Configure Permissions
+# Add www_data to sudo file (allows execution of
 cp /etc/sudoers /etc/sudoers.bak
 echo "%admin ALL=(ALL) ALL $WWW_USR ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
 

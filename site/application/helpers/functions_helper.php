@@ -57,6 +57,18 @@
         }
     }
 
+	// -----------------------------------------------------------------------------
+	// Hard-coded Variables
+	if (!function_exists('footer_variables')) {
+		function footer_variables($data)
+		{
+			$data = str_replace('{YEAR}', date('Y'), $data);
+			$data = str_replace('{COMPANY}', '<a href="https://www.unitechsol.co.za">Unitech Solutions TTL</a>', $data);
+			$data = str_replace('{APPLICATION}', 'Pulse<b>ISP</b>', $data);
+			return $data;
+		}
+	}
+
      // -----------------------------------------------------------------------------
     // Make Slug Function    
     if (!function_exists('make_slug'))
@@ -119,6 +131,14 @@
           }
         }
     }
+
+if (!function_exists('secondsToTime')) {
+	function secondsToTime($seconds) {
+		$dtF = new \DateTime('@0');
+		$dtT = new \DateTime("@$seconds");
+		return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+	}
+}
 
 
 ?>

@@ -58,11 +58,9 @@ class Data extends MY_Controller
 	// Generate
 	public function generate_user_account_code() {
 		$result = '';
-		$maxid = 0;
 		$accountCode = isset($_GET['ac']) ? $_GET['ac'] : null;
 		$name = isset($_GET['name']) ? $_GET['name'] : null;
 		$query = null;
-
 
 		if (!empty($accountCode) || !empty($name)) {
 			$CI =& get_instance();
@@ -106,9 +104,6 @@ class Data extends MY_Controller
 		$surname = isset($_GET['lastname']) ? $_GET['lastname'] : null;
 		$general_settings = $this->setting_model->get_general_settings();
 
-		//$name = substr($name, 0, 1);
-
-
 		if (!empty($name) || !empty($surname)) {
 			$result = $this->generate_username($name, $surname, $general_settings['realm_suffix']);
 			$response_array['status'] = 'OK';
@@ -146,24 +141,53 @@ class Data extends MY_Controller
 
 		echo $snmp->useMikrotik()->model();
 		echo $snmp->useMikrotik()->identity();
-		echo $this->secondsToTime($snmp->useMikrotik()->uptime());
+		echo secondsToTime($snmp->useMikrotik()->uptime());
 		echo 'CPU Usage: ' . $snmp->useMikrotik()->getCPUUsage() . ' %';
 	}
-
 	public function freeradiusStatus() {
 		$output = null;
 		$output = shell_exec("echo 'Message-Authenticator = 0x00, FreeRADIUS-Statistics-Type = All' | radclient localhost:18121 status tSxbnRo0E1U4Mkt- -x");
 		echo "<pve>". json_encode($output) . "</pve>";
 	}
+	public function checkDevice() {
 
-	function secondsToTime($seconds) {
-		$dtF = new \DateTime('@0');
-		$dtT = new \DateTime("@$seconds");
-		return $dtF->diff($dtT)->format('%a days, %h hours, %i minutes and %s seconds');
+		if (isset($_GET['ip']) && !empty($_GET['ip'])) {
+			$ip = $_GET['ip'];
+
+			if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+				try {
+					$snmpHost = new \OSS_SNMP\SNMP($ip, "public");
+					$model = $snmpHost->getPlatform()->getModel();
+					$os = $snmpHost->getPlatform()->getOs();
+					$identity = null;
+					$uptime = null;
+
+					if ($snmpHost->getPlatform()->getVendor() == 'Mikrotik') {
+						$identity = $snmpHost->useMikrotik()->identity();
+						$uptime = secondsToTime($snmpHost->useMikrotik()->uptime());
+					}
+
+					echo "<div class='alert alert-success'><b>SNMP Response:</b> $os $model<br><b>Device Identity:</b> $identity<br> <b>Device Uptime:</b> $uptime<br></div>";
+
+				} catch (Exception $e) {
+					echo "<div class='alert alert-danger'><b>No SNMP Response</b> (Is SNMP enabled on the device?)</div>";
+				}
+
+				$ttl = 128;
+				$timeout = 1;
+
+				try {
+					$ping = new JJG\Ping($ip, $ttl, $timeout);
+					$latency = $ping->ping('exec');
+
+					if ($latency !== false) { echo "<div class='alert alert-success'><b>Ping:</b> $latency ms</div>";  } else { echo "<div class='alert alert-danger'><b>No Ping Response</b> (Is the device accessible?)</div>"; }
+				} catch (Exception $e) { echo "<div class='alert alert-danger'><b>No Ping Response</b> (Is the device accessible?)</div>"; }
+
+			} else {
+				echo "<div class='alert alert-danger'><b>No SNMP Response</b> (Is SNMP enabled on the device?)</div>";
+			}
+		}
 	}
-
-
-
 
 
 

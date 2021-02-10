@@ -10,22 +10,24 @@ use OSS_SNMP\Exception;
  */
 class Mikrotik extends \OSS_SNMP\MIB
 {
-    const OID_MODEL						  = '.1.3.6.1.2.1.1.1.0';
-	const OID_IDENTITY					  = '.1.3.6.1.2.1.1.5.0';
-	const OID_UPTIME					  = '.1.3.6.1.2.1.1.3.0';
-	const OID_ACTIVE_CONNECTIONS		  = '.1.3.6.1.2.1.2.2.1.2';
-	const OID_ACTIVE_CONNECTIONS_COUNT	  = '.1.3.6.1.4.1.9.9.150.1.1.1.0';
-	const OID_CPU_USAGE					  = '.1.3.6.1.4.1.2021.11.10.0';
-
+    const OID_MODEL							= '.1.3.6.1.2.1.1.1.0';
+	const OID_IDENTITY						= '.1.3.6.1.2.1.1.5.0';
+	const OID_UPTIME						= '.1.3.6.1.2.1.1.3.0';
+	const OID_ACTIVE_CONNECTIONS			= '.1.3.6.1.2.1.2.2.1.2';
+	const OID_ACTIVE_CONNECTIONS_COUNT		= '.1.3.6.1.4.1.9.9.150.1.1.1.0';
+	const OID_CPU_USAGE						= '.1.3.6.1.4.1.2021.11.10.0';
+	const OID_SERIAL_NUMBER					= '.1.3.6.1.4.1.14988.1.1.7.3';
+	const OID_FIRMWARE_VERSION				= '.1.3.6.1.4.1.14988.1.1.7.4';
+	const OID_FIRMWARE_UPGRADE_VERSION		= '.1.3.6.1.4.1.14988.1.1.7.7';
+	const OID_SYSTEM_NOTE					= '.1.3.6.1.4.1.14988.1.1.7.5';
+	const OID_BUILD_TIME					= '.1.3.6.1.4.1.14988.1.1.7.6';
 
     /**
      * Get an array of MAU interface indexes
      *
      * @return array An array of MAU interface indexes
      */
-    public function index()
-    {
-    }
+    public function index() { }
 
     // RouterOS RB3011UiAS
 	public function model()
@@ -57,8 +59,9 @@ class Mikrotik extends \OSS_SNMP\MIB
 		}
     }
 
-    public function activePPPoECount($realm = null) {
-    	try {
+    public function activePPPoECount($realm = null)
+	{
+		try {
 			$data = array();
 
 			if (empty($realm)) {
@@ -77,10 +80,11 @@ class Mikrotik extends \OSS_SNMP\MIB
 			}
 			return count($data);
 		} catch (Exception $ex) {
-    		return array();
+			return array();
 		}
 	}
-	public function activePPPoEList($realm = null) {
+	public function activePPPoEList($realm = null)
+	{
     	try {
 			$data = array();
 
@@ -103,16 +107,17 @@ class Mikrotik extends \OSS_SNMP\MIB
 		}
 	}
 	// PPPoE users, VPN Connections, etc..
-    public function activeConnectionCount() {
+    public function activeConnectionCount()
+	{
         try {
             return $this->getSNMP()->get(self::OID_ACTIVE_CONNECTIONS_COUNT);
         } catch (Exception $ex) {
             return 0;
         }
     }
-
 	// 14
-    public function getCPUUsage() {
+    public function getCpuUsage()
+	{
         try {
             return $this->getSNMP()->get(self::OID_CPU_USAGE);
         } catch (Exception $ex) {

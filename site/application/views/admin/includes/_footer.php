@@ -4,7 +4,7 @@
 	  <?php echo (ENVIRONMENT === 'development') ? 'Rendered in <strong>{elapsed_time}</strong> seconds | CodeIgniter Version <strong>' . CI_VERSION . '</strong> | '.ENVIRONMENT.'' : ''; ?>
 	  <div class="badge"><?= $this->config->item('PULSEISP_VERSION'); ?>]</div>
 	  	<div class="float-right d-none d-sm-inline-block">
-      <?= $this->general_settings['copyright']; ?>
+      <?= footer_variables($this->general_settings['copyright']); ?>
     </div>
   </footer>
 
