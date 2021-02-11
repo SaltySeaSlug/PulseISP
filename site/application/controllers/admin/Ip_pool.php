@@ -10,6 +10,7 @@ class Ip_pool extends MY_Controller {
 		$this->rbac->check_module_access();
 
 		$this->load->model('admin/Ippool_model', 'ippool_model');
+		$this->load->model('admin/Nas_model', 'nas_model');
 		$this->load->model('admin/Activity_model', 'activity_model');
 		$this->load->model('admin/Setting_model', 'setting_model');
 		$this->load->helper('data_helper');
@@ -68,6 +69,7 @@ class Ip_pool extends MY_Controller {
 		$this->rbac->check_operation_access(); // check opration permission
 
 		$data['general_settings'] = $this->setting_model->get_general_settings();
+		$data['nas_devices'] = $this->nas_model->get_all_nas_devices();
 
 		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('iprange', 'IP Range', 'trim|required');
@@ -89,45 +91,22 @@ class Ip_pool extends MY_Controller {
 					$bool = !empty($this->input->post('addunaddressableips'));
 
 					if ($bool) {
-						//$pool = $this->ippool_model->get_ips_by_poolname($this->input->post('poolname'));
-						//$address_rage = $sub->getIPAddressRange();
-						//foreach (ip_range($address_rage[0], $address_rage[1]) as $ip_address) {	$iprange[] = $ip_address; }
-
-						//$uniqueRange = $this->array_xor($iprange, $pool);
 						foreach ($iprange as $ip_address) {
 							$sql[] = array('pool_name' => $this->input->post('poolname'), 'framedipaddress' => $ip_address);
 						}
-
-						//$excluded = IPTools\Network::parse($this->input->post('iprange'));
-						//foreach ($pool as $ip) {
-						//		$excluded->exclude(new \IPTools\IP($ip));
-						//}
-
-						//echo json_encode($pool);
-						//echo json_encode($iprange);
-						//echo json_encode($uniqueRange);
-						//echo json_encode($sql);
-						//echo json_encode($excluded);
 					}
 					else {
-						//$pool = $this->ippool_model->get_ips_by_poolname($this->input->post('poolname'));
 						foreach (ip_range($sub->getMinHost(), $sub->getMaxHost()) as $ip_address) {	$iprange[] = $ip_address; }
 
-						//$uniqueRange = $this->array_xor($iprange, $pool);
 						foreach ($iprange as $ip_address) {
 							$sql[] = array('pool_name' => $this->input->post('poolname'), 'framedipaddress' => $ip_address);
 						}
+					}
+				}
 
-						//$excluded = IPTools\Network::parse($this->input->post('iprange'));
-						//foreach ($pool as $ip) {
-						//	$excluded->exclude(new \IPTools\IP($ip));
-						//}
-
-						//echo json_encode($pool);
-						//echo json_encode($iprange);
-						//echo json_encode($uniqueRange);
-						//echo json_encode($sql);
-						//echo json_encode($excluded);
+				if (!empty($this->input->post('include_nasdevices')) && count($this->input->post('include_nasdevices')) > 0) {
+					foreach ($this->input->post('include_nasdevices') as $nas_id) {
+						$this->ippool_model->link_pool_to_nas_by_poolname($nas_id, $this->input->post('poolname'));
 					}
 				}
 
