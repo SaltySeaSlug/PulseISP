@@ -180,8 +180,14 @@ class Data extends MY_Controller
 					$ping = new JJG\Ping($ip, $ttl, $timeout);
 					$latency = $ping->ping('exec');
 
-					if ($latency !== false) { echo "<div class='alert alert-success'><b>Ping:</b> $latency ms</div>";  } else { echo "<div class='alert alert-danger'><b>No Ping Response</b> (Is the device accessible?)</div>"; }
-				} catch (Exception $e) { echo "<div class='alert alert-danger'><b>No Ping Response</b> (Is the device accessible?)</div>"; }
+					if ($latency !== false) {
+						echo "<div class='alert alert-success'><b>Ping:</b> $latency ms</div>";
+					} else {
+						echo "<div class='alert alert-danger'><b>No Ping Response</b> (Is the device accessible?)</div>";
+					}
+				} catch (Exception $e) {
+					echo "<div class='alert alert-danger'><b>No Ping Response</b> (Is the device accessible?)</div>";
+				}
 
 			} else {
 				echo "<div class='alert alert-danger'><b>No SNMP Response</b> (Is SNMP enabled on the device?)</div>";
@@ -189,6 +195,29 @@ class Data extends MY_Controller
 		}
 	}
 
+	function update_last_contact()
+	{
+		if (isset($_GET['ip']) && !empty($_GET['ip'])) {
+			$ip = $_GET['ip'];
+			$ttl = 128;
+			$timeout = 1;
+
+			if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+				try {
+					$ping = new JJG\Ping($ip, $ttl, $timeout);
+					$latency = $ping->ping('exec');
+
+					if ($latency !== false) {
+						echo $latency;
+					} else {
+						echo "ERR";
+					}
+				} catch (Exception $e) {
+					echo "ERR";
+				}
+			}
+		}
+	}
 
 
 

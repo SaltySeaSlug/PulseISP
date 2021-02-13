@@ -14,10 +14,6 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-12">
-              <div class="box">
-                <!-- form start -->
-                <div class="box-body">
-
                   <!-- For Messages -->
                   <?php $this->load->view('admin/includes/_messages.php') ?>
 
@@ -53,9 +49,18 @@
 				<label for="nastype" class="col-md-12 control-label"><?= trans('type') ?></label>
 				<div class="col-md-12">
 					<select class="form-control" id="nastype" name="nastype">
-						<option value="Mikrotik">Mikrotik</option>
-						<option value="Cisco">Cisco</option>
-						<option value="Other">Other</option>
+						<option value="mikrotik">Mikrotik</option>
+						<option value="cisco">Cisco</option>
+						<option value="other">Other</option>
+						<option value="livingston">Livingston</option>
+						<option value="max40xx">Max40xx</option>
+						<option value="multitech">Multitech</option>
+						<option value="natserver">Nat Server</option>
+						<option value="pathras">PathRAS</option>
+						<option value="patton">Patton</option>
+						<option value="portslave">Port Slave</option>
+						<option value="tc">TC</option>
+						<option value="usrhiper">USRhiper</option>
 					</select>
 				</div>
 			</div>
@@ -73,7 +78,29 @@
 					<input type="text" class="form-control" id="nasidentifier" name="nasidentifier" required>
 				</div>
 			</div>
-<!-- DHCP POOL -->
+<!-- NAS PORT -->
+			<div class="form-group">
+				<label for="nasport" class="col-md-12 control-label"><?= trans('nas_port') ?></label>
+				<div class="col-md-12">
+					<input type="number" class="form-control" id="nasport" name="nasport" required value="3799">
+				</div>
+			</div>
+<!-- COMMUNITY -->
+			<div class="form-group">
+				<label for="nascommunity" class="col-md-12 control-label"><?= trans('community') ?></label>
+				<div class="col-md-12">
+					<input type="text" class="form-control" id="nascommunity" name="nascommunity" required>
+				</div>
+			</div>
+<!-- DESCRIPTION -->
+			<div class="form-group">
+				<label for="nasdescription" class="col-md-12 control-label"><?= trans('description') ?></label>
+				<div class="col-md-12">
+					<input type="text" class="form-control" id="nasdescription" name="nasdescription" required
+						   value="RADIUS Client">
+				</div>
+			</div>
+				<!-- DHCP POOL
 			<div class="form-group">
 				<label for="ippool" class="col-md-2 control-label">IP Pools</label>
 				<div class="col-md-12">
@@ -85,16 +112,13 @@
 					</select>
 				</div>
 			</div>
-
-                  <div class="form-group">
+-->
+				<div class="form-group">
                     <div class="col-md-12">
                       <input type="submit" name="submit" value="<?= trans('add_new_nas') ?>" class="btn btn-primary pull-right">
                     </div>
                   </div>
-                  <?php echo form_close(); ?>
-                </div>
-                <!-- /.box-body -->
-              </div>
+                <?php echo form_close(); ?>
             </div>
           </div>  
         </div>

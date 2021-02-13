@@ -30,34 +30,41 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" id="pills-company-tab" data-toggle="pill" href="#company" role="tab" aria-controls="company" aria-selected="false"><?= trans('company_setting') ?></a>
-                  </li>
+				  </li>
 					<li class="nav-item">
-						<a class="nav-link" id="pills-radius-tab" data-toggle="pill" href="#radius" role="tab" aria-controls="company" aria-selected="false">Radius Settings</a>
+						<a class="nav-link" id="pills-radius-tab" data-toggle="pill" href="#radius" role="tab"
+						   aria-controls="company" aria-selected="false">Radius Settings</a>
 					</li>
 
 					<li class="nav-item">
-						<a class="nav-link" id="pills-application-tab" data-toggle="pill" href="#application" role="tab" aria-controls="application" aria-selected="false">Application Settings</a>
+						<a class="nav-link" id="pills-application-tab" data-toggle="pill" href="#application" role="tab"
+						   aria-controls="application" aria-selected="false">Application Settings</a>
 					</li>
-                </ul>
 
-                 <!-- Tab panes -->
-                <div class="tab-content">
+					<li class="nav-item">
+						<a class="nav-link" id="pills-company_setup-tab" data-toggle="pill" href="#company_setup"
+						   role="tab" aria-controls="company_setup" aria-selected="false">Company Setup</a>
+					</li>
+				</ul>
 
-                    <!-- General Setting -->
-                    <div role="tabpanel" class="tab-pane active" id="main">
+				<!-- Tab panes -->
+				<div class="tab-content">
 
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('timezone') ?></label>
-                            <select class="form-control" name="timezone">
-                                <option value="0">Please, select any timezone</option>
-                                <?php foreach($this->setting_model->get_timezone_list() as $tzone) { ?>
-                                  <option value="<?php print $tzone['zone'] ?>" <?= $general_settings['timezone'] == $tzone['zone'] ? ' selected="selected"' : ''; ?>>
-                                    <?php print $tzone['diff_from_GMT'] . ' - ' . $tzone['zone'] ?>
-                                  </option>
-                                <?php } ?>
-                              </select>
-                        </div>
-                        <div class="form-group">
+					<!-- General Setting -->
+					<div role="tabpanel" class="tab-pane active" id="main">
+
+						<div class="form-group">
+							<label class="control-label"><?= trans('timezone') ?></label>
+							<select class="form-control" name="timezone">
+								<option value="0">Please, select any timezone</option>
+								<?php foreach ($this->setting_model->get_timezone_list() as $tzone) { ?>
+									<option value="<?php print $tzone['zone'] ?>" <?= $general_settings['timezone'] == $tzone['zone'] ? ' selected="selected"' : ''; ?>>
+										<?php print $tzone['diff_from_GMT'] . ' - ' . $tzone['zone'] ?>
+									</option>
+								<?php } ?>
+							</select>
+						</div>
+						<div class="form-group">
                             <label class="control-label"><?= trans('default_language') ?></label>
                             <?php 
                                 $options = array_column($languages, 'name','id');
@@ -93,25 +100,29 @@
 
 						<div class="form-group">
 							<label class="control-label mr-2">Google Places Active</label>
-							<input data-toggle="switch" id="cb_google_places_status" name="cb_google_places_status" type="checkbox">
+							<input class="bootstrap-switch-small" data-toggle="switch" id="cb_google_places_status"
+								   name="cb_google_places_status" type="checkbox">
 						</div>
 
-                    </div>
+					</div>
 
-                    <!-- Email Setting -->
-                    <div role="tabpanel" class="tab-pane" id="email">
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('email_from') ?></label>
-                            <input type="text" class="form-control" name="email_from" placeholder= "no-reply@domain.com" value="<?php echo html_escape($general_settings['email_from']); ?>">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('smtp_host') ?></label>
-                            <input type="text" class="form-control" name="smtp_host" placeholder="SMTP Host" value="<?php echo html_escape($general_settings['smtp_host']); ?>">
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('smtp_port') ?></label>
-                            <input type="text" class="form-control" name="smtp_port" placeholder="SMTP Port" value="<?php echo html_escape($general_settings['smtp_port']); ?>">
-                        </div>
+					<!-- Email Setting -->
+					<div role="tabpanel" class="tab-pane" id="email">
+						<div class="form-group">
+							<label class="control-label"><?= trans('email_from') ?></label>
+							<input type="text" class="form-control" name="email_from" placeholder="no-reply@domain.com"
+								   value="<?php echo html_escape($general_settings['email_from']); ?>">
+						</div>
+						<div class="form-group">
+							<label class="control-label"><?= trans('smtp_host') ?></label>
+							<input type="text" class="form-control" name="smtp_host" placeholder="SMTP Host"
+								   value="<?php echo html_escape($general_settings['smtp_host']); ?>">
+						</div>
+						<div class="form-group">
+							<label class="control-label"><?= trans('smtp_port') ?></label>
+							<input type="text" class="form-control" name="smtp_port" placeholder="SMTP Port"
+								   value="<?php echo html_escape($general_settings['smtp_port']); ?>">
+						</div>
                         <div class="form-group">
                             <label class="control-label"><?= trans('smtp_user') ?></label>
                             <input type="text" class="form-control" name="smtp_user" placeholder="SMTP Email" value="<?php echo html_escape($general_settings['smtp_user']); ?>">
@@ -193,17 +204,19 @@
                             <label class="control-label"><?= trans('company_name') ?></label>
                             <textarea rows="5" type="text" class="form-control" name="terms" placeholder="terms"><?php echo html_escape($general_settings['terms']); ?></textarea>
                         </div>
-                    </div>
+					</div>
 
 					<!-- Radius Settings -->
 					<div role="tabpanel" class="tab-pane" id="radius">
 						<div class="form-group">
 							<label class="control-label">Radius Secret</label>
-							<input type="text" class="form-control" name="radius_secret" placeholder="radius secret" value="<?php echo html_escape($general_settings['radius_secret']); ?>">
+							<input type="text" class="form-control" name="radius_secret" placeholder="radius secret"
+								   value="<?php echo html_escape($general_settings['radius_secret']); ?>">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Realm Suffix</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="realm" value="<?php echo html_escape($general_settings['realm_suffix']); ?>">
+							<input type="text" class="form-control" name="realm_suffix" placeholder="realm"
+								   value="<?php echo html_escape($general_settings['realm_suffix']); ?>">
 						</div>
 					</div>
 
@@ -211,22 +224,31 @@
 					<!-- Application Settings -->
 					<div role="tabpanel" class="tab-pane" id="application">
 						<div class="form-group">
+							<label class="control-label">System ID</label>
+							<input type="text" class="form-control" name="system_id" placeholder="system id"
+								   value="<?php echo html_escape($general_settings['system_id']); ?>">
+						</div>
+						<div class="form-group">
 							<label class="control-label"><?= trans('favicon') ?> (25*25)</label><br/>
-							<?php if(!empty($general_settings['favicon'])): ?>
+							<?php if (!empty($general_settings['favicon'])): ?>
 								<p><img src="<?= base_url($general_settings['favicon']); ?>" class="favicon"></p>
 							<?php endif; ?>
 							<input type="file" name="favicon" accept=".png, .jpg, .jpeg, .gif, .svg">
-							<p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small></p>
-							<input type="hidden" name="old_favicon" value="<?php echo html_escape($general_settings['favicon']); ?>">
+							<p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small>
+							</p>
+							<input type="hidden" name="old_favicon"
+								   value="<?php echo html_escape($general_settings['favicon']); ?>">
 						</div>
 						<div class="form-group">
 							<label class="control-label"><?= trans('logo') ?></label><br/>
-							<?php if(!empty($general_settings['logo'])): ?>
+							<?php if (!empty($general_settings['logo'])): ?>
 								<p><img src="<?= base_url($general_settings['logo']); ?>" class="logo" width="150"></p>
 							<?php endif; ?>
 							<input type="file" name="logo" accept=".png, .jpg, .jpeg, .gif, .svg">
-							<p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small></p>
-							<input type="hidden" name="old_logo" value="<?php echo html_escape($general_settings['logo']); ?>">
+							<p><small class="text-success"><?= trans('allowed_types') ?>: gif, jpg, png, jpeg</small>
+							</p>
+							<input type="hidden" name="old_logo"
+								   value="<?php echo html_escape($general_settings['logo']); ?>">
 						</div>
 						<div class="form-group">
 							<label class="control-label"><?= trans('application_name') ?></label>
@@ -238,18 +260,69 @@
 						</div>
 					</div>
 
+
+					<!-- Company Settings -->
+					<div role="tabpanel" class="tab-pane" id="company_setup">
+						<div class="form-group">
+							<label class="control-label">Company Name</label>
+							<input type="text" class="form-control" name="radius_secret" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Company Slogan</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Company URL</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Company Logo</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Menu Logo</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Mobile Logo</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">From Email Address</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Phone Number</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Street Address</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Hide Powered By on public pages</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Enable Powered By</label>
+							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+						</div>
+					</div>
+
+
 					<div class="box-footer">
-                    <input type="submit" name="submit" value="<?= trans('save_changes') ?>" class="btn btn-primary pull-right">
-                </div>	
-                <?php echo form_close(); ?>
-            </div>
-        </div>
-    </section>
+						<input type="submit" name="submit" value="<?= trans('save_changes') ?>"
+							   class="btn btn-primary pull-right">
+					</div>
+					<?php echo form_close(); ?>
+				</div>
+			</div>
+	</section>
 </div>
 
 <script>
-    $("#setting").addClass('active');
-    $('#myTabs a').click(function (e) {
+	$("#setting").addClass('active');
+	$('#myTabs a').click(function (e) {
      e.preventDefault()
      $(this).tab('show')
 

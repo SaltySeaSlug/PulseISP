@@ -18,7 +18,7 @@ COL_RED=$ESC_SEQ"31;01m"
 COL_GREEN=$ESC_SEQ"32;01m"
 COL_YELLOW=$ESC_SEQ"33;01m"
 COL_BLUE=$ESC_SEQ"34;01m"
-COL_MAGENTA=$ESC_SEQ"35;01m"
+#COL_MAGENTA=$ESC_SEQ"35;01m"
 COL_CYAN=$ESC_SEQ"36;01m"
 DIVIDER="$COL_BLUE +-------------------------------------------------------------+ $COL_RESET"
 
@@ -200,7 +200,7 @@ git clone "$INSTALL_URL" "${TEMP_DIR:?}"
 
 ######################################################################################################################## Start Test Code (26-01-2020)
 # Replace variables in files with new ones
-sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${TEMP_DIR}/db/$MYSQL_SCHEME
+sed -i "s/\$FREERADIUS_SECRET/$FREERADIUS_SECRET/g" ${TEMP_DIR}/db/"$MYSQL_SCHEME"
 
 ######################################################################################################################## Install NTP service
 apt-get -y install ntp ntpdate
@@ -392,7 +392,7 @@ systemctl restart mysql
 ######################################################################################################################## Setup Holland repo
 . /etc/os-release
 echo "deb https://download.opensuse.org/repositories/home:/holland-backup/x${NAME}_${VERSION_ID}/ ./" >> /etc/apt/sources.list
-wget -qO - https://download.opensuse.org/repositories/home:/holland-backup/x${NAME}_${VERSION_ID}/Release.key | apt-key add -
+wget -qO - https://download.opensuse.org/repositories/home:/holland-backup/x"${NAME}"_"${VERSION_ID}"/Release.key | apt-key add -
 
 ######################################################################################################################## Install Holland packages
 apt-get update
@@ -471,8 +471,8 @@ sed -i "s/\$MYSQL_DB/$MYSQL_DB/g" ${FREERADIUS_PATH:?}/mods-available/sql
 #sed -i 's/password = "radpass"/password = "'$RADIUS_PWD'"/' /etc/freeradius/3.0/mods-available/sql.conf
 #sed -i 's/#port = 3306/port = 3306/' /etc/freeradius/3.0/mods-available/sql.conf
 
-sed -i -e 's/$INCLUDE sql.conf/\n$INCLUDE sql.conf/g' ${FREERADIUS_PATH:?}/radiusd.conf
-sed -i -e 's|$INCLUDE sql/mysql/counter.conf|\n$INCLUDE sql/mysql/counter.conf|g' ${FREERADIUS_PATH:?}/radiusd.conf
+sed -i -e "s/$INCLUDE sql.conf/\n$INCLUDE sql.conf/g" ${FREERADIUS_PATH:?}/radiusd.conf
+sed -i -e "s|$INCLUDE sql/mysql/counter.conf|\n$INCLUDE sql/mysql/counter.conf|g" ${FREERADIUS_PATH:?}/radiusd.conf
 sed -i -e 's|authorize {|authorize {\nsql|' ${FREERADIUS_PATH:?}/sites-available/inner-tunnel
 sed -i -e 's|session {|session {\nsql|' ${FREERADIUS_PATH:?}/sites-available/inner-tunnel
 sed -i -e 's|authorize {|authorize {\nsql|' ${FREERADIUS_PATH:?}/sites-available/default
@@ -622,9 +622,9 @@ systemctl restart apache2
 
 ######################################################################################################################## Setup report variables
 txtbld=$(tput bold)
-lightblue=`tput setaf 6`
-nc=`tput sgr0`
-real_ip=`curl --silent -4 icanhazip.com 2>&1`
+lightblue=$(tput setaf 6)
+nc=$(tput sgr0)
+real_ip=$(curl --silent -4 icanhazip.com 2>&1)
 
 clear
 

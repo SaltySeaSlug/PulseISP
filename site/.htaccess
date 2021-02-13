@@ -7,7 +7,7 @@ RewriteBase /pulseisp/
 
 # If the setup directory exists in the document root...
 RewriteCond %{DOCUMENT_ROOT}/install -d
-# ...and you're not in isntall..
+# ...and you're not in install..
 RewriteCond %{REQUEST_URI} !(install) [NC]
 # ...redirect to setup - with a 302 (temporary redirect) to make sure the browser won't cache the redirect.
 RewriteRule !^install/ install/ [L,NC,R=302]

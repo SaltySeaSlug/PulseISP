@@ -16,10 +16,9 @@ class General_settings extends MY_Controller {
 	// General Setting View
 	public function index()
 	{
+		$data['title'] = 'General Setting';
 		$data['general_settings'] = $this->setting_model->get_general_settings();
 		$data['languages'] = $this->setting_model->get_all_languages();
-
-		$data['title'] = 'General Setting';
 
 		$this->load->view('admin/includes/_header', $data);
 		$this->load->view('admin/general_settings/setting', $data);

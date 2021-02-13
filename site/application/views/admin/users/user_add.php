@@ -15,8 +15,9 @@
 			<?php echo form_open(base_url('admin/users/add'), 'class="form-horizontal"');  ?>
 
 			<div class="card-body">
-				<ul class="nav nav-tabs mb-3">
-					<li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">User Account</a></li>
+				<ul class="nav nav-tabs mb-3" role="tablist">
+					<li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">User Account</a>
+					</li>
 					<li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Data Account</a></li>
 					<li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Portal Login</a></li>
 				</ul>
@@ -26,7 +27,8 @@
 							<div class="form-group row">
 								<label class="col-md-2 col-sm-3 col-form-label" for="summary-input-type">Type</label>
 								<div class="col-md-10 col-sm-9">
-									<select type="text" class="form-control" id="summary-input-type" tabindex="-1" aria-hidden="true" onchange="customerType(this.value)">
+									<select type="text" class="form-control" id="summary-input-type" tabindex="-1"
+											aria-hidden="true" onchange="customerType(this.value)">
 										<option value="0">Individual</option>
 										<option value="1">Company</option>
 									</select>
@@ -63,46 +65,63 @@
 							</div>
 							<!-- NAME -->
 							<div class="form-group row">
-								<label class="col-md-2 col-sm-3 col-form-label" for="firstname"><?= trans('firstname') ?></label>
-								<div class="col-md-10 col-sm-9"><input type="text" name="firstname" class="form-control" id="firstname" placeholder=""></div>
+								<label class="col-md-2 col-sm-3 col-form-label"
+									   for="firstname"><?= trans('firstname') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="text" name="firstname" class="form-control"
+																	   id="firstname" placeholder=""></div>
 							</div>
 							<!-- SURNAME -->
 							<div class="form-group row">
-								<label class="col-md-2 col-sm-3 col-form-label" for="lastname"><?= trans('lastname') ?></label>
-								<div class="col-md-10 col-sm-9"><input type="text" name="lastname" class="form-control" id="lastname" placeholder=""></div>
+								<label class="col-md-2 col-sm-3 col-form-label"
+									   for="lastname"><?= trans('lastname') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="text" name="lastname" class="form-control"
+																	   id="lastname" placeholder=""></div>
 							</div>
 							<!-- EMAIL ADDRESS -->
 							<div class="form-group row">
-								<label class="col-md-2 col-sm-3 col-form-label" for="email"><?= trans('email') ?></label>
-								<div class="col-md-10 col-sm-9"><input type="email" name="email" class="form-control" id="email" placeholder=""></div>
+								<label class="col-md-2 col-sm-3 col-form-label"
+									   for="email"><?= trans('email') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="email" name="email" class="form-control"
+																	   id="email" placeholder=""></div>
 							</div>
 							<!-- CONTACT NUMBER -->
 							<div class="form-group row">
-								<label class="col-md-2 col-sm-3 col-form-label" for="mobile_no"><?= trans('mobile_no') ?></label>
-								<div class="col-md-10 col-sm-9"><input type="tel" name="mobile_no" class="form-control" id="mobile_no" placeholder=""></div>
+								<label class="col-md-2 col-sm-3 col-form-label"
+									   for="mobile_no"><?= trans('mobile_no') ?></label>
+								<div class="col-md-10 col-sm-9"><input type="tel" name="mobile_no" class="form-control"
+																	   id="mobile_no" placeholder=""></div>
 							</div>
 							<!-- ADDRESS -->
-							<?php if (!empty($this->general_settings['google_places_is_active'])) { ?>
-							<div class="form-group row">
-								<!-- GOOGLE PLACES API -->
-								<label class="col-md-2 col-sm-3 col-form-label" for="autocomplete">Search Address</label>
-								<div class="col-md-10 col-sm-9">
-									<div class="input-group">
-										<input class="form-control" name="autocomplete" id="autocomplete" type="text">
-										<?php if (!empty($this->general_settings['google_api_key'])) { ?>
-											<input id="btn-view-on-map" type="button" class="btn btn-info btn-flat" onclick="showContactAddress(); return false;" title="This displays a rough estimate based on address, gps coordinates are more precise" value="View on Map">
-										<?php } ?>
+							<?php if (!empty($this->general_settings['google_api_key']) && !empty($this->general_settings['google_places_is_active'])) { ?>
+								<div class="form-group row">
+									<!-- GOOGLE PLACES API -->
+									<label class="col-md-2 col-sm-3 col-form-label" for="autocomplete">Search
+										Address</label>
+									<div class="col-md-10 col-sm-9">
+										<div class="input-group">
+											<input class="form-control" name="autocomplete" id="autocomplete"
+												   type="text">
+											<?php if (!empty($this->general_settings['google_api_key'])) { ?>
+												<input id="btn-view-on-map" type="button" class="btn btn-info btn-flat"
+													   onclick="showContactAddress(); return false;"
+													   title="This displays a rough estimate based on address, gps coordinates are more precise"
+													   value="View on Map">
+											<?php } ?>
+										</div>
 									</div>
 								</div>
-							</div>
 							<?php } ?>
 							<!-- MAP -->
 							<?php if (!empty($this->general_settings['google_api_key'])) { ?>
 								<div class="row">
-								<div class="col-sm-7 col-md-6">
-									<div class="form-group row">
-										<label class="col-sm-5 col-md-4 col-form-label" for="street_number">Number</label>
-										<div class="col-sm-7 col-md-8"><input class="form-control" name="street_number" id="street_number" type="text" autocomplete="off"></div>
+									<div class="col-sm-7 col-md-6">
+										<div class="form-group row">
+											<label class="col-sm-5 col-md-4 col-form-label"
+												   for="street_number">Number</label>
+											<div class="col-sm-7 col-md-8"><input class="form-control"
+																				  name="street_number"
+																				  id="street_number" type="text"
+																				  autocomplete="off"></div>
 									</div>
 									<div class="form-group row">
 										<label class="col-sm-5 col-md-4 col-form-label" for="route">Street Address</label>

@@ -736,10 +736,11 @@ post-auth {
 #	main_pool
     sqlippool
 
-    # Get the pool name for the NAS that's sent the request. Each NAS has their own pool
-    update control {
-        Pool-Name := "%{sql:SELECT pool_name FROM radnas_pool_names WHERE nas_ip_address='%{NAS-IP-Address}'}"
-    }
+######################### Get the pool name for the NAS that's sent the request. Each NAS has their own pool
+    #update control {
+    #    Pool-Name := "%{sql:SELECT pool_name FROM radnas_pool_names WHERE nas_ip_address='%{NAS-IP-Address}'}"
+    #}
+#########################
 
 	#  Create the CUI value and add the attribute to Access-Accept.
 	#  Uncomment the line below if *returning* the CUI.

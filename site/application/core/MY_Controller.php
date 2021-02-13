@@ -5,29 +5,24 @@
 		function __construct()
 		{
 			parent::__construct();
-			$CI = & get_instance();
+			//$CI = & get_instance();
 			//$this->output->enable_profiler(TRUE);
 
 			$this->load->model('admin/setting_model', 'setting_model');
 			$this->load->library('gravatar');
+
 			//$this->load->library('user_agent');
 			//$this->load->helper('url');
 
 			//general settings
-
 			$global_data['general_settings'] = $this->setting_model->get_general_settings();
-
 			$this->general_settings = $global_data['general_settings'];
 
 			//set timezone
-
 			date_default_timezone_set($this->general_settings['timezone']);
 
-
 			//recaptcha status
-
 			$global_data['recaptcha_status'] = true;
-
 			if (empty($this->general_settings['recaptcha_site_key']) || empty($this->general_settings['recaptcha_secret_key'])) {
 				$global_data['recaptcha_status'] = false;
 			}

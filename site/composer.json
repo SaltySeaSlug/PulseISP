@@ -11,26 +11,27 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
-		"php" : ">=7.2",
-	  	"ext-curl": "*",
-	  	"ext-gd": "*",
-	  	"ext-bcmath": "*",
-	  	"ext-json": "*",
-	  	"almasaeed2010/adminlte": "~3.1",
-		"mpdf/mpdf": "v8.0.*",
-	  	"geerlingguy/ping": "1.2.1",
-	  	"detain/iptools": "v3.0.*",
-	  	"markrogoyski/ipv4-subnet-calculator": "3.*",
-		"ivantcholakov/codeigniter-phpmailer": "^1.4",
-	  	"opensolutions/oss-snmp": "^v1.0.2"
+	  "php": ">=7.2",
+	  "ext-curl": "*",
+	  "ext-gd": "*",
+	  "ext-bcmath": "*",
+	  "ext-json": "*",
+	  "almasaeed2010/adminlte": "~3.1",
+	  "mpdf/mpdf": "v8.0.*",
+	  "geerlingguy/ping": "1.2.1",
+	  "detain/iptools": "v3.0.*",
+	  "markrogoyski/ipv4-subnet-calculator": "3.*",
+	  "ivantcholakov/codeigniter-phpmailer": "^1.4",
+	  "opensolutions/oss-snmp": "^v1.0.2",
+	  "guzzlehttp/guzzle": "^7.0"
 	},
-	"suggest": {
-		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
-	},
-	"require-dev": {
-		"mikey179/vfsstream": "1.1.*",
-		"phpunit/phpunit": "4.* || 5.*"
-	},
-	"minimum-stability": "dev",
-    "prefer-stable": true
+  "suggest": {
+	"paragonie/random_compat": "Provides better randomness in PHP 5.x"
+  },
+  "require-dev": {
+	"mikey179/vfsstream": "1.1.*",
+	"phpunit/phpunit": "4.* || 5.*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

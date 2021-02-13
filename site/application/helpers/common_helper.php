@@ -150,4 +150,3 @@ function check_service($sname) {
 		return "no service name";
 	}
 }
-

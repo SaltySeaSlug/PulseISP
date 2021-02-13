@@ -46,6 +46,7 @@
 
 	<?php if($this->general_settings['use_google_font']) { ?>
 		<!-- Google Font: Source Sans Pro -->
+		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 	<?php } ?>
 
@@ -208,33 +209,36 @@
           <i class="fas fa-expand-arrows-alt"></i>
         </a>
       </li>
-      <!-- User Profile Menu -->
-      <li class="nav-item dropdown user-menu">
-        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+		<!-- User Profile Menu -->
+		<li class="nav-item dropdown user-menu">
+			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 
-			<?php echo '<img src="'.$gravatar_url.'" class="user-image img-circle elevation-2" alt="User Image">'; ?>
-          <!--<span class="d-none d-md-inline"><?= ucwords($this->session->userdata('firstname')); ?></span>-->
-        </a>
-        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-          <!-- User image -->
-          <li class="user-header bg-primary">
-			  <?php echo '<img src="'.$gravatar_url.'" class="user-image img-circle elevation-2" alt="User Image">'; ?>
-            <p>
-              <?= ucwords($this->session->userdata('fullname')); ?>
-              <small><?= trans('member_since') ?> <?= date('M. Y', strtotime($this->session->userdata('created_date'))); ?></small>
-            </p>
-          </li>
-		  <!-- /.row -->
-          </li>
-          <!-- Menu Footer-->
-          <li class="user-footer">
-			  <a href="<?= base_url('admin/profile') ?>" class="btn btn-default btn-flat"><?= trans('profile') ?></a>
-			  <a href="<?= base_url('admin/auth/lock_screen') ?>" class="btn btn-default btn-flat"><?= trans('lock_screen') ?></a>
-            <a href="<?= base_url('admin/auth/logout') ?>" class="btn btn-default btn-flat float-right"><?= trans('logout') ?></a>
-          </li>
-        </ul>
-      </li>
-    </ul>
+				<?php echo '<img src="' . $gravatar_url . '" class="user-image img-circle elevation-2" alt="User Image">'; ?>
+				<!--<span class="d-none d-md-inline"><?= ucwords($this->session->userdata('firstname')); ?></span>-->
+			</a>
+			<ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+				<!-- User image -->
+				<li class="user-header bg-primary">
+					<?php echo '<img src="' . $gravatar_url . '" class="user-image img-circle elevation-2" alt="User Image">'; ?>
+					<p>
+						<?= ucwords($this->session->userdata('fullname')); ?>
+						<small><?= trans('member_since') ?> <?= date('M. Y', strtotime($this->session->userdata('created_date'))); ?></small>
+					</p>
+				</li>
+				<!-- /.row -->
+				</li>
+				<!-- Menu Footer-->
+				<li class="user-footer">
+					<a href="<?= base_url('admin/profile') ?>"
+					   class="btn btn-default btn-flat btn-sm"><?= trans('profile') ?></a>
+					<a href="<?= base_url('admin/auth/lock_screen') ?>"
+					   class="btn btn-default btn-flat btn-sm"><?= trans('lock_screen') ?></a>
+					<a href="<?= base_url('admin/auth/logout') ?>"
+					   class="btn btn-default btn-flat float-right btn-sm"><?= trans('logout') ?></a>
+				</li>
+			</ul>
+		</li>
+	</ul>
   </nav>
 
   <?php endif; ?>

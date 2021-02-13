@@ -80,12 +80,6 @@ class Setting_model extends CI_Model
 	}
 
 
-
-
-
-
-
-
 	function shapeSpace_server_uptime() {
 
 		$file_name = "/proc/uptime";
