@@ -1,5 +1,10 @@
 <?php
-	class Dictionary_model extends CI_Model
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
+class Dictionary_model extends CI_Model
 	{
 		public function add_dictionary($data)
 		{
@@ -90,15 +95,16 @@
 						'vendor' => $myVendor
 					);
 
-					$this->db->insert('raddictionary', $sql);
+					$this->db->insert($this->config->item('CONFIG_DB_TBL_RADDICTIONARY'), $sql);
 				}
 			}
 
 			return true;
 		}
-		public function get_all_dictionaries() {
+		public function get_all_dictionaries()
+		{
 			$this->db->select('attribute, value, vendor');
-			return $this->db->get('raddictionary')->result_array();
+			return $this->db->get($this->config->item('CONFIG_DB_TBL_RADDICTIONARY'))->result_array();
 		}
 	}
 ?>

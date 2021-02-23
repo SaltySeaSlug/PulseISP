@@ -1,21 +1,28 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
-class Profiles_components extends MY_Controller {
-	
-	public function __construct(){
-		
+class Profiles_components extends MY_Controller
+{
+
+	public function __construct()
+	{
 		parent::__construct();
-		auth_check(); // check login auth
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
+
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 
 		$this->load->model('admin/profiles_components_model', 'profiles_components_model');
-		$this->load->model('admin/Activity_model', 'activity_model');
 	}
 
 	//-------------------------------------------------------------------------
-	public function index(){
-
-		if($this->input->post('submit')){
+	public function index()
+	{
+		if ($this->input->post('submit')) {
 			$data = array(
 				'username' => $this->input->post('username'),
 				'firstname' => $this->input->post('firstname'),
@@ -26,13 +33,11 @@ class Profiles_components extends MY_Controller {
 			);
 			$data = $this->security->xss_clean($data);
 			$result = $this->admin_model->update_user($data);
-			if($result){
+			if ($result) {
 				$this->session->set_flashdata('success', 'Profile has been Updated Successfully!');
 				redirect(base_url('admin/profile'), 'refresh');
 			}
-		}
-		else{
-
+		} else {
 			$data['title'] = 'Profiles and Components';
 			$data['profiles'] = $this->profiles_components_model->get_all_profiles();
 			$data['components'] = $this->profiles_components_model->get_all_components();
@@ -44,11 +49,14 @@ class Profiles_components extends MY_Controller {
 	}
 
 	//-------------------------------------------------------------------------
-	public function profile_add(){
+	public function profile_add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$id = $this->session->userdata('admin_id');
 
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 
 			$profiledata = array(
 				'name' => $this->input->post('profilename')
@@ -70,7 +78,7 @@ class Profiles_components extends MY_Controller {
 				}
 			}
 			// Activity Log
-			$this->activity_model->add_to_log(1, "Profile has been added successfully");
+			$this->activity_model->add_to_system_log("Profile has been added successfully");
 
 			$this->session->set_flashdata('success', 'Profile has been added successfully!');
 			redirect(base_url('admin/profiles_components'));
@@ -87,11 +95,14 @@ class Profiles_components extends MY_Controller {
 		}
 	}
 
-	public function component_add(){
+	public function component_add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$id = $this->session->userdata('admin_id');
 
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 
 			//echo json_encode($this->input->post());
 			//return;
@@ -122,11 +133,11 @@ class Profiles_components extends MY_Controller {
 					);
 					$dict_data = $this->security->xss_clean($dictdata);
 
-					$this->profiles_components_model->link_dictionaryitem_to_profile_component($this->input->post('componentname'), $dict_data, $target);
+					$this->profiles_components_model->link_dictionaryitem_to_profile_component($dict_data, $target);
 				}
 			}
 			// Activity Log
-			$this->activity_model->add_to_log(1, "Component has been added successfully");
+			$this->activity_model->add_to_system_log("Component has been added successfully");
 
 			$this->session->set_flashdata('success', 'Component has been added successfully!');
 			redirect(base_url('admin/profiles_components'));
@@ -142,7 +153,6 @@ class Profiles_components extends MY_Controller {
 			$this->load->view('admin/includes/_footer');
 		}
 	}
-
 }
 
 ?>	

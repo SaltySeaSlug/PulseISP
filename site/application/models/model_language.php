@@ -1,4 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
 /**
  * Model for CodeIgniter frontend language files editor.
  *
@@ -101,15 +106,15 @@ class Model_language extends CI_Model {
 	 */
 	function get_keys_from_db($file){
 		$this->db->select('key as `keys`');
-		$r = $this->db->get_where('ci_language_keys', array('filename' => $file));
-		if($r->num_rows()){
-			$result=$r->result();
-			foreach($result as $row){
-				$tab[]=$row->keys;
+		$r = $this->db->get_where($this->config->item('CONFIG_DB_TBL_LANGUAGE_KEY'), array('filename' => $file));
+		if ($r->num_rows()) {
+			$result = $r->result();
+			foreach ($result as $row) {
+				$tab[] = $row->keys;
 			}
 		}
 		return (!empty($row)) ? $tab : FALSE;
-   }
+	}
 
 	/**
 	 * Get list of keys for file from database
@@ -117,13 +122,14 @@ class Model_language extends CI_Model {
 	 * @param string
 	 * @return	array
 	 */
-	function get_comments_from_db($file){
+	function get_comments_from_db($file)
+	{
 		$this->db->select('key as `keys`,comment');
-		$r = $this->db->get_where('ci_language_keys', array('filename' => $file));
-		if($r->num_rows()){
-			$result=$r->result();
-			foreach($result as $row){
-				$tab[$row->keys]=$row->comment;
+		$r = $this->db->get_where($this->config->item('CONFIG_DB_TBL_LANGUAGE_KEY'), array('filename' => $file));
+		if ($r->num_rows()) {
+			$result = $r->result();
+			foreach ($result as $row) {
+				$tab[$row->keys] = $row->comment;
 			}
 		}
 		return (!empty($row)) ? $tab : FALSE;
@@ -148,17 +154,18 @@ class Model_language extends CI_Model {
 	 * @param string
 	 * @return	bool
 	 */
-	function add_keys($keys,$file){
-		if(!is_array($keys)){
+	function add_keys($keys,$file)
+	{
+		if (!is_array($keys)) {
 			return FALSE;
 		}
-		foreach ($keys as $k){
+		foreach ($keys as $k) {
 			$data[] = array(
-				'key'=>$k,
-				'filename'=>$file
+				'key' => $k,
+				'filename' => $file
 			);
 		}
-		$this->db->insert_batch('ci_language_keys',$data);
+		$this->db->insert_batch($this->config->item('CONFIG_DB_TBL_LANGUAGE_KEY'), $data);
 		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
@@ -192,13 +199,15 @@ class Model_language extends CI_Model {
 	 * @param string
 	 * @return	bool
 	 */
-	function delete_all_keys($file){
-		$this->db->delete('ci_language_keys',array('filename'=>$file));
+	function delete_all_keys($file)
+	{
+		$this->db->delete($this->config->item('CONFIG_DB_TBL_LANGUAGE_KEY'), array('filename' => $file));
 		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
-	function delete_one_key($key,$file){
-		$this->db->delete('ci_language_keys',array('filename'=>$file,'key'=>$key));
+	function delete_one_key($key,$file)
+	{
+		$this->db->delete($this->config->item('CONFIG_DB_TBL_LANGUAGE_KEY'), array('filename' => $file, 'key' => $key));
 		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
@@ -207,10 +216,10 @@ class Model_language extends CI_Model {
 			return FALSE;
 		}
 		$this->db->trans_start();
-		foreach ($com as $k=>$c){
+		foreach ($com as $k=>$c) {
 			$this->db->where('key', $k);
 			$this->db->where('filename', $file);
-			$this->db->update('ci_language_keys',array('comment'=>$c));
+			$this->db->update($this->config->item('CONFIG_DB_TBL_LANGUAGE_KEY'), array('comment' => $c));
 		}
 		$this->db->trans_complete();
 		return ($this->db->trans_status()) ? TRUE : FALSE;

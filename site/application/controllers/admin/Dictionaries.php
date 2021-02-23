@@ -1,15 +1,24 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Dictionaries extends MY_Controller {
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
-	public function __construct(){
+class Dictionaries extends MY_Controller
+{
 
+	public function __construct()
+	{
 		parent::__construct();
-		auth_check(); // check login auth
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
+
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 
 		$this->load->model('admin/Dictionary_model', 'dictionary_model');
-		$this->load->model('admin/Activity_model', 'activity_model');
-		$this->load->model('admin/Setting_model', 'setting_model');
+		//$this->load->model('admin/Activity_model', 'activity_model');
+		//$this->load->model('admin/Setting_model', 'setting_model');
 		$this->load->helper('data_helper');
 	}
 
@@ -53,9 +62,10 @@ class Dictionaries extends MY_Controller {
 		$this->nas_model->change_status();
 	}
 
-	public function add(){
-		
-		$this->rbac->check_operation_access(); // check opration permission
+	public function add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$config = array(
 			'upload_path' => "./uploads/",
@@ -87,19 +97,20 @@ class Dictionaries extends MY_Controller {
 		}
 	}
 
-	public function edit($id = 0){
+	public function edit($id = 0)
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('nasname', 'Name', 'trim|required');
 			$this->form_validation->set_rules('nashost', 'IP Address', 'trim|required');
 			$this->form_validation->set_rules('nasidentifier', 'Identifier', 'trim|required');
 			$this->form_validation->set_rules('nassecret', 'Secret', 'trim|required');
 			if ($this->form_validation->run() == FALSE) {
-					$data = array(
-						'errors' => validation_errors()
-					);
+				$data = array(
+					'errors' => validation_errors()
+				);
 					$this->session->set_flashdata('errors', $data['errors']);
 					redirect(base_url('admin/nas/edit/'.$id),'refresh');
 			}
@@ -138,8 +149,9 @@ class Dictionaries extends MY_Controller {
 
 	public function delete($id = 0)
 	{
-		$this->rbac->check_operation_access(); // check opration permission
-		
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
 		$this->db->delete('radnas', array('id' => $id));
 
 		// Activity Log 

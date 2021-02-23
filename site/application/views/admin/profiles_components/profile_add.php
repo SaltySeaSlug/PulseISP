@@ -24,18 +24,19 @@
 		<?php echo form_open(base_url('admin/profiles_components/profile_add'), 'class="form-horizontal"');  ?>
 
 		<div class="card-body">
-		  <div class="col-md-6">
-			  <div class="form-group">
-				  <label for="profilename">Profile Name</label>
-				  <input type="text" class="form-control" id="profilename" name="profilename" required>
-			  </div>
-		  </div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="profilename">Profile Name</label>
+					<input type="text" class="form-control" id="profilename" name="profilename" required>
+				</div>
+			</div>
 
-		  <div class="col-md-6">
-			  <div class="form-group">
-				  <label for="profilecomponents">Profile Components</label>
-				  <select class="form-control select2tag select2-hidden-accessible" id="profilecomponents" name="profilecomponents[]" style="width: 100%;" tabindex="-1" aria-hidden="true" multiple>
-					  <?php foreach ($components as $item) { echo "<option value='".$item['id']."'>".$item['name']."</option>"; } ?>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="profilecomponents">Profile Components</label>
+					<select class="form-control select2 select2tag select2-hidden-accessible" id="profilecomponents"
+							name="profilecomponents[]" style="width: 100%;" tabindex="-1" aria-hidden="true" multiple>
+						<?php foreach ($components as $item) { echo "<option value='".$item['id']."'>".$item['name']."</option>"; } ?>
 				  </select>
 			  </div>
 
@@ -94,10 +95,6 @@
     function(data){
       $.notify("Status Changed Successfully", "success");
     });
-  });
-
-  $(document).ready(function() {
-	  $('#profilecomponents').select2();
   });
 </script>
 

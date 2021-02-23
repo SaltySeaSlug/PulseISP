@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/14, 13:50
+ */
+
 header('Content-type: application/json');
 
 error_reporting(E_ALL);
@@ -28,7 +33,7 @@ if (!empty($accountCode) || !empty($name)) {
 
 	if (!empty($accountCode)) {
 		$CI->db->select_max('account_code', $accountCode);
-		$query = $CI->db->get('ci_users')->row();
+		$query = $CI->db->get($this->config->item('CONFIG_DB_TBL_USER'))->row();
 	}
 
 if (!empty($query)) {

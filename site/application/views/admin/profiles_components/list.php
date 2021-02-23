@@ -3,43 +3,46 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-  <section class="content">
-    <!-- For Messages -->
-    <?php $this->load->view('admin/includes/_messages.php') ?>
-    <div class="card">
-      <div class="card-header">
-        <div class="d-inline-block">
-          <h3 class="card-title mt-2"><i class="fad fa-server mr-2"></i><?= trans('profiles_components_list') ?></h3>
-        </div>
-        <div class="d-inline-block float-right">
-			<?php if($this->rbac->check_operation_permission('add')): ?>
-				<a href="<?= base_url('admin/profiles_components/profile_add'); ?>" class="btn btn-success"><i class="fad fa-plus mr-1"></i><?= trans('add_profile') ?></a>
-			<?php endif; ?>
-			<?php if($this->rbac->check_operation_permission('add')): ?>
-				<a href="<?= base_url('admin/profiles_components/component_add'); ?>" class="btn btn-success"><i class="fad fa-plus mr-1"></i><?= trans('add_component') ?></a>
-			<?php endif; ?>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-body">
-		  <label>PROFILES</label>
-		  <table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
-          <thead>
-            <tr>
-				<th># <?= trans('id') ?></th>
+	<section class="content">
+		<!-- For Messages -->
+		<?php $this->load->view('admin/includes/_messages.php') ?>
+		<div class="card">
+			<div class="card-header">
+				<div class="d-inline-block">
+					<h3 class="card-title mt-2"><i
+								class="fad fa-server mr-2"></i><?= trans('profiles_components_list') ?></h3>
+				</div>
+				<div class="d-inline-block float-right">
+					<?php if ($this->rbac->check_operation_permission('profile_add')): ?>
+						<a href="<?= base_url('admin/profiles_components/profile_add'); ?>" class="btn btn-success"><i
+									class="fad fa-plus mr-1"></i><?= trans('add_profile') ?></a>
+					<?php endif; ?>
+					<?php if ($this->rbac->check_operation_permission('component_add')): ?>
+						<a href="<?= base_url('admin/profiles_components/component_add'); ?>" class="btn btn-success"><i
+									class="fad fa-plus mr-1"></i><?= trans('add_component') ?></a>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-body">
+				<label>PROFILES</label>
+				<table id="na_datatable"
+					   class="table table-hover table-striped no-footer table-sm text-md nowrap dataTable"
+					   style="width: 100%">
+					<thead>
+					<tr>
+						<th># <?= trans('id') ?></th>
               	<th><?= trans('name') ?></th>
-              	<th><?= trans('status') ?></th>
-				<th>Components</th>
-              <th class="text-right"><?= trans('action') ?></th>
-            </tr>
-          </thead>
-			<tbody>
-			<?php foreach($profiles as $data): ?>
+						<th>Components</th>
+						<th class="text-right" style="width: 1em"></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($profiles as $data): ?>
 				<tr>
 					<td><?= $data['id']; ?></td>
 					<td><?= $data['name']; ?></td>
-					<td><span class="btn btn-success btn-flat btn-xs"></span></td>
 					<td>
 						<?php foreach ($this->db->get_where('radusergroup', ['username' => $data['name']])->result_array() as $comp) { ?>
 							<span class='badge badge-secondary'><?php echo $comp['groupname']; ?></span><br>
@@ -55,26 +58,26 @@
 
 				</tr>
 			<?php endforeach; ?>
-			</tbody>
-        </table>
+					</tbody>
+				</table>
 
-		  <label>PROFILE COMPONENTS</label>
-		  <table id="na_datatable1" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
-			  <thead>
-			  <tr>
-				  <th># <?= trans('id') ?></th>
+				<label>PROFILE COMPONENTS</label>
+				<table id="na_datatable1"
+					   class="table table-hover table-striped no-footer table-sm text-md nowrap dataTable"
+					   style="width: 100%">
+					<thead>
+					<tr>
+						<th># <?= trans('id') ?></th>
 				  <th><?= trans('name') ?></th>
-				  <th><?= trans('status') ?></th>
-				  <th>Attributes</th>
-				  <th class="text-right"><?= trans('action') ?></th>
-			  </tr>
-			  </thead>
-			  <tbody>
-			  <?php foreach($components as $data): ?>
+						<th>Attributes</th>
+						<th class="text-right" style="width: 1em"></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php foreach($components as $data): ?>
 				  <tr>
 					  <td><?= $data['id']; ?></td>
 					  <td><?= $data['name']; ?></td>
-					  <td><span class="btn btn-success btn-flat btn-xs"></span></td>
 					  <td>
 						  <?php foreach ($this->db->get_where('radgroupreply', ['groupname' => $data['name']])->result_array() as $attr) { ?>
 							  <span class='badge badge-secondary'><?php echo $attr['attribute']; ?><?php echo $attr['op']; ?><?php echo $attr['value']; ?></span><br>
@@ -105,12 +108,18 @@
 <script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 
 <script>
-  //---------------------------------------------------
-  /*var table = $('#na_datatable').DataTable({
-    "processing": true,
-    "serverSide": false,
-	"responsive": true,
-    //"ajax": "<?=base_url('admin/profiles_components/datatable_json')?>",
+	$(function () {
+		$("#na_datatable").DataTable();
+	})
+	$(function () {
+		$("#na_datatable1").DataTable();
+	})
+	//---------------------------------------------------
+	/*var table = $('#na_datatable').DataTable({
+	  "processing": true,
+	  "serverSide": false,
+	  "responsive": true,
+	  //"ajax": "<?=base_url('admin/profiles_components/datatable_json')?>",
     "order": [[0,'asc']],
     "columnDefs": [
     { "targets": 0, "name": "id", 'searchable':true, 'orderable':true},

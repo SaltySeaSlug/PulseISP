@@ -1,19 +1,28 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
-	class Invoices extends MY_Controller {
+use Mpdf\Mpdf;
 
-		public function __construct(){
+class Invoices extends MY_Controller
+{
+	public function __construct()
+	{
+		parent::__construct();
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
 
-			parent::__construct();
-			auth_check(); // check login auth
-			$this->rbac->check_module_access();
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
+		$this->rbac->check_module_access();
 
-			$this->load->model('admin/invoice_model', 'invoice_model');
-			$this->load->model('admin/Activity_model', 'activity_model');
-			//$this->load->helper('pdf_helper'); // loaded pdf helper
-		}
+		$this->load->model('admin/invoice_model', 'invoice_model');
+		//$this->load->model('admin/Activity_model', 'activity_model');
+		//$this->load->helper('pdf_helper'); // loaded pdf helper
+	}
 
-		//---------------------------------------------------
+	//---------------------------------------------------
 		// Get All Invoices
 		public function index(){
 
@@ -28,9 +37,10 @@
 		// Add New Invoices
 		public function add()
 		{
-			$this->rbac->check_operation_access(); // check opration permission
+			// Check if user is allowed to access operation
+			$this->rbac->check_operation_access();
 
-			if($this->input->post('submit')){
+			if ($this->input->post('submit')) {
 				$data['company_data'] = array(
 					'name' => $this->input->post('company_name'),
 					'address1' => $this->input->post('company_address_1'),
@@ -106,24 +116,28 @@
 
 		//---------------------------------------------------
 		// Get View Invoice
-		public function view($id=0){
+		public function view($id=0)
+		{
 
-			$this->rbac->check_operation_access(); // check opration permission
+			// Check if user is allowed to access operation
+			$this->rbac->check_operation_access();
 
 			$data['invoice_detail'] = $this->invoice_model->get_invoice_by_id($id);
 
 			$this->load->view('admin/includes/_header');
-        	$this->load->view('admin/invoices/invoice_view', $data);
-        	$this->load->view('admin/includes/_footer');
+			$this->load->view('admin/invoices/invoice_view', $data);
+			$this->load->view('admin/includes/_footer');
 		}
 
 		//---------------------------------------------------
 		// Edit Invoice
-		public function edit($id=0){
+		public function edit($id=0)
+		{
 
-			$this->rbac->check_operation_access(); // check opration permission
+			// Check if user is allowed to access operation
+			$this->rbac->check_operation_access();
 
-			if($this->input->post('submit')){
+			if ($this->input->post('submit')) {
 				$data['company_data'] = array(
 					'name' => $this->input->post('company_name'),
 					'address1' => $this->input->post('company_address_1'),
@@ -199,25 +213,26 @@
 
 		//---------------------------------------------------------------
 		// Create PDF invoice at run time for Email
-		public function create_pdf($id=0){
-			
+		public function create_pdf($id=0)
+		{
+
 			$data['invoice_detail'] = $this->invoice_model->get_invoice_by_id($id);
 			$html = $this->load->view('admin/invoices/invoice_pdf', $data, TRUE);
-			
-			$filename = $data['invoice_detail']['invoice_no'];
-		
-			$pdf_file_path = FCPATH."/uploads/invoices/".$filename.".pdf";
 
-			$mpdf=new \Mpdf\Mpdf(); 
+			$filename = $data['invoice_detail']['invoice_no'];
+
+			$pdf_file_path = FCPATH . "/uploads/invoices/" . $filename . ".pdf";
+
+			$mpdf = new Mpdf();
 			$mpdf->SetDisplayMode('fullpage');
-			$mpdf->list_indent_first_level = 0;	// 1 or 0 - whether to indent the first level of a list
+			$mpdf->list_indent_first_level = 0;    // 1 or 0 - whether to indent the first level of a list
 			// LOAD a stylesheet
 			$stylesheet = file_get_contents(base_url('assets/dist/css/mpdfstyletables.css'));
-			$mpdf->WriteHTML($stylesheet,1);	// The parameter 1 tells that this is css/style only and no body/html/text
-			$mpdf->WriteHTML($html,2);
-			$mpdf->Output($pdf_file_path,'F');
-			
-			echo base_url()."uploads/invoices/".$filename.".pdf";
+			$mpdf->WriteHTML($stylesheet, 1);    // The parameter 1 tells that this is css/style only and no body/html/text
+			$mpdf->WriteHTML($html, 2);
+			$mpdf->Output($pdf_file_path, 'F');
+
+			echo base_url() . "uploads/invoices/" . $filename . ".pdf";
 			exit;
 		
 		}
@@ -243,12 +258,14 @@
 
 		//---------------------------------------------------
 		// Delete Invoices
-		public function delete($id){
+		public function delete($id)
+		{
 
-			$this->rbac->check_operation_access(); // check opration permission
+			// Check if user is allowed to access operation
+			$this->rbac->check_operation_access();
 
 			$result = $this->db->delete('ci_payments', array('id' => $id));
-			if($result){
+			if ($result) {
 				// Activity Log 
 				$this->activity_model->add_to_system_log("Invoice has been deleted successfully");
 				$this->session->set_flashdata('success', 'Record has been deleted Successfully!');

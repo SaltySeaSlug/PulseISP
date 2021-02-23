@@ -69,7 +69,9 @@
 					<!-- INCLUDED NAS ROUTERS (leave blank for all) -->
 					<div class="form-group">
 						<label for="include_nasdevices" class="col-md-12 control-label">NAS Devices</label>
-						<select class="form-control select2tag select2-hidden-accessible" id="include_nasdevices" name="include_nasdevices[]" style="width: 100%;" tabindex="-1" aria-hidden="true" multiple>
+						<select class="form-control select2 select2tag select2-hidden-accessible"
+								id="include_nasdevices" name="include_nasdevices[]" style="width: 100%;" tabindex="-1"
+								aria-hidden="true" multiple>
 							<?php foreach ($nas_devices as $item) { echo "<option value='".$item['id']."'>".$item['nasname']." (".$item['shortname'].")</option>"; } ?>
 						</select>
 					</div>
@@ -157,9 +159,5 @@
 				  });
 			  }
 		  });
-	  });
-
-	  $(document).ready(function() {
-		  $('#include_nasdevices').select2();
 	  });
   </script>

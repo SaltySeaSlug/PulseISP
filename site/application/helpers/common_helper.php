@@ -1,11 +1,16 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
 // -----------------------------------------------------------------------------
 // Get Language by ID
 function get_lang_name_by_id($id)
 {
-    $ci = & get_instance();
-    $ci->db->where('id',$id);
-    return $ci->db->get('ci_language')->row_array()['name'];
+	$ci = &get_instance();
+	$ci->db->where('id', $id);
+	return $ci->db->get('ci_language')->row_array()['name'] ?? 'english';
 }
 
 // -----------------------------------------------------------------------------
@@ -14,7 +19,7 @@ function get_lang_short_code($id)
 {
     $ci = & get_instance();
     $ci->db->where('id',$id);
-    return $ci->db->get('ci_language')->row_array()['short_name'];
+	return $ci->db->get('ci_language')->row_array()['short_name'] ?? 'en';
 }
 
 // -----------------------------------------------------------------------------

@@ -1,45 +1,49 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
 
 class Data extends MY_Controller
 {
 	public function __construct()
 	{
-		header('Content-type: application/json');
-
 		parent::__construct();
-		auth_check(); // check login auth
-		$this->rbac->check_module_access();
-
-		$this->load->model('admin/Setting_model', 'setting_model');
+		header('Content-type: application/json');
 	}
 
 	//-------------------------------------------------------------------------
-	public function index()	{ }
+	public function index()
+	{
+	}
 	//-------------------------------------------------------------------------
 
 
 	// Check if username exists
-	public function check_portal_username() {
+	public function check_portal_username()
+	{
 		$username = isset($_GET['un']) ? $_GET['un'] : null;
 		if (empty($username)) return false;
 
-		if ($this->db->where(['username' => $username])->from("ci_users")->count_all_results() == 0) {
+		if ($this->db->where(['username' => $username])->from($this->config->item('CONFIG_DB_TBL_USER'))->count_all_results() == 0) {
 			echo json_encode(false);
 		} else {
 			echo json_encode(true);
 		}
 	}
-	public function check_admin_username() {
+	public function check_admin_username()
+	{
 		$username = isset($_GET['un']) ? $_GET['un'] : null;
 		if (empty($username)) return false;
 
-		if ($this->db->where(['username' => $username])->from("ci_admin")->count_all_results() == 0) {
+		if ($this->db->where(['username' => $username])->from($this->config->item('CONFIG_DB_TBL_ADMIN'))->count_all_results() == 0) {
 			echo json_encode(false);
 		} else {
 			echo json_encode(true);
 		}
 	}
-	public function check_data_account_username($username = null) {
+	public function check_data_account_username($username = null)
+	{
 		$un = isset($_GET['un']) ? $_GET['un'] : null;
 
 		if (!empty($username)) {
@@ -48,7 +52,7 @@ class Data extends MY_Controller
 
 		if (empty($un)) echo false;
 
-		if ($this->db->where(['username' => $un])->from("data_accounts")->count_all_results() == 0) {
+		if ($this->db->where(['username' => $un])->from($this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT'))->count_all_results() == 0) {
 			echo false;
 		} else {
 			echo true;
@@ -67,7 +71,7 @@ class Data extends MY_Controller
 
 			if (!empty($accountCode)) {
 				$CI->db->select_max('account_code', $accountCode);
-				$query = $CI->db->get('ci_users')->row();
+				$query = $CI->db->get($this->config->item('CONFIG_DB_TBL_USER'))->row();
 			}
 
 			if (!empty($query)) {
@@ -155,24 +159,6 @@ class Data extends MY_Controller
 			$ip = $_GET['ip'];
 
 			if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-				try {
-					$snmpHost = new \OSS_SNMP\SNMP($ip, "public");
-					$model = $snmpHost->getPlatform()->getModel();
-					$os = $snmpHost->getPlatform()->getOs();
-					$identity = null;
-					$uptime = null;
-
-					if ($snmpHost->getPlatform()->getVendor() == 'Mikrotik') {
-						$identity = $snmpHost->useMikrotik()->identity();
-						$uptime = secondsToTime($snmpHost->useMikrotik()->uptime());
-					}
-
-					echo "<div class='alert alert-success'><b>SNMP Response:</b> $os $model<br><b>Device Identity:</b> $identity<br> <b>Device Uptime:</b> $uptime<br></div>";
-
-				} catch (Exception $e) {
-					echo "<div class='alert alert-danger'><b>No SNMP Response</b> (Is SNMP enabled on the device?)</div>";
-				}
-
 				$ttl = 128;
 				$timeout = 1;
 
@@ -187,6 +173,25 @@ class Data extends MY_Controller
 					}
 				} catch (Exception $e) {
 					echo "<div class='alert alert-danger'><b>No Ping Response</b> (Is the device accessible?)</div>";
+				}
+
+				try {
+					$snmpHost = new \OSS_SNMP\SNMP($ip, "public");
+					$model = $snmpHost->getPlatform()->getModel();
+					$os = $snmpHost->getPlatform()->getOs();
+					$vendor = $snmpHost->getPlatform()->getVendor();
+					$identity = null;
+					$uptime = null;
+
+					if ($vendor == 'Mikrotik') {
+						$identity = $snmpHost->useMikrotik()->identity();
+						$uptime = secondsToTime($snmpHost->useMikrotik()->uptime());
+					}
+
+					echo "<div class='alert alert-success'><b>SNMP Response:</b> $os $model<br><b>Device Vendor:</b> $vendor<br> <b>Device Identity:</b> $identity<br> <b>Device Uptime:</b> $uptime<br></div>";
+
+				} catch (Exception $e) {
+					echo "<div class='alert alert-danger'><b>No SNMP Response</b> (Is SNMP enabled on the device?)</div>";
 				}
 
 			} else {
@@ -238,7 +243,7 @@ class Data extends MY_Controller
 	{
 		header('Content-type: application/json');
 		$vendor = isset($_GET['vendor']) ? $_GET['vendor'] : null;
-		$result = $this->db->query('SELECT MAX(id), attribute FROM raddictionary WHERE vendor = \'' . $vendor . '\'  GROUP BY attribute ORDER BY attribute ASC');
+		$result = $this->db->query('SELECT MAX(id), attribute FROM ' . $this->config->item('CONFIG_DB_TBL_RADDICTIONARY') . ' WHERE vendor = \'' . $vendor . '\'  GROUP BY attribute ORDER BY attribute ASC');
 
 		if ($result->num_rows() > 0) {
 			$attributes[] = '<option selected>None</option>';
@@ -252,17 +257,18 @@ class Data extends MY_Controller
 
 		echo json_encode($attributes);
 	}
-	public function get_attribute_defaults(){
+	public function get_attribute_defaults()
+	{
 		header('Content-type: application/json');
 		$attributeid = isset($_GET['attribute']) ? $_GET['attribute'] : null;
 
 
 		$this->db->select("*", ["id" => $attributeid]);
-		$result = $this->db->get_where('raddictionary', array('id' => $attributeid));
+		$result = $this->db->get_where($this->config->item('CONFIG_DB_TBL_RADDICTIONARY'), array('id' => $attributeid));
 		$values = [];
 
 		if ($result->num_rows() > 0) {
-			foreach($result->result_array() as $row) {
+			foreach ($result->result_array() as $row) {
 				$values[] = $row['value'] ?? null;
 				$values[] = $row['recommended_op'] ?? ':=';
 				$values[] = $row['recommended_table'] ?? 'reply';
@@ -284,19 +290,20 @@ class Data extends MY_Controller
 
 		switch ($period)
 		{
-			case 'T': {
-				$today = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM data_accounts_stats WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ORDER BY HOUR(`timestamp`) ASC")->result_array();
-				$todayCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM data_accounts_stats WHERE DATE(timestamp) = CURDATE()")->row();
+			case 'T':
+				{
+					$today = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ORDER BY HOUR(`timestamp`) ASC")->result_array();
+					$todayCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE DATE(timestamp) = CURDATE()")->row();
 
-				$data = range(0, 23);
+					$data = range(0, 23);
 
-				foreach ($today as $row) {
-					$data[$row['hour']] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['hour']);
-				}
+					foreach ($today as $row) {
+						$data[$row['hour']] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['hour']);
+					}
 
-				$count = 0;
-				foreach (array_keys($data) as $index => $key) {
-					if ($index == $count && is_numeric($data[$key])) {
+					$count = 0;
+					foreach (array_keys($data) as $index => $key) {
+						if ($index == $count && is_numeric($data[$key])) {
 						$data[$key] = array("period" => $key);
 					}
 					$count++;
@@ -304,37 +311,39 @@ class Data extends MY_Controller
 
 				$json_data = array("count" => array("downloaded" => $todayCount->download ?? 0, "uploaded" => $todayCount->upload ?? 0), "chartdata" => $data);
 			} break;
-			case 'W': {
-				$thisweek = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAYNAME(`timestamp`) as day FROM data_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0) GROUP BY DAYNAME(`timestamp`) ORDER BY DAYOFWEEK(day)")->result_array();
-				$thisweekCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM data_accounts_stats WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0)")->row();
+			case 'W':
+				{
+					$thisweek = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAYNAME(`timestamp`) as day FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0) GROUP BY DAYNAME(`timestamp`) ORDER BY DAYOFWEEK(day)")->result_array();
+					$thisweekCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0)")->row();
 
-				$data = range(0, 6);
-				foreach ($thisweek as $row) {
-					$data[getWeekday($row['day'])] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['day']);
-				}
-				$count = 0;
-				foreach (array_keys($data) as $index => $key) {
-					if ($index == $count && is_numeric($data[$key])) {
-						$data[$key] = array("period" => getDay($key));
+					$data = range(0, 6);
+					foreach ($thisweek as $row) {
+						$data[getWeekday($row['day'])] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['day']);
 					}
+					$count = 0;
+					foreach (array_keys($data) as $index => $key) {
+						if ($index == $count && is_numeric($data[$key])) {
+							$data[$key] = array("period" => getDay($key));
+						}
 					$count++;
 				}
 
 				$json_data = array("count" => array("downloaded" => $thisweekCount->download ?? 0, "uploaded" => $thisweekCount->upload ?? 0), "chartdata" => $data);
 			} break;
-			case 'M': {
-				$thismonth = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAY(`timestamp`) as day FROM data_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`timestamp`) ORDER BY DAY(`timestamp`) ASC")->result_array();
-				$thismonthCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM data_accounts_stats WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE())")->row();
+			case 'M':
+				{
+					$thismonth = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAY(`timestamp`) as day FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`timestamp`) ORDER BY DAY(`timestamp`) ASC")->result_array();
+					$thismonthCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE())")->row();
 
-				$data = range(1, date('t') + 1);
-				foreach ($thismonth as $row) {
-					$data[$row['day']] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['day']);
-				}
-				$count = 0;
-				foreach (array_keys($data) as $index => $key) {
-					if ($count != 0 && $index == $count && is_numeric($data[$key])) {
-						$data[$key] = array("period" => $key);
+					$data = range(1, date('t') + 1);
+					foreach ($thismonth as $row) {
+						$data[$row['day']] = array("downloaded" => toxBytes($row['download'], 'B'), "uploaded" => toxBytes($row['upload'], 'B'), "period" => $row['day']);
 					}
+					$count = 0;
+					foreach (array_keys($data) as $index => $key) {
+						if ($count != 0 && $index == $count && is_numeric($data[$key])) {
+							$data[$key] = array("period" => $key);
+						}
 					if ($count == 0) unset($data[$key]);
 					$count++;
 				}
@@ -355,56 +364,59 @@ class Data extends MY_Controller
 
 		switch ($period)
 		{
-			case 'T': {
-				$today = $this->db->query("SELECT HOUR(`authdate`) as hour, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE DATE(`authdate`) = CURDATE() GROUP BY HOUR(`authdate`)")->result_array();
-				$todayCount = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE DATE(`authdate`) = CURDATE()")->row();
+			case 'T':
+				{
+					$today = $this->db->query("SELECT HOUR(`authdate`) as hour, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM " . $this->config->item('CONFIG_DB_TBL_RADPOSTAUTH') . " WHERE DATE(`authdate`) = CURDATE() GROUP BY HOUR(`authdate`)")->result_array();
+					$todayCount = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM " . $this->config->item('CONFIG_DB_TBL_RADPOSTAUTH') . " WHERE DATE(`authdate`) = CURDATE()")->row();
 
-				$data = range(0, 23);
+					$data = range(0, 23);
 
-				foreach ($today as $row) {
-					$data[$row['hour']] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['hour']);
-				}
-				$count = 0;
-				foreach (array_keys($data) as $index => $key) {
-					if ($index == $count && is_numeric($data[$key])) {
-						$data[$key] = array("period" => $key);
+					foreach ($today as $row) {
+						$data[$row['hour']] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['hour']);
+					}
+					$count = 0;
+					foreach (array_keys($data) as $index => $key) {
+						if ($index == $count && is_numeric($data[$key])) {
+							$data[$key] = array("period" => $key);
 					}
 					$count++;
 				}
 
 				$json_data = array("count" => array("accepted" => $todayCount->accept, "rejected" => $todayCount->reject), "chartdata" => $data);
 			} break;
-			case 'W': {
-				$thisweek = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM radpostauth WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0) GROUP BY DAYNAME(`authdate`)")->result_array();
-				$thisweekCount = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM radpostauth WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0)")->row();
+			case 'W':
+				{
+					$thisweek = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM " . $this->config->item('CONFIG_DB_TBL_RADPOSTAUTH') . " WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0) GROUP BY DAYNAME(`authdate`)")->result_array();
+					$thisweekCount = $this->db->query("SELECT COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject, DAYNAME(`authdate`) as day FROM " . $this->config->item('CONFIG_DB_TBL_RADPOSTAUTH') . " WHERE YEARWEEK(`authdate`, 0) = YEARWEEK(CURDATE(), 0)")->row();
 
-				$data = range(0, 6);
-				foreach ($thisweek as $row) {
-					$data[getWeekday($row['day'])] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
-				}
-				$count = 0;
-				foreach (array_keys($data) as $index => $key) {
-					if ($index == $count && is_numeric($data[$key])) {
-						$data[$key] = array("period" => getDay($key));
+					$data = range(0, 6);
+					foreach ($thisweek as $row) {
+						$data[getWeekday($row['day'])] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
 					}
+					$count = 0;
+					foreach (array_keys($data) as $index => $key) {
+						if ($index == $count && is_numeric($data[$key])) {
+							$data[$key] = array("period" => getDay($key));
+						}
 					$count++;
 				}
 
 				$json_data = array("count" => array("accepted" => $thisweekCount->accept, "rejected" => $thisweekCount->reject), "chartdata" => $data);
 			} break;
-			case 'M': {
-				$thismonth = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`authdate`)")->result_array();
-				$thismonthCount = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM radpostauth WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE())")->row();
+			case 'M':
+				{
+					$thismonth = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM " . $this->config->item('CONFIG_DB_TBL_RADPOSTAUTH') . " WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`authdate`)")->result_array();
+					$thismonthCount = $this->db->query("SELECT DAY(`authdate`) as day, COUNT(CASE WHEN `reply` = 'Access-Accept' THEN ( SELECT `id` ) END) as accept, COUNT(CASE WHEN `reply` = 'Access-Reject' THEN ( SELECT `id` ) END) as reject FROM " . $this->config->item('CONFIG_DB_TBL_RADPOSTAUTH') . " WHERE YEAR(`authdate`) = YEAR(CURRENT_DATE()) AND MONTH(`authdate`) = MONTH(CURRENT_DATE())")->row();
 
-				$data = range(1, date('t') + 1);
-				foreach ($thismonth as $row) {
-					$data[$row['day']] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
-				}
-				$count = 0;
-				foreach (array_keys($data) as $index => $key) {
-					if ($count != 0 && $index == $count && is_numeric($data[$key])) {
-						$data[$key] = array("period" => $key);
+					$data = range(1, date('t') + 1);
+					foreach ($thismonth as $row) {
+						$data[$row['day']] = array("accept" => $row['accept'], "reject" => $row['reject'], "period" => $row['day']);
 					}
+					$count = 0;
+					foreach (array_keys($data) as $index => $key) {
+						if ($count != 0 && $index == $count && is_numeric($data[$key])) {
+							$data[$key] = array("period" => $key);
+						}
 					if ($count == 0) unset($data[$key]);
 					$count++;
 				}

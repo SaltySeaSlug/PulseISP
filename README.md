@@ -1,15 +1,21 @@
 # PulseISP
- 
+
 > Web application aimed at general-purpose ISP deployment
 >
-> CodeIgniter | PHP | JavaScript | ISP | Web Management | Radius | Freeradius
+> CodeIgniter | PHP | JavaScript | ISP | Web Management | Radius | Freeradius | Perl
 
-### Goal
-> I started this project to facilitate a requirement that was lacking in the community, 
+### Mission Statement
+
+> I started this project to facilitate a requirement that was lacking in the community,
 > there are a lot of service (paid and free) but each lacking in their own way.
 >
-> I will confess that I am a **novice** when it comes to many aspects of this and I am learning.
-> It is my first project and my first open source project
+> I will confess that I am a **novice** when it comes to many aspects of this, and I am learning.
+> It is my first project, and my first open source project
+>
+> This project is committed to create an inclusive web based management solution to FreeRADIUS that is:
+>  * Professional
+>  * Scalable
+>  * Enterprise Ready
 
 ### Development Requirements
 *   Ubuntu Server 20.04 or above
@@ -29,7 +35,11 @@ sudo su -c "bash <(wget -qO- https://raw.githubusercontent.com/SaltySeaSlug/Puls
 ```
 
 ### Demo
+
 > `NOTE: This is still a work in progress so everything may not work`
+>> Username : superadmin
+> >
+>> Password : admin
 
 ### Contributing
 If you'd like to contribute to this project.

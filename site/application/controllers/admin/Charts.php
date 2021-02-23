@@ -1,15 +1,24 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
-class Charts extends MY_Controller {
+class Charts extends MY_Controller
+{
 
-	public function __construct(){
-
+	public function __construct()
+	{
 		parent::__construct();
-		auth_check(); // check login auth
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
+
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 	}
 
-	public function chartjs(){
+	public function chartjs()
+	{
 
 		$data['title'] = '';
 

@@ -1,15 +1,25 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Users extends MY_Controller {
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
-	public function __construct(){
+class Users extends MY_Controller
+{
+
+	public function __construct()
+	{
 
 		parent::__construct();
-		auth_check(); // check login auth
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
+
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 
 		$this->load->model('admin/user_model', 'user_model');
-		$this->load->model('admin/Activity_model', 'activity_model');
-		$this->load->model('admin/Setting_model', 'setting_model');
+		//$this->load->model('admin/Activity_model', 'activity_model');
+		//$this->load->model('admin/Setting_model', 'setting_model');
 		$this->load->model('admin/PPP_model', 'ppp_model');
 		$this->load->model('admin/Profiles_components_model', 'profiles_components_model');
 		$this->load->model('admin/Ippool_model', 'ippool_model');
@@ -27,52 +37,50 @@ class Users extends MY_Controller {
 		$records['data'] = $this->user_model->get_all_users();
 		$data = array();
 
-		foreach ($records['data']   as $row)
-		{
-			if ($this->rbac->check_operation_permission('view')) { $action_view = '<a title="View" class="btn btn-sm btn-info" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-eye"></i></a>';}
-			if ($this->rbac->check_operation_permission('edit')) { $action_edit = '<a title="Edit" class="btn btn-sm btn-warning" href="'.base_url('admin/users/edit/'.$row['id']).'"> <i class="fad fa-edit"></i></a>';}
-			if ($this->rbac->check_operation_permission('delete')) {$action_delete = '<a title="Delete" class="btn btn-sm btn-danger" href='.base_url("admin/users/delete/".$row['id']).' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash"></i></a>';}
+		foreach ($records['data']   as $row) {
+			if ($this->rbac->check_operation_permission('view')) {
+				$action_view = '<a title="View" class="btn btn-sm btn-info" href="' . base_url('admin/users/edit/' . $row['id']) . '"> <i class="fad fa-eye"></i></a>';
+			}
+			if ($this->rbac->check_operation_permission('edit')) {
+				$action_edit = '<a title="Edit" class="btn btn-sm btn-warning" href="' . base_url('admin/users/edit/' . $row['id']) . '"> <i class="fad fa-edit"></i></a>';
+			}
+			if ($this->rbac->check_operation_permission('delete')) {
+				$action_delete = '<a title="Delete" class="btn btn-sm btn-danger" href=' . base_url("admin/users/delete/" . $row['id']) . ' title="Delete" onclick="return confirm(\'Do you want to delete ?\')"> <i class="fad fa-trash"></i></a>';
+			}
 
 
-
-			$status = ($row['is_active'] == 1)? 'checked': '';
-			$verify = ($row['is_verify'] == 1)? 'Verified': 'Pending';
-			$data[]= array(
+			$status = ($row['active'] == 1) ? 'checked' : '';
+			$data[] = array(
 				$row['id'],
 				$row['username'],
 				$row['email'],
-				$row['mobile_no'],
-				date_time($row['created_at']),	
-				'<span class="badge badge-success">'.$verify.'</span>',
-				'<input class="tgl tgl-light tgl_checkbox" 
-				data-id="'.$row['id'].'" 
-				id="cb_'.$row['id'].'"
-				type="checkbox"  
-				'.$status.'><label class="tgl-btn" for="cb_'.$row['id'].'"></label>',
-
- 				'<div class="btn-group float-right">'.$action_view.''.$action_edit.''.$action_delete.'</div>'
+				$row['phone'],
+				date_time($row['created']),
+				'<input class="tgl tgl-light tgl_checkbox" data-id="' . $row['id'] . '"	id="cb_' . $row['id'] . '" type="checkbox"' . $status . '><label class="tgl-btn" for="cb_' . $row['id'] . '"></label>',
+				'<div class="btn-group float-right">' . $action_view . '' . $action_edit . '' . $action_delete . '</div>'
 			);
 		}
-		$records['data']=$data;
-		echo json_encode($records);						   
+		$records['data'] = $data;
+		echo json_encode($records);
 	}
 
 	//-----------------------------------------------------------
 	function change_status()
-	{   
+	{
 		$this->user_model->change_status();
 	}
 
-	public function add(){
-		
-		$this->rbac->check_operation_access(); // check operation permission
+	public function add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('username', 'Username', 'trim|required');
 			$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
 			$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
 			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
-			$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
+			$this->form_validation->set_rules('phone', 'Number', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 
 			if ($this->form_validation->run() == FALSE) {
@@ -80,16 +88,15 @@ class Users extends MY_Controller {
 					'errors' => validation_errors()
 				);
 				$this->session->set_flashdata('errors', $data['errors']);
-				redirect(base_url('admin/users/add'),'refresh');
-			}
-			else{
+				redirect(base_url('admin/users/add'), 'refresh');
+			} else {
 
 				$userData = array(
 					'id_number' => $this->input->post('profile-input-id-number'),
 					'firstname' => $this->input->post('firstname'),
 					'lastname' => $this->input->post('lastname'),
 					'email' => $this->input->post('email'),
-					'mobile_no' => $this->input->post('mobile_no'),
+					'phone' => $this->input->post('phone'),
 					'physical_address' => $this->input->post('physical_address'),
 					'gps_coordinates' => $this->input->post('gps_coordinates'),
 					'account_code' => $this->input->post('profile-input-account-code'),
@@ -175,12 +182,12 @@ class Users extends MY_Controller {
 
 				/*if($pppid > 0) {
 					// Activity Log
-					$this->activity_model->add_to_log(1, "PPP has been added successfully");
+					$this->activity_model->add_to_system_log("PPP has been added successfully");
 					$this->session->set_flashdata('success', 'PPP has been added successfully!');
 				}
 				
 				if($userid > 0) {
-					$this->activity_model->add_to_log(1, "User has been added successfully");
+					$this->activity_model->add_to_system_log("User has been added successfully");
 
 					$this->session->set_flashdata('success', 'User has been added successfully!');
 					redirect(base_url('admin/users'));
@@ -196,14 +203,15 @@ class Users extends MY_Controller {
 			$this->load->view('admin/users/user_add', $data);
 			$this->load->view('admin/includes/_footer');
 		}
-		
+
 	}
 
-	public function edit($id = 0){
+	public function edit($id = 0)
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('username', 'Username', 'trim|required');
 			$this->form_validation->set_rules('firstname', 'Username', 'trim|required');
 			$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
@@ -211,7 +219,7 @@ class Users extends MY_Controller {
 			$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
 			$this->form_validation->set_rules('status', 'Status', 'trim|required');
 			if ($this->form_validation->run() == FALSE) {
-					$data = array(
+				$data = array(
 						'errors' => validation_errors()
 					);
 					$this->session->set_flashdata('errors', $data['errors']);
@@ -224,24 +232,23 @@ class Users extends MY_Controller {
 					'lastname' => $this->input->post('lastname'),
 					'email' => $this->input->post('email'),
 					'mobile_no' => $this->input->post('mobile_no'),
-					'password' =>  password_hash($this->input->post('password'), PASSWORD_BCRYPT),
-					'is_active' => $this->input->post('status'),
+					'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT),
+					'active' => $this->input->post('status'),
 					'updated_at' => date('Y-m-d : h:m:s'),
 				);
 				$data = $this->security->xss_clean($data);
 				$result = $this->user_model->edit_user($data, $id);
-				if($result){
+				if($result) {
 					// Activity Log
-					$this->activity_model->add_to_log(2, "User has been updated successfully");
+					$this->activity_model->add_to_system_log("User has been updated successfully");
 
 					$this->session->set_flashdata('success', 'User has been updated successfully!');
 					redirect(base_url('admin/users'));
 				}
 			}
-		}
-		else{
+		} else {
 			$data['user'] = $this->user_model->get_user_by_id($id);
-			
+
 			$this->load->view('admin/includes/_header');
 			$this->load->view('admin/users/user_edit', $data);
 			$this->load->view('admin/includes/_footer');
@@ -250,12 +257,13 @@ class Users extends MY_Controller {
 
 	public function delete($id = 0)
 	{
-		$this->rbac->check_operation_access(); // check opration permission
-		
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
 		$this->db->delete('ci_users', array('id' => $id));
 
 		// Activity Log
-		$this->activity_model->add_to_log(3, "User has been deleted successfully");
+		$this->activity_model->add_to_system_log("User has been deleted successfully");
 
 		$this->session->set_flashdata('success', 'Use has been deleted successfully!');
 		redirect(base_url('admin/users'));

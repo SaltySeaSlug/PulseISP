@@ -44,7 +44,7 @@ $ci->load->helper('url');
 
 <div class="wrap">
 	<div class="logo">
-		<img src="../assets/dist/img/404PAGE-NOT-FOUND.png"/>
+		<img src="<?php echo base_url(); ?>/assets/dist/img/404PAGE-NOT-FOUND.png"/>
 		<div class="sub"
 			 style="position: fixed;left: 50%;bottom: 20px;transform: translate(-50%, -50%);margin: 0 auto;">
 			<p><a href="<?php echo base_url(); ?>">BACK TO HOME</a></p>

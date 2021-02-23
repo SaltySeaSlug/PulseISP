@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/14, 13:50
+ */
+
 header('Content-type: application/json');
 
 error_reporting(E_ALL);

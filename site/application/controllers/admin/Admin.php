@@ -1,16 +1,22 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
 class Admin extends MY_Controller
 {
-    function __construct(){
+    function __construct()
+	{
+		parent::__construct();
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
 
-        parent::__construct();
-        auth_check(); // check login auth
-        $this->rbac->check_module_access();
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
+		$this->rbac->check_module_access();
 
 		$this->load->model('admin/admin_model', 'admin');
-		$this->load->model('admin/Activity_model', 'activity_model');
-    }
+	}
 
 	//-----------------------------------------------------		
 	function index($type=''){
@@ -45,27 +51,29 @@ class Admin extends MY_Controller
 	}
 
 	//-----------------------------------------------------------
-	function change_status(){
+	function change_status()
+	{
 
-		$this->rbac->check_operation_access(); // check opration permission
+		$this->rbac->check_operation_access(); // check operation permission
 
 		$this->admin->change_status();
 	}
 	
 	//--------------------------------------------------
-	function add(){
+	function add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
+		$data['admin_roles'] = $this->admin->get_admin_roles();
 
-		$data['admin_roles']=$this->admin->get_admin_roles();
-
-		if($this->input->post('submit')){
-				$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|is_unique[ci_admin.username]|required');
-				$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
-				$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
-				$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
-				$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
+		if ($this->input->post('submit')) {
+			$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|is_unique[ci_admin.username]|required');
+			$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
+			$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
+			$this->form_validation->set_rules('email', 'Email', 'trim|valid_email|required');
+			$this->form_validation->set_rules('mobile_no', 'Number', 'trim|required');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 				$this->form_validation->set_rules('role', 'Role', 'trim|required');
 				if ($this->form_validation->run() == FALSE) {
 					$data = array(
@@ -98,23 +106,22 @@ class Admin extends MY_Controller
 						redirect(base_url('admin/admin'));
 					}
 				}
-			}
-			else
-			{
-				$this->load->view('admin/includes/_header', $data);
-        		$this->load->view('admin/admin/add');
-        		$this->load->view('admin/includes/_footer');
-			}
+		} else {
+			$this->load->view('admin/includes/_header', $data);
+			$this->load->view('admin/admin/add');
+			$this->load->view('admin/includes/_footer');
+		}
 	}
 
 	//--------------------------------------------------
-	function edit($id=""){
-
-		$this->rbac->check_operation_access(); // check opration permission
+	function edit($id = "")
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$data['admin_roles'] = $this->admin->get_admin_roles();
 
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('username', 'Username', 'trim|alpha_numeric|required');
 			$this->form_validation->set_rules('firstname', 'Firstname', 'trim|required');
 			$this->form_validation->set_rules('lastname', 'Lastname', 'trim|required');
@@ -182,16 +189,17 @@ class Admin extends MY_Controller
     }
 
     //------------------------------------------------------------
-	function delete($id=''){
-	   
-		$this->rbac->check_operation_access(); // check opration permission
+	function delete($id='')
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$this->admin->delete($id);
 
 		// Activity Log 
 		$this->activity_model->add_to_system_log("Admin has been deleted successfully");
 
-		$this->session->set_flashdata('success','User has been Deleted Successfully.');	
+		$this->session->set_flashdata('success', 'User has been Deleted Successfully.');
 		redirect('admin/admin');
 	}
 	

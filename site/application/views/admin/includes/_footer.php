@@ -45,20 +45,28 @@
 <script src="<?= base_url() ?>assets/plugins/notify/notify.min.js"></script>
 <!-- DROPZONE -->
 <script src="<?= base_url() ?>assets/plugins/dropzone/dropzone.js" type="text/javascript"></script>
+
 <script src="<?= base_url() ?>assets/dist/js/functions.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/plugins/select2/select2.full.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/plugins/toastr/toastr.min.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/plugins/chart.js/Chart.min.js" type="text/javascript"></script>
 <script src="<?= base_url() ?>assets/plugins/bootstrap-switch/js/bootstrap-switch.js" type="text/javascript"></script>
 
+<!-- DataTables -->
+<script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>
+<script src="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.js"></script>
+<script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= base_url() ?>assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
 
 <?php if (!empty($this->general_settings['google_api_key'])) { ?>
-	<script defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->general_settings['google_api_key']; ?><?php echo $this->general_settings['google_places_is_active'] == true ? '&libraries=places' : '' ?>"></script>
+	<script defer
+			src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->general_settings['google_api_key']; ?><?php echo $this->general_settings['google_places_is_active'] == true ? '&libraries=places' : '' ?>"></script>
 <?php } ?>
 
 <script>
 
-var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';
+	var csfr_token_name = '<?php echo $this->security->get_csrf_token_name(); ?>';
 
 var csfr_token_value = '<?php echo $this->security->get_csrf_hash(); ?>';
 

@@ -33,18 +33,21 @@
 	<!-- Date Picker -->
 	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/datepicker/datepicker3.css">
 	<!-- Daterange picker -->
-	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/daterangepicker/daterangepicker-bs3.css">
+	<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/daterangepicker/daterangepicker-bs3.css">
 	<!-- bootstrap wysihtml5 - text editor -->
-	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 	<!-- DropZone -->
-	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/dropzone/dropzone.css">
-	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/toastr/toastr.min.css">
-	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/select2/select2.css">
-	<link rel="stylesheet" href="<?= base_url()?>assets/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css">
+	<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/dropzone/dropzone.css">
+	<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/toastr/toastr.min.css">
+	<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/select2/select2.css">
+	<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.css">
 	<!-- jQuery -->
-	<script src="<?= base_url()?>assets/plugins/jquery/jquery.min.js"></script>
+	<script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
+	<!-- DataTables -->
+	<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css">
 
-	<?php if($this->general_settings['use_google_font']) { ?>
+
+	<?php if ($this->general_settings['use_google_font']) { ?>
 		<!-- Google Font: Source Sans Pro -->
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -59,7 +62,7 @@
 <div class="wrapper">
 
   <!-- Navbar -->
-  
+
   <?php if(!isset($navbar)): ?>
 
   <nav class="main-header navbar navbar-expand border-bottom navbar-dark">
@@ -231,8 +234,7 @@
 				<li class="user-footer">
 					<a href="<?= base_url('admin/profile') ?>"
 					   class="btn btn-default btn-flat btn-sm"><?= trans('profile') ?></a>
-					<a href="<?= base_url('admin/auth/lock_screen') ?>"
-					   class="btn btn-default btn-flat btn-sm"><?= trans('lock_screen') ?></a>
+					<!--<a href="<?= base_url('admin/auth/lock_screen') ?>" class="btn btn-default btn-flat btn-sm"><?= trans('lock_screen') ?></a>-->
 					<a href="<?= base_url('admin/auth/logout') ?>"
 					   class="btn btn-default btn-flat float-right btn-sm"><?= trans('logout') ?></a>
 				</li>

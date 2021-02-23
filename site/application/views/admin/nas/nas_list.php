@@ -15,26 +15,28 @@
           <?php if($this->rbac->check_operation_permission('add')): ?>
             <a href="<?= base_url('admin/nas/add'); ?>" class="btn btn-success"><i class="fad fa-plus mr-1"></i><?= trans('add_new_nas') ?></a>
           <?php endif; ?>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-body">
-        <table id="na_datatable" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
-          <thead>
-            <tr>
-				<th># <?= trans('id') ?></th>
+		</div>
+	  </div>
+	</div>
+	  <div class="card">
+		  <div class="card-body">
+			  <table id="na_datatable"
+					 class="table table-hover table-striped no-footer table-sm text-md nowrap dataTable"
+					 style="width: 100%">
+				  <thead>
+				  <tr>
+					  <th># <?= trans('id') ?></th>
               	<th><?= trans('name') ?></th>
               	<th><?= trans('ip_address') ?></th>
               	<th><?= trans('identifier') ?></th>
               	<th><?= trans('status') ?></th>
-              <th class="text-right"><?= trans('action') ?></th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-    </div>
-  </section>  
+					  <th class="text-right" style="width: 1em"></th>
+				  </tr>
+				  </thead>
+			  </table>
+		  </div>
+	  </div>
+  </section>
 </div>
 
 

@@ -18,17 +18,18 @@
 			</div>
 
 			<div class="card-body">
-				<table id="example1" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
+				<table id="example1" class="table table-hover table-striped no-footer table-sm text-md nowrap dataTable"
+					   style="width: 100%">
 					<thead>
-						<tr>
-							<th width="50">ID</th>
-							<th>Name</th>
-							<th>Operations</th>
-							<th class="text-right">Action</th>
-						</tr>
+					<tr>
+						<th width="50">ID</th>
+						<th>Name</th>
+						<th>Operations</th>
+						<th class="text-right" style="width: 1em"></th>
+					</tr>
 					</thead>
 					<tbody>
-						<?php foreach($records as $record): ?>
+					<?php foreach($records as $record): ?>
 							<tr>
 								<td><?= $record['id']; ?></td>
 								<td><?= trans($record['name']); ?></td>

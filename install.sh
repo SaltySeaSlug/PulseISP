@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+#
+# Copyright (c) 2021.
+# Last Modified : 2021/05/17, 16:01
+#
+
 clear
 
 ########################################################################################################################
@@ -714,21 +719,8 @@ cp -fr ${TEMP_DIR:?}/site/. ${WWW_PATH:?}/
 
 cp /backup/database.php ${WWW_PATH:?}/application/config/database.php
 
-#rm -fr "/backup"
-#rm -fr ${WWW_PATH}/install
-
 cd ${WWW_PATH:?}/ || exit 1
 sudo composer -n install
-
-#chown $WWW_USR:$WWW_USR ${WWW_PATH:?}/ -R
-#chmod -R 0755 ${WWW_PATH:?}/
-#usermod -a -G $WWW_USR "$currentUser"
-#chgrp -R $WWW_USR /var/www
-#chmod -R g+w /var/www
-
-#sudo usermod -a -G $(whoami) www-data
-#sudo setfacl -R -m u:$(whoami):rwx /var/www/html
-
 
 # Set permissions for path
 chgrp -R $WWW_USR ${WWW_PATH}
@@ -746,21 +738,6 @@ chmod 777 ${WWW_PATH} -R
 
 systemctl restart apache2
 
-#sed -n -e '/user/ s/.*= *//p' "/root/.serverstatus"
-#sed -n -e '/password/ s/.*= *//p' "/root/.serverstatus"
-#sed -n -e '/freeradius/ s/.*= *//p' "/root/.serverstatus"
-
-#sed -n -e '/user/ s/.*= *//p' "/root/.phpmyadmin"
-#sed -n -e '/password/ s/.*= *//p' "/root/.phpmyadmin"
-#sed -n -e '/freeradius/ s/.*= *//p' "/root/.phpmyadmin"
-
-#sed -n -e '/user/ s/.*= *//p' "/root/.my.cnf"
-#sed -n -e '/password/ s/.*= *//p' "/root/.my.cnf"
-#sed -n -e '/freeradius/ s/.*= *//p' "/root/.my.cnf"
-
-#sed -n -e '/user/ s/.*= *//p' "/root/.misc.cnf"
-#sed -n -e '/password/ s/.*= *//p' "/root/.misc.cnf"
-#sed -n -e '/freeradius/ s/.*= *//p' "/root/.misc.cnf"
 echo
 ;;
 

@@ -1,19 +1,28 @@
-<?php
+<?php defined('BASEPATH') or exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
+
 class Admin_roles extends MY_Controller
 {
-    function __construct(){
+	function __construct()
+	{
+		parent::__construct();
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
 
-        parent::__construct();
-        auth_check(); // check login auth
-        $this->rbac->check_module_access();
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
+		$this->rbac->check_module_access();
 
 		$this->load->model('admin/admin_roles_model', 'admin_roles');
-    }
+	}
 
 	//-----------------------------------------------------		
-	function index(){
+	function index()
+	{
 
-		$data['title'] = trans('role_and_permissions');;
+		$data['title'] = trans('role_and_permissions');
 		$data['records'] = $this->admin_roles->get_all();
 
 		$this->load->view('admin/includes/_header');
@@ -30,24 +39,25 @@ class Admin_roles extends MY_Controller
 	}
 
 	//------------------------------------------------------------
-	function delete($id=''){
-
-		$this->rbac->check_operation_access(); // check opration permission
+	function delete($id='')
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$this->admin_roles->delete($id);
-		$this->session->set_flashdata('msg','Role has been Deleted Successfully.');	
+		$this->session->set_flashdata('msg', 'Role has been Deleted Successfully.');
 		redirect('admin/admin_roles');
 	}
 	
 	//-----------------------------------------------------------------
-	function add(){
+	function add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit'))
-		{
-			$this->admin_roles->insert();	
-			$this->session->set_flashdata('success', 'Record Added Successfully');	
+		if ($this->input->post('submit')) {
+			$this->admin_roles->insert();
+			$this->session->set_flashdata('success', 'Record Added Successfully');
 			redirect('admin/admin_roles');
 		}
 
@@ -59,17 +69,17 @@ class Admin_roles extends MY_Controller
 	}
 
 	//--------------------------------------------------
-	function edit($id=""){
+	function edit($id="")
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit'))
-		{
+		if ($this->input->post('submit')) {
 			$this->admin_roles->update();
-			$this->session->set_flashdata('success', 'Record updated Successfully');		
+			$this->session->set_flashdata('success', 'Record updated Successfully');
 			redirect('admin/admin_roles');
 		}
-		if($id=="") 
+		if ($id == "")
 			redirect('admin/admin_roles');
 
 		$data['title'] = trans('edit_role');
@@ -81,14 +91,15 @@ class Admin_roles extends MY_Controller
 	}
 
 	//--------------------------------------------------
-	function access($id=""){
-
-		$this->rbac->check_operation_access(); // check opration permission
+	function access($id="")
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$data['title'] = trans('admin_permissions');
-		$data['record']= $this->admin_roles->get_role_by_id($id);
-		$data['access']= $this->admin_roles->get_access($id);
-		$data['modules']= $this->admin_roles->get_modules();
+		$data['record'] = $this->admin_roles->get_role_by_id($id);
+		$data['access'] = $this->admin_roles->get_access($id);
+		$data['modules'] = $this->admin_roles->get_modules();
 
 		$this->load->view('admin/includes/_header');
 		$this->load->view('admin/admin_roles/access', $data);
@@ -127,11 +138,12 @@ class Admin_roles extends MY_Controller
 	}
 
 	//-----------------------------------------------------------
-	public function module_add(){
+	public function module_add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('module_name', 'Module Name', 'trim|required');
 			$this->form_validation->set_rules('controller_name', 'Controller Name', 'trim|required');
 			$this->form_validation->set_rules('fa_icon', 'fa_icon', 'trim');
@@ -171,11 +183,12 @@ class Admin_roles extends MY_Controller
 	}
 
 	//-----------------------------------------------------------
-	public function module_edit($id=0){
+	public function module_edit($id=0)
+	{
+		// Check if user is allowed to access operation
+		//$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('module_name', 'Module Name', 'trim|required');
 			$this->form_validation->set_rules('controller_name', 'Controller Name', 'trim|required');
 			$this->form_validation->set_rules('fa_icon', 'fa_icon', 'trim');
@@ -216,13 +229,14 @@ class Admin_roles extends MY_Controller
 	}
 
 	//------------------------------------------------------------
-	public function module_delete($id=''){
-
-		$this->rbac->check_operation_access(); // check opration permission
+	public function module_delete($id='')
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$this->admin_roles->delete_module($id);
 
-		$this->session->set_flashdata('msg','Module has been Deleted Successfully.');	
+		$this->session->set_flashdata('msg', 'Module has been Deleted Successfully.');
 		redirect('admin/admin_roles/module');
 	}
 
@@ -242,11 +256,12 @@ class Admin_roles extends MY_Controller
 	}
 
 	//-----------------------------------------------------------
-	public function sub_module_add(){
+	public function sub_module_add()
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('module_name', 'sub_module Name', 'trim|required');
 			$this->form_validation->set_rules('operation', 'Operation', 'trim');
 			$this->form_validation->set_rules('sort_order', 'Sort Order', 'trim');
@@ -293,11 +308,12 @@ class Admin_roles extends MY_Controller
 	}
 
 	// -----------------------------------------------------------
-	public function sub_module_edit($id = 0){
+	public function sub_module_edit($id = 0)
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		$this->rbac->check_operation_access(); // check opration permission
-
-		if($this->input->post('submit')){
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('module_name', 'module Name', 'trim|required');
 			$this->form_validation->set_rules('sub_module_name', 'sub_module Name', 'trim|required');
 			$this->form_validation->set_rules('operation', 'Operation', 'trim');
@@ -337,14 +353,15 @@ class Admin_roles extends MY_Controller
 	}
 
 	// ------------------------------------------------------------
-	public function sub_module_delete($id = 0,$parent = 0){
-
-		$this->rbac->check_operation_access(); // check opration permission
+	public function sub_module_delete($id = 0,$parent = 0)
+	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
 		$this->admin_roles->delete_sub_module($id);
 
-		$this->session->set_flashdata('msg','Sub Menu has been Deleted Successfully.');	
-		redirect('admin/admin_roles/sub_module/'.$parent);
+		$this->session->set_flashdata('msg', 'Sub Menu has been Deleted Successfully.');
+		redirect('admin/admin_roles/sub_module/' . $parent);
 	}
 
 	

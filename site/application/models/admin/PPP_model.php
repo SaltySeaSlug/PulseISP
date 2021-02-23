@@ -1,8 +1,13 @@
 <?php
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/13, 21:37
+ */
+
 class PPP_model extends CI_Model{
 
 	public function add_data_account($data, $returnId = false) {
-		$this->db->insert('data_accounts', $data);
+		$this->db->insert($this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT'), $data);
 		if ($returnId == true) return $this->db->insert_id();
 		else return true;
 	}
@@ -30,7 +35,7 @@ class PPP_model extends CI_Model{
 			'start_date' => $data['start_date']
 		);
 
-		$this->db->insert('data_accounts', $cleanData);
+		$this->db->insert($this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT'), $cleanData);
 		return true;
 	}
 	public function link_data_account_to_user($dataAccountId, $userid)
@@ -42,7 +47,7 @@ class PPP_model extends CI_Model{
 			'is_active' => true,
 			'is_deleted' => false
 		);
-		$this->db->insert('link_users_data_account', $data);
+		$this->db->insert($this->config->item('CONFIG_DB_TBL_LINK_USER_DATA_ACCOUNT'), $data);
 		return true;
 	}
 	public function add_attributes_to_radcheck($data){}

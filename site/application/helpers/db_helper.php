@@ -1,8 +1,14 @@
 <?php
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
 /**
  * @author   Natan Felles <natanfelles@gmail.com>
  */
 defined('BASEPATH') or exit('No direct script access allowed');
+
 if (!function_exists('add_foreign_key')) {
 	/**
 	 * @param string $table

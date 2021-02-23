@@ -1,3 +1,14 @@
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
+$(document).ready(function () {
+	$('[data-toggle="switch"]').bootstrapSwitch();
+	$('.select2').select2();
+});
+
+
 $(function checkSupport() {
 	var NotificationIsSupported = !!(window.Notification /* W3C Specification */ ||
 		window.webkitNotifications /* old WebKit Browsers */ ||
@@ -212,17 +223,6 @@ $("#save").click(function() {
 	$("#append-area").append(text + "<br>");
 	localStorage.setItem("appended", JSON.stringify(currentPos));
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 //let debug = true;
@@ -468,7 +468,10 @@ function buildAuthChartData(data) {
 	var accept = [];
 
 	for (var i in data) {
-		name.push(data[i].period);
+		if (localStorage.getItem('remember.chart.auth.period') === 'T') name.push(curTime(data[i].period));
+		else if (localStorage.getItem('remember.chart.auth.period') === 'M') name.push(curDay(data[i].period));
+		else name.push(data[i].period);
+
 		reject.push(data[i].reject);
 		accept.push(data[i].accept);
 	}
@@ -510,7 +513,10 @@ function buildAuthChartConfig(data) {
 						var datasetLabel = data.datasets[item.datasetIndex].label || "";
 						var dataPoint = item.yLabel;
 						var label = data.labels[item.index];
-						return " " + datasetLabel + ": " + dataPoint; // + " @ " + label;
+
+						if (localStorage.getItem('remember.chart.usage.period') === 'T') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " @ " + label;
+						if (localStorage.getItem('remember.chart.usage.period') === 'W') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on " + label;
+						if (localStorage.getItem('remember.chart.usage.period') === 'M') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on the " + label;
 					}
 				},
 				itemSort: function(a, b) {
@@ -719,21 +725,35 @@ function getCustomerCount(period, interval) {
 		}
 	});
 }
-function getChartAuth(period, url, interval){
-	if (period === 'T') { cAChart = 'today-authchart-canvas'; }
-	if (period === 'W') { cAChart = 'thisweek-authchart-canvas'; }
-	if (period === 'M') { cAChart = 'thismonth-authchart-canvas'; }
+function getChartAuth(period, url, interval) {
+	if (period === 'T') {
+		cAChart = 'today-authchart-canvas';
+	}
+	if (period === 'W') {
+		cAChart = 'thisweek-authchart-canvas';
+	}
+	if (period === 'M') {
+		cAChart = 'thismonth-authchart-canvas';
+	}
 	$('#' + cAChart).replaceWith($('<canvas id="' + cAChart + '" height="300" style="height: 300px;"></canvas>'));
 
 	localStorage.setItem('remember.chart.auth.period', period);
+	localStorage.setItem('remember.chart.auth.url', url);
+
 
 	$.ajax({
-		url : url,
-		type : 'GET',
-		data : {'period' : period},
-		dataType : 'json',
-		beforeSend: function() { $("#lUAChart").show(); $("#rAStats").hide(); },
-		complete: function() { $('#lUAChart').hide(); $("#rAStats").show(); },
+		url: url,
+		type: 'GET',
+		data: {'period': period},
+		dataType: 'json',
+		beforeSend: function () {
+			$("#lUAChart").show();
+			$("#rAStats").hide();
+		},
+		complete: function () {
+			$('#lUAChart').hide();
+			$("#rAStats").show();
+		},
 		success: function (data) {
 			if (typeof data === "undefined") { console.debug("ChartAuth data null"); return; }
 
@@ -1306,8 +1326,6 @@ function initMap() {
 }
 
 
-
-
 function buildGoogleMap(map, gps, readonly = false, options = null) {
 
 	if (map == null || map === '') return;
@@ -1320,8 +1338,7 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 	if (gps != null && gps !== '' && gps !== "" && IsValidGPS(gps)) {
 		lat = parseFloat(gps.split(',')[0]);
 		lng = parseFloat(gps.split(',')[1]);
-	}
-	else {
+	} else {
 		lat = parseFloat("0");
 		lng = parseFloat("0");
 		zoom = 2;
@@ -1437,7 +1454,7 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 				}
 			});
 		} catch (e) {
-			
+
 		}
 	}
 	if (options != null && options.location !== undefined) {
@@ -1457,8 +1474,6 @@ function buildGoogleMap(map, gps, readonly = false, options = null) {
 	document.getElementById(map).map = contact_map;
 	document.getElementById(map).marker = contact_marker;
 }
-
-
 
 
 function bytes(bytes, label, decimal = 1) {
@@ -1529,41 +1544,6 @@ function IsValidEmail(input) {
 	alert("You have entered an invalid email address!")
 	return false
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function generatePassword(passwordLength) {

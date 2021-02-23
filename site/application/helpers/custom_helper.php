@@ -1,42 +1,47 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
 
-if(!function_exists('generate_numbers')) {
+if (!function_exists('generate_numbers')) {
 	function generate_numbers($letter, $start, $digits = 5)
 	{
 		return $letter . str_pad($start + 1, $digits, "0", STR_PAD_LEFT);
 	}
 }
-if(!function_exists('time2str')) {
-	function time2str($time) {
+if (!function_exists('time2str')) {
+	function time2str($time)
+	{
 		$str = "";
 		$time = floor($time);
 		if (!$time)
 			return "0 seconds";
-		$d = $time/86400;
+		$d = $time / 86400;
 		$d = floor($d);
-		if ($d){
+		if ($d) {
 			$str .= "$d days, ";
 			$time = $time % 86400;
 		}
-		$h = $time/3600;
+		$h = $time / 3600;
 		$h = floor($h);
-		if ($h){
+		if ($h) {
 			$str .= "$h hours, ";
 			$time = $time % 3600;
 		}
-		$m = $time/60;
+		$m = $time / 60;
 		$m = floor($m);
-		if ($m){
+		if ($m) {
 			$str .= "$m minutes, ";
 			$time = $time % 60;
 		}
 		if ($time)
 			$str .= "$time seconds, ";
-		$str = preg_replace("/, $/",'',$str);
+		$str = preg_replace("/, $/", '', $str);
 		return $str;
 	}
 }
-if(!function_exists('toxbyte')) {
+if (!function_exists('toxbyte')) {
 	function toxbyte($size)
 	{
 		// Gigabytes
@@ -67,7 +72,7 @@ if(!function_exists('toxbyte')) {
 		}
 	}
 }
-if(!function_exists('toxBytes')) {
+if (!function_exists('toxBytes')) {
 	function toxBytes($bytes, $force_unit = NULL, $format = NULL, $si = FALSE)
 	{
 		//if ($bytes == 0) return 0;
@@ -92,20 +97,20 @@ if(!function_exists('toxBytes')) {
 		return ($bytes / pow($mod, $power));
 	}
 }
-if(!function_exists('getWeekday')) {
+if (!function_exists('getWeekday')) {
 	function getWeekday($date)
 	{
 		return date('w', strtotime($date));
 	}
 }
-if(!function_exists('getDay')) {
+if (!function_exists('getDay')) {
 	function getDay($dow_numeric)
 	{
 		$dowMap = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
 		return $dowMap[$dow_numeric];
 	}
 }
-if(!function_exists('daysBetween')) {
+if (!function_exists('daysBetween')) {
 	function daysBetween($dt1, $dt2)
 	{
 		return date_diff(
@@ -187,14 +192,12 @@ if (!function_exists('iprange2cidr')) {
 		return $result;
 	}
 }
-
-if (!function_exists('os_type'))
-{
-	function os_type() {
+if (!function_exists('os_type')) {
+	function os_type()
+	{
 		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 			return false;
-		}
-		else {
+		} else {
 			return true;
 		}
 	}

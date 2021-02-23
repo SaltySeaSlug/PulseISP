@@ -37,36 +37,41 @@
 					</div>
 				</div>
 			</div>
-<!-- NAS SECRET -->
-			<div class="form-group">
-				<label for="nassecret" class="col-md-12 control-label"><?= trans('secret') ?></label>
-				<div class="col-md-12">
-					<input type="text" class="form-control" id="nassecret" name="nassecret" value="<?php echo html_escape($general_settings['radius_secret']); ?>" required>
+				<!-- SNMP LOOKUP -->
+				<div class="col-12" id="snmp"></div>
+				<!-- NAS SECRET -->
+				<div class="form-group">
+					<label for="nassecret" class="col-md-12 control-label"><?= trans('secret') ?> <span
+								class="badge badge-warning">using system specified password</span></label>
+					<div class="col-md-12">
+						<input type="text" class="form-control" id="nassecret" name="nassecret"
+							   value="<?php echo html_escape($general_settings['radius_secret']); ?>" required>
+					</div>
 				</div>
-			</div>
-<!-- NAS TYPE -->
-			<div class="form-group">
-				<label for="nastype" class="col-md-12 control-label"><?= trans('type') ?></label>
-				<div class="col-md-12">
-					<select class="form-control" id="nastype" name="nastype">
-						<option value="mikrotik">Mikrotik</option>
-						<option value="cisco">Cisco</option>
-						<option value="other">Other</option>
-						<option value="livingston">Livingston</option>
-						<option value="max40xx">Max40xx</option>
-						<option value="multitech">Multitech</option>
-						<option value="natserver">Nat Server</option>
-						<option value="pathras">PathRAS</option>
-						<option value="patton">Patton</option>
-						<option value="portslave">Port Slave</option>
-						<option value="tc">TC</option>
-						<option value="usrhiper">USRhiper</option>
-					</select>
+				<!-- NAS TYPE -->
+				<!-- TODO: When snmp walk is complete - check vendor type and update accordingly, else leave as other -->
+				<div class="form-group">
+					<label for="nastype" class="col-md-12 control-label"><?= trans('type') ?></label>
+					<div class="col-md-12">
+						<select class="form-control" id="nastype" name="nastype">
+							<option value="other">Other</option>
+							<option value="mikrotik">Mikrotik</option>
+							<option value="cisco">Cisco</option>
+							<option value="livingston">Livingston</option>
+							<option value="max40xx">Max40xx</option>
+							<option value="multitech">Multitech</option>
+							<option value="natserver">Nat Server</option>
+							<option value="pathras">PathRAS</option>
+							<option value="patton">Patton</option>
+							<option value="portslave">Port Slave</option>
+							<option value="tc">TC</option>
+							<option value="usrhiper">USRhiper</option>
+						</select>
+					</div>
 				</div>
-			</div>
-<!-- NAS NAME -->
-			<div class="form-group">
-				<label for="nasname" class="col-md-12 control-label"><?= trans('name') ?></label>
+				<!-- NAS NAME -->
+				<div class="form-group">
+					<label for="nasname" class="col-md-12 control-label"><?= trans('name') ?></label>
 				<div class="col-md-12">
 					<input type="text" class="form-control" id="nasname" name="nasname" required>
 				</div>
@@ -78,28 +83,28 @@
 					<input type="text" class="form-control" id="nasidentifier" name="nasidentifier" required>
 				</div>
 			</div>
-<!-- NAS PORT -->
-			<div class="form-group">
-				<label for="nasport" class="col-md-12 control-label"><?= trans('nas_port') ?></label>
-				<div class="col-md-12">
-					<input type="number" class="form-control" id="nasport" name="nasport" required value="3799">
+				<!-- NAS PORT -->
+				<div class="form-group" hidden>
+					<label for="nasport" class="col-md-12 control-label"><?= trans('nas_port') ?></label>
+					<div class="col-md-12">
+						<input type="number" class="form-control" id="nasport" name="nasport" value="3799" required>
+					</div>
 				</div>
-			</div>
-<!-- COMMUNITY -->
-			<div class="form-group">
-				<label for="nascommunity" class="col-md-12 control-label"><?= trans('community') ?></label>
-				<div class="col-md-12">
-					<input type="text" class="form-control" id="nascommunity" name="nascommunity" required>
+				<!-- COMMUNITY -->
+				<div class="form-group" hidden>
+					<label for="nascommunity" class="col-md-12 control-label"><?= trans('community') ?></label>
+					<div class="col-md-12">
+						<input type="text" class="form-control" id="nascommunity" name="nascommunity" value="public">
+					</div>
 				</div>
-			</div>
-<!-- DESCRIPTION -->
-			<div class="form-group">
-				<label for="nasdescription" class="col-md-12 control-label"><?= trans('description') ?></label>
-				<div class="col-md-12">
-					<input type="text" class="form-control" id="nasdescription" name="nasdescription" required
-						   value="RADIUS Client">
+				<!-- DESCRIPTION -->
+				<div class="form-group">
+					<label for="nasdescription" class="col-md-12 control-label"><?= trans('description') ?></label>
+					<div class="col-md-12">
+						<input type="text" class="form-control" id="nasdescription" name="nasdescription"
+							   value="RADIUS Client" required>
+					</div>
 				</div>
-			</div>
 				<!-- DHCP POOL
 			<div class="form-group">
 				<label for="ippool" class="col-md-2 control-label">IP Pools</label>
@@ -119,11 +124,11 @@
                     </div>
                   </div>
                 <?php echo form_close(); ?>
-            </div>
-          </div>  
-        </div>
-      </div>
-    </section> 
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</section>
   </div>
 
   <script>
@@ -132,9 +137,15 @@
 		  const regex = new RegExp(`^${octet}\\.${octet}\\.${octet}\\.${octet}$`);
 		  return regex.test(str);
 	  }
+
 	  function doPing(event) {
-	  	if (event != null) event.preventDefault();
-		if (!isValidIP($('#nashost').val())) { $("#pingbtn").removeClass("bg-green"); $("#pingbtn").addClass("bg-red"); $("#pingbtn").html('Invalid IP'); return; }
+		  if (event != null) event.preventDefault();
+		  if (!isValidIP($('#nashost').val())) {
+			  $("#pingbtn").removeClass("bg-green");
+			  $("#pingbtn").addClass("bg-red");
+			  $("#pingbtn").html('Invalid IP');
+			  return;
+		  }
 
 		  $.ajax({
 			  type: "GET",
@@ -142,21 +153,46 @@
 			  dataType: "json",
 			  data: {"ip": $("#nashost").val()},
 			  success: function (result) {
-
-				  if (result != "ERR") { $("#pingbtn").removeClass("bg-red"); $("#pingbtn").addClass("bg-green"); $("#pingbtn").html(result + ' ms'); }
-				  else { $("#pingbtn").removeClass("bg-green"); $("#pingbtn").addClass("bg-red"); $("#pingbtn").html(result); }
+				  if (result != "ERR") {
+					  $("#pingbtn").removeClass("bg-red");
+					  $("#pingbtn").addClass("bg-green");
+					  $("#pingbtn").html('Reachable');
+					  $.ajax({
+						  type: "GET",
+						  url: "<?php echo base_url("data/checkDevice"); ?>",
+						  dataType: "text",
+						  data: {"ip": $("#nashost").val()},
+						  success: function (result) {
+							  $("#snmp").html(result);
+							  const vendor = result.substring(result.lastIndexOf("Device Vendor:</b> ") + 19, result.lastIndexOf("<br> <b>Device Identity:"));
+							  const identifier = result.substring(result.lastIndexOf("Device Identity:</b> ") + 21, result.lastIndexOf("<br> <b>Device Uptime:"));
+							  $("#nastype").val(vendor.toLowerCase()).change();
+							  $("#nasidentifier").val(identifier.toUpperCase()).change()
+						  },
+						  error: function (error) {
+						  }
+					  });
+				  } else {
+					  $("#pingbtn").removeClass("bg-green");
+					  $("#pingbtn").addClass("bg-red");
+					  $("#pingbtn").html(result);
+					  $("#snmp").html('');
+				  }
 			  },
 			  error: function (error) {
-				  $("#pingbtn").removeClass("bg-green"); $("#pingbtn").addClass("bg-red"); $("#pingbtn").html('Unreachable');
+				  $("#pingbtn").removeClass("bg-green");
+				  $("#pingbtn").addClass("bg-red");
+				  $("#pingbtn").html('Unreachable');
+				  $("#snmp").html('');
 			  }
 		  });
 	  }
 
 	  $('#pingbtn').on('click', doPing);
 
-	  (function($){
+	  (function ($) {
 		  $.fn.extend({
-			  donetyping: function(callback,timeout){
+			  donetyping: function (callback, timeout) {
 				  timeout = timeout || 1e3; // 1 second default timeout
 				  var timeoutReference,
 						  doneTyping = function(el){
@@ -191,7 +227,7 @@
 		  });
 	  })(jQuery);
 
-	  $('#nashost').donetyping(function(){
+	  $('#nashost').donetyping(function () {
 		  doPing();
-	  });
+	  }, 2000);
   </script>

@@ -1,5 +1,3 @@
-<!-- DataTables -->
-<link rel="stylesheet" href="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.css"> 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <section class="content">
@@ -42,35 +40,25 @@
                         </div>
                     </div>
                 </div>
-                <?php echo form_close(); ?> 
-            </div> 
-        </div>
-    </section>
+                <?php echo form_close(); ?>
+			</div>
+		</div>
+	</section>
 
 
-    <!-- Main content -->
-    <section class="content mt6">
-    	<div class="card">
-    		<div class="card-body p-0">
-               <!-- Load Admin list (json request)-->
-               <div class="data_container"></div>
-           </div>
-       </div>
-    </section>
-    <!-- /.content -->
+	<!-- Main content -->
+	<section class="content mt6">
+		<div class="card">
+			<div class="card-body p-0 table-responsive">
+				<!-- Load Admin list (json request)-->
+				<div class="data_container"></div>
+			</div>
+		</div>
+	</section>
+	<!-- /.content -->
 </div>
 
 
-
-<!-- DataTables -->
-<script src="<?= base_url() ?>assets/plugins/datatables/jquery.dataTables.js"></script>
-<script src="<?= base_url() ?>assets/plugins/datatables/dataTables.bootstrap4.js"></script>
-<script>
-  $(function () {
-    $("#example1").DataTable();
-  });
-
-</script> 
 
 <script>
 //------------------------------------------------------------------

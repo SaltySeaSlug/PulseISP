@@ -1,5 +1,10 @@
 <?php
-	class Ippool_model extends CI_Model{
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
+class Ippool_model extends CI_Model{
 
 		function array_xor ($array_a, $array_b)
 		{
@@ -23,34 +28,33 @@
 
 		public function link_pool_to_nas($nasId, $poolId)
 		{
-			$nas = $this->db->query("SELECT nasname FROM ".$this->config->item('CONFIG_DB_TBL_RADNAS')." WHERE id = " . $nasId)->row()->nasname;
-			$pool = $this->db->query("SELECT pool_name FROM ".$this->config->item('CONFIG_DB_TBL_RADIPPOOL')." WHERE id = " . $poolId)->row()->pool_name;
-			$link = $this->db->query("SELECT * FROM radnas_pool_names WHERE nas_ip_address ='\". $nas . \"'");
-			
+			$nas = $this->db->query("SELECT nasname FROM " . $this->config->item('CONFIG_DB_TBL_RADNAS') . " WHERE id = " . $nasId)->row()->nasname;
+			$pool = $this->db->query("SELECT pool_name FROM " . $this->config->item('CONFIG_DB_TBL_RADIPPOOL') . " WHERE id = " . $poolId)->row()->pool_name;
+			$link = $this->db->query("SELECT * FROM " . $this->config->item('CONFIG_DB_TBL_RADNAS_POOL_NAME') . " WHERE nas_ip_address ='\". $nas . \"'");
+
 			if ($link->num_rows() > 0) {
 				// IF RECORD EXISTS UPDATE RECORD
-			}
-			else {
-				return $this->db->insert('radnas_pool_names', ['nas_ip_address' => $nas, 'pool_name' => $pool]);
+			} else {
+				return $this->db->insert($this->config->item('CONFIG_DB_TBL_RADNAS_POOL_NAME'), ['nas_ip_address' => $nas, 'pool_name' => $pool]);
 			}
 		}
 
 		public function link_pool_to_nas_by_poolname($nasId, $poolName)
 		{
-			$nas = $this->db->query("SELECT nasname FROM ".$this->config->item('CONFIG_DB_TBL_RADNAS')." WHERE id = " . $nasId)->row()->nasname;
-			$link = $this->db->query("SELECT * FROM radnas_pool_names WHERE nas_ip_address ='\". $nas . \"'");
+			$nas = $this->db->query("SELECT nasname FROM " . $this->config->item('CONFIG_DB_TBL_RADNAS') . " WHERE id = " . $nasId)->row()->nasname;
+			$link = $this->db->query("SELECT * FROM " . $this->config->item('CONFIG_DB_TBL_RADNAS_POOL_NAME') . " WHERE nas_ip_address ='\". $nas . \"'");
 
 			if ($link->num_rows() > 0) {
 				// IF RECORD EXISTS UPDATE RECORD
-			}
-			else {
-				return $this->db->insert('radnas_pool_names', ['nas_ip_address' => $nas, 'pool_name' => $poolName]);
+			} else {
+				return $this->db->insert($this->config->item('CONFIG_DB_TBL_RADNAS_POOL_NAME'), ['nas_ip_address' => $nas, 'pool_name' => $poolName]);
 			}
 		}
 
-		public function unlink_pool_from_nas($nasId, $poolId) {
-			$nas = $this->db->query("SELECT nasname FROM ".$this->config->item('CONFIG_DB_TBL_RADNAS')." WHERE id = ".$nasId)->row()->nasname;
-			return $this->db->delete('radnas_pool_names', ['nas_ip_address' => $nas]);
+		public function unlink_pool_from_nas($nasId, $poolId)
+		{
+			$nas = $this->db->query("SELECT nasname FROM " . $this->config->item('CONFIG_DB_TBL_RADNAS') . " WHERE id = " . $nasId)->row()->nasname;
+			return $this->db->delete($this->config->item('CONFIG_DB_TBL_RADNAS_POOL_NAME'), ['nas_ip_address' => $nas]);
 		}
 
 		public function get_ips_by_poolname($poolname) {

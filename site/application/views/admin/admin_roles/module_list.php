@@ -17,19 +17,20 @@
 			</div>
 
 			<div class="card-body">
-				<table id="example1" class="table table-hover table-striped table-hover no-footer table-md text-md nowrap dataTable" width="100%">
+				<table id="example1" class="table table-hover table-striped no-footer table-sm text-md nowrap dataTable"
+					   style="width: 100%">
 					<thead>
-						<tr>
-							<th># <?= trans('id') ?></th>
+					<tr>
+						<th># <?= trans('id') ?></th>
 							<th><?= trans('module_name') ?></th>
 							<th><?= trans('controller_name') ?></th>
 							<th><?= trans('fa_icon') ?></th>
 							<th><?= trans('operations') ?></th>
-							<th class="text-right"><?= trans('action') ?></th>
-						</tr>
+						<th class="text-right" style="width: 0.5em"></th>
+					</tr>
 					</thead>
 					<tbody>
-						<?php foreach($records as $record): ?>
+					<?php foreach($records as $record): ?>
 							<tr>
 								<td><?= $record['module_id']; ?></td>
 								<td><?= trans($record['module_name']); ?></td>

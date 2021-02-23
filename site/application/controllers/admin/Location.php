@@ -1,11 +1,18 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
 class Location extends MY_Controller
 {
 	function __construct()
 	{
-		parent ::__construct();
-		auth_check(); // check login auth
+		parent::__construct();
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
+
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 
 		$this->load->library('datatable'); // loaded my custom serverside datatable library
@@ -47,7 +54,10 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function country_add()
 	{
-		if($this->input->post()){
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
+		if ($this->input->post()) {
 			$this->form_validation->set_rules('country', 'country', 'trim|is_unique[ci_countries.name]|required');
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 			if ($this->form_validation->run() === FALSE) {
@@ -78,8 +88,10 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function country_edit($id=0)
 	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		if($this->input->post()){
+		if ($this->input->post()) {
 			$this->form_validation->set_rules('country', 'country', 'trim|required');
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 			if ($this->form_validation->run() === FALSE) {
@@ -112,6 +124,9 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function country_del($id = 0)
 	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
 		$this->db->delete('ci_countries', array('id' => $id));
 		$this->session->set_flashdata('success', 'Country has been Deleted Successfully!');
 		redirect(base_url('admin/location'));
@@ -154,7 +169,10 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function state_add()
 	{
-		if($this->input->post()){
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
+		if ($this->input->post()) {
 			$this->form_validation->set_rules('country', 'country', 'trim|required');
 			$this->form_validation->set_rules('state', 'state', 'trim|is_unique[ci_states.name]|required');
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -187,8 +205,10 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function state_edit($id=0)
 	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
 
-		if($this->input->post()){
+		if ($this->input->post()) {
 			$this->form_validation->set_rules('country', 'country', 'trim|required');
 			$this->form_validation->set_rules('state', 'state', 'trim|required');
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -226,6 +246,9 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function state_del($id = 0)
 	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
 		$this->db->delete('ci_states', array('id' => $id));
 		$this->session->set_flashdata('success', 'State has been Deleted Successfully!');
 		redirect(base_url('admin/location/state'));
@@ -268,7 +291,10 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function city_add()
 	{
-		if($this->input->post()){
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
+		if ($this->input->post()) {
 			$this->form_validation->set_rules('city', 'city', 'trim|is_unique[ci_cities.name]|required');
 			$this->form_validation->set_rules('state', 'state', 'trim|required');
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -301,7 +327,10 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function city_edit($id=0)
 	{
-		if($this->input->post()){
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
+		if ($this->input->post()) {
 			$this->form_validation->set_rules('city', 'city', 'trim|required');
 			$this->form_validation->set_rules('state', 'state', 'trim|required');
 			$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -335,6 +364,9 @@ class Location extends MY_Controller
 	//-----------------------------------------------------
 	public function city_del($id = 0)
 	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
 		$this->db->delete('ci_cities', array('id' => $id));
 		$this->session->set_flashdata('success', 'City has been Deleted Successfully!');
 		redirect(base_url('admin/location/city'));

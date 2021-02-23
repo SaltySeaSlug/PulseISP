@@ -1,11 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
 
 // Navbar - Left Top
 $lang['home']                   = "Home";
 $lang['contact'] 				= "Contact";
 $lang['logout'] 				= "Logout";
-$lang['search'] 				= "Search";
-
+$lang['search'] = "Search";
+$lang['phone'] = "Phone";
 // Navbar - Right Top
 $lang['languages']				= "Languages";
 $lang['messages']				= "Messages";
@@ -41,26 +45,29 @@ $lang['display_name']			= "Display Name";
 $lang['directory_name']			= "Directory Name";
 $lang['update_language']		= "Update Language";
 $lang['list']					= "List";
-$lang['add_profile_component']	= "Add Component";
+$lang['add_profile_component'] = "Add Component";
 
 //Navbar
-$lang['nas_devices']							= "NAS Devices";
-$lang['nas_list']								= "NAS Devices List";
-$lang['name']									= "Name";
-$lang['type']									= "Type";
-$lang['ping']									= "Ping";
-$lang['ip_address']								= "IP Address";
-$lang['identifier']								= "Identifier";
-$lang['secret']									= "Secret";
-$lang['connection_type']						= "Connection Type";
-$lang['add_new_nas']							= "Add NAS";
-$lang['edit_nas'] 								= "Edit Nas";
-$lang['update_nas'] 							= "Update Nas";
+$lang['nas_devices'] = "NAS Devices";
+$lang['nas_list'] = "NAS Devices List";
+$lang['name'] = "Name";
+$lang['type'] = "Type";
+$lang['ping'] = "Ping";
+$lang['ip_address'] = "IP Address";
+$lang['identifier'] = "Identifier";
+$lang['nas_port'] = "Port";
+$lang['community'] = "Community";
+$lang['description'] = "Description";
+$lang['secret'] = "Secret";
+$lang['connection_type'] = "Connection Type";
+$lang['add_new_nas'] = "Add NAS";
+$lang['edit_nas'] = "Edit Nas";
+$lang['update_nas'] = "Update Nas";
 
-$lang['ip_pool']								= "IP Pool";
+$lang['ip_pool'] = "IP Pool";
 
-$lang['dashboard']                               = "Dashboard";
-	$lang['dashboard_v1']                        = "Dashboard v1";
+$lang['dashboard'] = "Dashboard";
+$lang['dashboard_v1'] = "Dashboard v1";
 	$lang['dashboard_v2']                        = "Dashboard v2";
 	$lang['dashboard_v3']                        = "Dashboard v3";
 	$lang['dashboard_test']						 = "Dashboard Test";

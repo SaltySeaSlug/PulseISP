@@ -1,5 +1,10 @@
 <?php
-	class NAS_model extends CI_Model{
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
+class NAS_model extends CI_Model{
 
 		public function assign_nas_to_ippool($poolid) {
 
@@ -12,7 +17,8 @@
 
 		//---------------------------------------------------
 		// get all users for server-side datatable processing (ajax based)
-		public function get_all_nas_devices(){
+		public function get_all_nas_devices()
+		{
 			$this->db->select('*');
 			//$this->db->where('is_admin',0);
 			return $this->db->get($this->config->item('CONFIG_DB_TBL_RADNAS'))->result_array();
@@ -20,15 +26,17 @@
 
 
 		//---------------------------------------------------
-		// Get user detial by ID
-		public function get_nas_by_id($id){
+		// Get user detail by ID
+		public function get_nas_by_id($id)
+		{
 			$query = $this->db->get_where($this->config->item('CONFIG_DB_TBL_RADNAS'), array('id' => $id));
 			return $result = $query->row_array();
 		}
 
 		//---------------------------------------------------
 		// Edit user Record
-		public function edit_nas($data, $id){
+		public function edit_nas($data, $id)
+		{
 			$this->db->where('id', $id);
 			$this->db->update($this->config->item('CONFIG_DB_TBL_RADNAS'), $data);
 			return true;

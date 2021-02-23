@@ -200,10 +200,11 @@
                             <label class="control-label"><?= trans('company_name') ?></label>
                             <input type="text" class="form-control" name="contact_number" placeholder="contact number" value="<?php echo html_escape($general_settings['contact_number']); ?>">
                         </div>
-                        <div class="form-group">
-                            <label class="control-label"><?= trans('company_name') ?></label>
-                            <textarea rows="5" type="text" class="form-control" name="terms" placeholder="terms"><?php echo html_escape($general_settings['terms']); ?></textarea>
-                        </div>
+						<div class="form-group">
+							<label class="control-label"><?= trans('company_name') ?></label>
+							<textarea rows="5" type="text" class="form-control" name="terms"
+									  placeholder="terms"><?php echo html_escape($general_settings['terms']); ?></textarea>
+						</div>
 					</div>
 
 					<!-- Radius Settings -->
@@ -214,9 +215,19 @@
 								   value="<?php echo html_escape($general_settings['radius_secret']); ?>">
 						</div>
 						<div class="form-group">
-							<label class="control-label">Realm Suffix</label>
+							<label class="control-label">Suffix</label>
 							<input type="text" class="form-control" name="realm_suffix" placeholder="realm"
 								   value="<?php echo html_escape($general_settings['realm_suffix']); ?>">
+						</div>
+						<div class="form-group">
+							<input type="checkbox" id="users" name="users" checked>
+							<label for="users">Add suffix when creating new users</label>
+
+							<input type="checkbox" id="voucher" name="voucher" checked>
+							<label for="voucher">Add suffix when creating vouchers</label>
+
+							<input type="checkbox" id="byod" name="byod" checked>
+							<label for="byod">Add suffix when creating BYOD</label>
 						</div>
 					</div>
 
@@ -265,47 +276,51 @@
 					<div role="tabpanel" class="tab-pane" id="company_setup">
 						<div class="form-group">
 							<label class="control-label">Company Name</label>
-							<input type="text" class="form-control" name="radius_secret" placeholder="" value="">
+							<input type="text" class="form-control" name="company_name" placeholder="" value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Company Slogan</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_slogan" placeholder="" value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Company URL</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_url" placeholder="" value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Company Logo</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_logo" placeholder="" value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Menu Logo</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_menu_logo" placeholder="" value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Mobile Logo</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_mobile_logo" placeholder="" value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">From Email Address</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_form_email_address" placeholder=""
+								   value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Phone Number</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_phone_number" placeholder="" value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Street Address</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_street_address" placeholder=""
+								   value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Hide Powered By on public pages</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_hide_powered_by" placeholder=""
+								   value="">
 						</div>
 						<div class="form-group">
 							<label class="control-label">Enable Powered By</label>
-							<input type="text" class="form-control" name="realm_suffix" placeholder="" value="">
+							<input type="text" class="form-control" name="company_enable_powered_by" placeholder=""
+								   value="">
 						</div>
 					</div>
 

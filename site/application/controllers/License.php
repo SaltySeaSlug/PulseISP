@@ -1,4 +1,8 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/13, 11:49
+ */
 
 class License extends MY_Controller
 {
@@ -7,7 +11,9 @@ class License extends MY_Controller
 		header('Content-type: application/json');
 
 		parent::__construct();
-		auth_check(); // check login auth
+		// Check if user is authenticated
+		auth_check();
+		// Check if user is allowed to access module
 		$this->rbac->check_module_access();
 
 		$this->load->model('License_model', 'license_model');

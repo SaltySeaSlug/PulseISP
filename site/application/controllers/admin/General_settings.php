@@ -1,15 +1,20 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
-class General_settings extends MY_Controller {
+class General_settings extends MY_Controller
+{
 
 	public function __construct()
 	{
 		parent::__construct();
-		auth_check(); // check login auth
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
+
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
-		
-		$this->load->model('admin/setting_model', 'setting_model');
-		$this->load->model('admin/Activity_model', 'activity_model');
 	}
 
 	//-------------------------------------------------------------------------
@@ -28,8 +33,9 @@ class General_settings extends MY_Controller {
 	//-------------------------------------------------------------------------
 	public function add()
 	{
-		$this->rbac->check_operation_access(); // check opration permission
-		
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
 		$data = array(
 			'application_name' => $this->input->post('application_name'),
 			'timezone' => $this->input->post('timezone'),
@@ -60,7 +66,7 @@ class General_settings extends MY_Controller {
 			'updated_date' => date('Y-m-d : h:m:s'),
 			'use_google_font' => $this->input->post('use_google_font'),
 			'google_api_key' => $this->input->post('google_maps_api'),
-			'google_places_is_active' => $this->input->post('cb_google_places_status') ? true : false,
+			'google_places_is_active' => (bool)$this->input->post('cb_google_places_status'),
 			'radius_secret' => $this->input->post('radius_secret'),
 			'realm_suffix' => $this->input->post('realm_suffix')
 		);
@@ -114,14 +120,15 @@ class General_settings extends MY_Controller {
 	// ------------------------------------------------------------
 	public function email_templates()
 	{
-		$this->rbac->check_operation_access(); // check opration permission
-		if($this->input->post()){
+		// Check if user is allowed to access operation
+		//$this->rbac->check_operation_access();
+
+		if ($this->input->post()) {
 			$this->form_validation->set_rules('subject', 'Email Subject', 'trim|required');
 			$this->form_validation->set_rules('content', 'Email Body', 'trim|required');
 			if ($this->form_validation->run() == FALSE) {
 				echo validation_errors();
-			}
-			else{
+			} else {
 
 				$id = $this->input->post('id');
 				

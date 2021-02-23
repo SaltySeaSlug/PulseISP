@@ -1,11 +1,19 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:23
+ */
 
-class Languages extends MY_Controller {
+class Languages extends MY_Controller
+{
 
 	public function __construct()
 	{
 		parent::__construct();
-		auth_check(); // check login auth
+		// CHECK IF USER IS AUTHENTICATED
+		auth_check();
+
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 
 		$this->load->model('admin/languages_model', 'languages_model');
@@ -21,15 +29,17 @@ class Languages extends MY_Controller {
 
 	public function add()
 	{
-		if($this->input->post('submit')){
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
+		if ($this->input->post('submit')) {
 			$this->form_validation->set_rules('name', 'Language Name', 'trim|required');
 			$this->form_validation->set_rules('short_name', 'Short Name', 'trim|required');
 			if ($this->form_validation->run() == FALSE) {
 				$this->load->view('admin/includes/_header', $data);
 				$this->load->view('admin/languages/language_add', $data);
 				$this->load->view('admin/includes/_footer', $data);
-			}
-			else{
+			} else {
 				$data = array(
 					'name' => $this->input->post('name'),
 					'short_name' => $this->input->post('short_name'),
@@ -51,14 +61,17 @@ class Languages extends MY_Controller {
 
 	public function edit($id=0)
 	{
-		if($this->input->post('submit')){
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
+		if ($this->input->post('submit')) {
 			$data = array(
 				'name' => $this->input->post('name'),
 				'short_name' => $this->input->post('short_name'),
 			);
 			$data = $this->security->xss_clean($data);
 			$result = $this->languages_model->edit_language($data, $id);
-			if($result){
+			if ($result) {
 				$this->session->set_flashdata('msg', 'language has been updated successfully!');
 				redirect(base_url('admin/languages'));
 			}
@@ -73,6 +86,9 @@ class Languages extends MY_Controller {
 
 	public function del($id)
 	{
+		// Check if user is allowed to access operation
+		$this->rbac->check_operation_access();
+
 		$result = $this->languages_model->delete_language($id);
 		if ($result) {
 			$this->session->set_flashdata('msg', 'language has been Deleted Successfully!');

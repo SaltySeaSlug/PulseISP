@@ -1,4 +1,9 @@
 <?php
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
 class Setting_model extends CI_Model
 {
 	public bool $LINUX_OS;
@@ -12,24 +17,25 @@ class Setting_model extends CI_Model
 	}
 
 	//-----------------------------------------------------
-	public function update_general_setting($data){
+	public function update_general_setting($data): bool
+	{
 		$this->db->where('id', 1);
-		$this->db->update('ci_general_settings', $data);
+		$this->db->update($this->config->item('CONFIG_DB_TBL_GENERAL_SETTING'), $data);
 		return true;
-
 	}
 
 	//-----------------------------------------------------
-	public function get_general_settings(){
+	public function get_general_settings()
+	{
 		$this->db->where('id', 1);
-        $query = $this->db->get('ci_general_settings');
-        return $query->row_array();
+		$query = $this->db->get($this->config->item('CONFIG_DB_TBL_GENERAL_SETTING'));
+		return $query->row_array();
 	}
 
 	public function get_all_languages()
 	{
-		$this->db->where('status',1);
-		return $this->db->get('ci_language')->result_array();
+		$this->db->where('status', 1);
+		return $this->db->get($this->config->item('CONFIG_DB_TBL_LANGUAGE'))->result_array();
 	}
 
 	public function get_timezone_list() {
@@ -43,13 +49,14 @@ class Setting_model extends CI_Model
 	    return $time_Zones_arr;
 	}
 
-	public function get_currency_list() {
-		return $this->db->get('ci_currency')->result_array();
+	public function get_currency_list()
+	{
+		return $this->db->get($this->config->item('CONFIG_DB_TBL_CURRENCY'))->result_array();
 	}
 
 	public function get_currency(){
 		$this->db->where('id', 1);
-        $query = $this->db->get('ci_general_settings');
+		$query = $this->db->get($this->config->item('CONFIG_DB_TBL_GENERAL_SETTING'));
         return $query->row_array()['currency'];
 	}
 
@@ -59,24 +66,24 @@ class Setting_model extends CI_Model
 
 	function get_email_templates()
 	{
-		return $this->db->get('ci_email_templates')->result_array();
+		return $this->db->get($this->config->item('CONFIG_DB_TBL_EMAIL_TEMPLATE'))->result_array();
 	}
 
 	function update_email_template($data,$id)
 	{
 		$this->db->where('id', $id);
-		$this->db->update('ci_email_templates', $data);
+		$this->db->update($this->config->item('CONFIG_DB_TBL_EMAIL_TEMPLATE'), $data);
 		return true;
 	}
 
 	function get_email_template_content_by_id($id)
 	{
-		return $this->db->get_where('ci_email_templates',array('id' => $id))->row_array();
+		return $this->db->get_where($this->config->item('CONFIG_DB_TBL_EMAIL_TEMPLATE'), array('id' => $id))->row_array();
 	}
 
 	function get_email_template_variables_by_id($id)
 	{
-		return $this->db->get_where('ci_email_template_variables',array('template_id' => $id))->result_array();
+		return $this->db->get_where($this->config->item('CONFIG_DB_TBL_EMAIL_TEMPLATE_VARIABLE'), array('template_id' => $id))->result_array();
 	}
 
 
@@ -230,9 +237,6 @@ class Setting_model extends CI_Model
 			return @round($bytes/pow(1000,($i=floor(log($bytes,1000)))),2) .' '. (isset($unit[$i]) ? $unit[$i] : 'B');
 		}
 	}
-
-
-
 
 	function systemInfo() {
 

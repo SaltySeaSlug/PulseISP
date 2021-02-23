@@ -1,45 +1,42 @@
 <?php
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:22
+ */
 
-	class MY_Controller extends CI_Controller
+class MY_Controller extends CI_Controller
 	{
 		function __construct()
 		{
 			parent::__construct();
-			//$CI = & get_instance();
-			//$this->output->enable_profiler(TRUE);
 
+			// LOAD MODULES, LIBRARIES AND HELPERS
+			$this->load->model('admin/activity_model', 'activity_model');
 			$this->load->model('admin/setting_model', 'setting_model');
+			$this->load->model('admin/realm_model', 'realm_model');
 			$this->load->library('gravatar');
 
-			//$this->load->library('user_agent');
-			//$this->load->helper('url');
-
-			//general settings
+			// GENERAL SETTINGS
 			$global_data['general_settings'] = $this->setting_model->get_general_settings();
 			$this->general_settings = $global_data['general_settings'];
 
-			//set timezone
+			// SET TIMEZONE
 			date_default_timezone_set($this->general_settings['timezone']);
 
-			//recaptcha status
+			// RECAPTCHA STATUS
 			$global_data['recaptcha_status'] = true;
 			if (empty($this->general_settings['recaptcha_site_key']) || empty($this->general_settings['recaptcha_secret_key'])) {
 				$global_data['recaptcha_status'] = false;
 			}
-
 			$this->recaptcha_status = $global_data['recaptcha_status'];
 
+			// LANGUAGE
 			$site_language = ($this->general_settings['default_language'] != "") ? $this->general_settings['default_language'] : "english";
 			$language = ($this->session->userdata('site_lang') != "") ? $this->session->userdata('site_lang') : $site_language;
 			$language = strtolower(get_lang_name_by_id($language));
 
 			$this->config->set_item('language', $language);
 			$this->lang->load(array('site'), $language);
-
-
-			/*if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) && !isset($this->CI->referrer)) {
-				$this->session->set_userdata('referred_from', current_url());
-			}*/
 		}
 
 		//verify recaptcha

@@ -1,21 +1,8 @@
 <?php
 
-/**
- * CodeIgniter User Audit Trail
- *
- * Version 1.0, October - 2017
- * Author: Firoz Ahmad Likhon <likh.deshi@gmail.com>
- * Website: https://github.com/firoz-ahmad-likhon
- *
- * Copyright (c) 2018 Firoz Ahmad Likhon
- * Released under the MIT license
- *       ___            ___  ___    __    ___      ___  ___________  ___      ___
- *      /  /           /  / /  /  _/ /   /  /     /  / / _______  / /   \    /  /
- *     /  /           /  / /  /_ / /    /  /_____/  / / /      / / /     \  /  /
- *    /  /           /  / /   __|      /   _____   / / /      / / /  / \  \/  /
- *   /  /_ _ _ _ _  /  / /  /   \ \   /  /     /  / / /______/ / /  /   \    /
- *  /____________/ /__/ /__/     \_\ /__/     /__/ /__________/ /__/     /__/
- * Likhon the hackman, who claims himself as a hacker but really he isn't.
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
  */
 
 class MY_DB_mysqli_driver extends CI_DB_mysqli_driver 
@@ -181,17 +168,17 @@ class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
 
         $new_value = json_encode($set); // For delete event it stores where condition
 
-        return parent::insert('ci_audit_trails' ,
-            [
-                'user_id' => ($this->CI->session->userdata('user_id') != '') ? $this->CI->session->userdata('user_id') : null,
-                'admin_id' => ($this->CI->session->userdata('admin_id') != '') ? $this->CI->session->userdata('admin_id') : null,
-                'event' => $event,
-                'table_name' => $table,
-                'old_values' => $old_value,
-                'new_values' => $new_value,
-                'name' =>  ($this->CI->session->userdata('fullname') != '') ? $this->CI->session->userdata('fullname') : null,
-                'url' => $this->CI->uri->ruri_string(),
-                'ip_address' => $this->CI->input->ip_address(),
+        return parent::insert($this->CI->config->item('CONFIG_DB_TBL_AUDIT_TRAIL'),
+			[
+				'user_id' => ($this->CI->session->userdata('user_id') != '') ? $this->CI->session->userdata('user_id') : null,
+				'admin_id' => ($this->CI->session->userdata('admin_id') != '') ? $this->CI->session->userdata('admin_id') : null,
+				'event' => $event,
+				'table_name' => $table,
+				'old_values' => $old_value,
+				'new_values' => $new_value,
+				'name' => ($this->CI->session->userdata('fullname') != '') ? $this->CI->session->userdata('fullname') : null,
+				'url' => $this->CI->uri->ruri_string(),
+				'ip_address' => $this->CI->input->ip_address(),
                 'user_agent' => $this->CI->input->user_agent(),
                 'created_at' => date('Y-m-d H:i:s'),
             ]);

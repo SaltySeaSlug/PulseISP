@@ -1,16 +1,26 @@
 <div class="form" id="data_account_form">
 	<!-- USER TYPE -->
-	<select type="text" class="form-control" id="user_type" tabindex="-1" aria-hidden="true">
-		<option value="radius_user">Radius User Login</option>
-		<option value="radius_mac">Radius MAC Address Login</option>
-		<option value="mikrotik_login">MikroTik Winbox Login</option>
-	</select>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="user_type">User Type</label>
+		<div class="col-sm-10">
+			<select type="text" class="form-control" id="user_type" tabindex="-1" aria-hidden="true">
+				<option value="radius_user">Radius User Login</option>
+				<option value="radius_mac">Radius MAC Address Login</option>
+				<option value="mikrotik_login">MikroTik Winbox Login</option>
+			</select>
+		</div>
+	</div>
 	<!-- CONNECTION TYPE -->
-	<select type="text" class="form-control" id="connection_type" tabindex="-1" aria-hidden="true">
-		<option value="conn_wireless">Wireless</option>
-		<option value="conn_hotspot">Hotspot</option>
-		<option value="conn_fibre">Fibre</option>
-	</select>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="connection_type">Connection Type</label>
+		<div class="col-sm-10">
+			<select type="text" class="form-control" id="connection_type" tabindex="-1" aria-hidden="true">
+				<option value="conn_wireless">Wireless</option>
+				<option value="conn_hotspot">Hotspot</option>
+				<option value="conn_fibre">Fibre</option>
+			</select>
+		</div>
+	</div>
 	<!-- USERNAME -->
 	<div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="username"><?= trans('username') ?></label>
@@ -49,20 +59,34 @@
 	<div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="account_labels">Labels</label>
 		<div class="col-sm-10">
-			<input name="account_labels" type="text" class="form-control" id="account_labels" placeholder="" autocomplete="off" value="" required>
+			<input name="account_labels" type="text" class="form-control" id="account_labels" placeholder=""
+				   autocomplete="off" value="" required>
 		</div>
 	</div>
 	<!-- TRAFFIC COUNTED -->
-	<select type="text" class="form-control" id="traffic_count" tabindex="-1" aria-hidden="true">
-		<option value="traffic_radius">Radius Accounting</option>
-		<option value="traffic_ip">IP Accounting</option>
-	</select>
+	<!-- TODO: Radius Accounting - a data account and session is required | IP Accounting - info is pulled from the router for a specific IP -->
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="traffic_count">Traffic Count</label>
+		<div class="col-sm-10">
+			<select type="text" class="form-control" id="traffic_count" tabindex="-1" aria-hidden="true">
+				<option value="traffic_radius">Radius Accounting</option>
+				<option value="traffic_ip">IP Accounting</option>
+			</select>
+		</div>
+	</div>
 	<!-- ACCOUNT TYPE -->
-	<select type="text" class="form-control" id="account_type" tabindex="-1" aria-hidden="true">
-		<option value="account_normal">Normal Account</option>
-		<option value="account_sub">Sub Account</option>
-	</select>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" for="account_type">Account Type</label>
+		<div class="col-sm-10">
+
+			<select type="text" class="form-control" id="account_type" tabindex="-1" aria-hidden="true">
+				<option value="account_normal">Normal Account</option>
+				<option value="account_sub">Sub Account</option>
+			</select>
+		</div>
+	</div>
 	<!-- PASSWORD TYPE -->
+	<!-- TODO: Implement password functions / password helper class -->
 	<div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="passwordtype">Password Type</label>
 		<div class="col-sm-10">
@@ -89,10 +113,12 @@
 		</div>
 	</div>
 	<!-- CONCURRENT SESSIONS -->
+	<!-- TODO : Add Simultaneous-Use := 1 to radgroupcheck-->
 	<div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="session_concurrent">Concurrent Sessions</label>
 		<div class="col-sm-10">
-			<input name="session_concurrent" type="text" class="form-control" id="session_concurrent" placeholder="" autocomplete="off" value="" required>
+			<input name="session_concurrent" type="text" class="form-control" id="session_concurrent" placeholder=""
+				   autocomplete="off" value="" required>
 		</div>
 	</div>
 	<!-- IP MODE -->
@@ -138,6 +164,7 @@
 		</div>
 	</div>
 	<!-- AUTHENTICATION -->
+	<!-- TODO: Implement pre check, if accept selected authentication will proceed, if reject selected authentication will be denied -->
 	<div class="form-group row">
 		<label class="col-sm-2 col-form-label" for="authentication">Authentication</label>
 		<div class="col-sm-10">

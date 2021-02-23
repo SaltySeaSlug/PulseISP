@@ -1,4 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
 
 /**
  * Controller for CodeIgniter frontend language files editor.
@@ -20,14 +24,14 @@ class Language extends MY_Controller{
 
 	function __construct(){
 		parent::__construct();
-		auth_check(); // check login auth
+		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 
-		$this->load->helper(array('url','file','language','form')); //load this helpers if youre not doing it in autoload
+		$this->load->helper(array('url', 'file', 'language', 'form')); //load this helpers if youre not doing it in autoload
 		$this->load->model(array('model_language'));
 		$this->load->library(array('session')); //load session if youre not doing it in autoload
 		$this->load->database(); //load database if youre not doing it in autoload
-		$this->load->language('language','english'); //you can delete it if you have translation for you language
+		$this->load->language('language', 'english'); //you can delete it if you have translation for you language
 		$this->config->load('language_editor');
 	}
 
