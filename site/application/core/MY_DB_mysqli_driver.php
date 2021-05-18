@@ -2,7 +2,7 @@
 
 /*
  * Copyright (c) 2021.
- * Last Modified : 2021/05/17, 17:14
+ * Last Modified : 2021/05/18, 11:18
  */
 
 class MY_DB_mysqli_driver extends CI_DB_mysqli_driver 
@@ -176,12 +176,12 @@ class MY_DB_mysqli_driver extends CI_DB_mysqli_driver
 				'table_name' => $table,
 				'old_values' => $old_value,
 				'new_values' => $new_value,
-				'name' => ($this->CI->session->userdata('fullname') != '') ? $this->CI->session->userdata('fullname') : null,
+				'name' => ($this->CI->session->userdata('fullname') != '') ? $this->CI->session->userdata('fullname') : "",
 				'url' => $this->CI->uri->ruri_string(),
 				'ip_address' => $this->CI->input->ip_address(),
-                'user_agent' => $this->CI->input->user_agent(),
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
+				'user_agent' => $this->CI->input->user_agent(),
+				'created_at' => date('Y-m-d H:i:s'),
+			]);
     }
 
     /**
