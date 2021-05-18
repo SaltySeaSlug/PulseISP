@@ -1,9 +1,19 @@
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/18, 09:23
+ */
+
+/*
+ * Copyright (c) 2021.
+ * Last Modified : 2021/05/17, 17:14
+ */
+
 -- phpMyAdmin SQL Dump
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2021 at 05:46 AM
+-- Generation Time: May 17, 2021 at 05:11 PM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 8.0.0
 
@@ -12,16 +22,14 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `pulseisp_db`
 --
-CREATE DATABASE IF NOT EXISTS `pulseisp_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `pulseisp_db`;
 
 -- --------------------------------------------------------
 
@@ -29,15 +37,17 @@ USE `pulseisp_db`;
 -- Table structure for table `ci_activity_log`
 --
 
-CREATE TABLE `ci_activity_log` (
-                                   `id` int(11) NOT NULL,
-                                   `activity_id` tinyint(4) NOT NULL,
-                                   `user_id` int(11) DEFAULT NULL,
-                                   `admin_id` int(11) DEFAULT NULL,
-                                   `description` varchar(255) DEFAULT NULL,
-                                   `ip_address` varchar(64) DEFAULT NULL,
-                                   `created_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_activity_log`
+(
+    `id`          int(11)    NOT NULL,
+    `activity_id` tinyint(4) NOT NULL,
+    `user_id`     int(11)      DEFAULT NULL,
+    `admin_id`    int(11)      DEFAULT NULL,
+    `description` varchar(255) DEFAULT NULL,
+    `ip_address`  varchar(64)  DEFAULT NULL,
+    `created_at`  datetime   NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -45,10 +55,12 @@ CREATE TABLE `ci_activity_log` (
 -- Table structure for table `ci_activity_status`
 --
 
-CREATE TABLE `ci_activity_status` (
-                                      `id` int(11) NOT NULL,
-                                      `description` varchar(225) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_activity_status`
+(
+    `id`          int(11)      NOT NULL,
+    `description` varchar(225) NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -56,34 +68,30 @@ CREATE TABLE `ci_activity_status` (
 -- Table structure for table `ci_admin`
 --
 
-CREATE TABLE `ci_admin` (
-                            `admin_id` int(11) NOT NULL,
-                            `admin_role_id`       int(11)      NOT NULL,
-                            `username`            varchar(100) NOT NULL,
-                            `firstname`           varchar(255) NOT NULL,
-                            `lastname`            varchar(255) NOT NULL,
-                            `email`               varchar(255) NOT NULL,
-                            `mobile_no`           varchar(255) NOT NULL,
-                            `image`               varchar(300) NOT NULL,
-                            `password`            varchar(255) NOT NULL,
-                            `last_login`          datetime     NOT NULL,
-                            `is_verify`           tinyint(4)   NOT NULL DEFAULT 1,
-                            `is_admin`            tinyint(4)   NOT NULL DEFAULT 1,
-                            `is_active`           tinyint(4)   NOT NULL DEFAULT 0,
-                            `is_supper`           tinyint(4)   NOT NULL DEFAULT 0,
-                            `token`               varchar(255) NOT NULL,
-                            `password_reset_code` varchar(255) NOT NULL,
-                            `last_ip`             varchar(255) NOT NULL,
-                            `created_at`          datetime     NOT NULL,
-                            `updated_at`          datetime     NOT NULL
+CREATE TABLE `ci_admin`
+(
+    `admin_id`            int(11)      NOT NULL,
+    `admin_role_id`       int(11)      NOT NULL,
+    `username`            varchar(100) NOT NULL,
+    `firstname`           varchar(255) NOT NULL,
+    `lastname`            varchar(255) NOT NULL,
+    `email`               varchar(255) NOT NULL,
+    `mobile_no`           varchar(255) NOT NULL,
+    `image`               varchar(300) NOT NULL,
+    `password`            varchar(255) NOT NULL,
+    `last_login`          datetime     NOT NULL,
+    `is_verify`           tinyint(4)   NOT NULL DEFAULT 1,
+    `is_admin`            tinyint(4)   NOT NULL DEFAULT 1,
+    `is_active`           tinyint(4)   NOT NULL DEFAULT 0,
+    `is_supper`           tinyint(4)   NOT NULL DEFAULT 0,
+    `token`               varchar(255) NOT NULL,
+    `password_reset_code` varchar(255) NOT NULL,
+    `last_ip`             varchar(255) NOT NULL,
+    `created_at`          datetime     NOT NULL,
+    `updated_at`          datetime     NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
---
--- Truncate table before insert `ci_admin`
---
-
-TRUNCATE TABLE `ci_admin`;
 --
 -- Dumping data for table `ci_admin`
 --
@@ -91,20 +99,20 @@ TRUNCATE TABLE `ci_admin`;
 INSERT INTO `ci_admin` (`admin_id`, `admin_role_id`, `username`, `firstname`, `lastname`, `email`, `mobile_no`, `image`,
                         `password`, `last_login`, `is_verify`, `is_admin`, `is_active`, `is_supper`, `token`,
                         `password_reset_code`, `last_ip`, `created_at`, `updated_at`)
-VALUES (25, 2, 'admin', 'Admin', 'User', 'admin@gmail.com', '544354353', '',
-        '$2y$10$KyH0L.rMhaXWkMh/ZoN1.e44FOzEak.KzZoUjQdIGiuVJtuKa9z0y', '2019-01-09 00:00:00', 1, 1, 1, 0, '', '', '',
-        '2018-03-19 00:00:00', '2019-11-24 00:00:00'),
-       (31, 1, 'superadmin', 'Super', 'Admin', 'test@test.com', '', '',
+VALUES (2, 2, 'admin', 'Admin', 'User', 'admin@gmail.com', '544354353', '',
+        '$2y$10$KyH0L.rMhaXWkMh/ZoN1.e44FOzEak.KzZoUjQdIGiuVJtuKa9z0y', '2019-01-09 00:00:00', 1, 1, 1, 0, '', '',
+        '::1', '2018-03-19 00:00:00', '2019-11-24 00:00:00'),
+       (1, 1, 'superadmin', 'Super', 'Admin', 'test@test.com', '', '',
         '$2y$12$2kPx54.2xX4GyxjPovhFHOJdVthJQBcy.mBR3ig/aPVnOC0a3E2tK', '0000-00-00 00:00:00', 1, 1, 1, 1, '',
         'e620a99414d5ebf5c61d6a43a4ac94a2', '::1', '2019-01-16 06:01:58', '2020-12-22 00:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_admin_roles`
+-- Table structure for table `ci_admin_role`
 --
 
-CREATE TABLE `ci_admin_roles`
+CREATE TABLE `ci_admin_role`
 (
     `admin_role_id`          int(11)     NOT NULL,
     `admin_role_title`       varchar(30) NOT NULL,
@@ -117,16 +125,11 @@ CREATE TABLE `ci_admin_roles`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_admin_roles`
+-- Dumping data for table `ci_admin_role`
 --
 
-TRUNCATE TABLE `ci_admin_roles`;
---
--- Dumping data for table `ci_admin_roles`
---
-
-INSERT INTO `ci_admin_roles` (`admin_role_id`, `admin_role_title`, `admin_role_status`, `admin_role_created_by`,
-                              `admin_role_created_on`, `admin_role_modified_by`, `admin_role_modified_on`)
+INSERT INTO `ci_admin_role` (`admin_role_id`, `admin_role_title`, `admin_role_status`, `admin_role_created_by`,
+                             `admin_role_created_on`, `admin_role_modified_by`, `admin_role_modified_on`)
 VALUES (1, 'Super Admin', 1, 0, '2018-03-15 12:48:04', 0, '2018-03-17 12:53:16'),
        (2, 'Admin', 1, 0, '2018-03-15 12:53:19', 0, '2019-01-26 08:27:34'),
        (3, 'Accountant', 1, 0, '2018-03-15 01:46:54', 0, '2019-01-26 02:17:38'),
@@ -135,68 +138,76 @@ VALUES (1, 'Super Admin', 1, 0, '2018-03-15 12:48:04', 0, '2018-03-17 12:53:16')
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_audit_trails`
+-- Table structure for table `ci_audit_trail`
 --
 
-CREATE TABLE `ci_audit_trails` (
-                                   `id` int(11) NOT NULL,
-                                   `user_id` int(11) DEFAULT NULL,
-                                   `admin_id` int(11) DEFAULT NULL,
-                                   `event` enum('insert','update','delete') NOT NULL,
-                                   `table_name` varchar(128) NOT NULL,
-                                   `old_values` text DEFAULT NULL,
-                                   `new_values` text NOT NULL,
-                                   `url` varchar(255) NOT NULL,
-                                   `name` varchar(128) NOT NULL,
-                                   `ip_address` varchar(45) NOT NULL,
-                                   `user_agent` varchar(255) NOT NULL,
-                                   `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_audit_trail`
+(
+    `id`         int(11)                           NOT NULL,
+    `user_id`    int(11)                                DEFAULT NULL,
+    `admin_id`   int(11)                                DEFAULT NULL,
+    `event`      enum ('insert','update','delete') NOT NULL,
+    `table_name` varchar(128)                      NOT NULL,
+    `old_values` text                                   DEFAULT NULL,
+    `new_values` text                              NOT NULL,
+    `url`        varchar(255)                      NOT NULL,
+    `name`       varchar(128)                      NOT NULL,
+    `ip_address` varchar(45)                       NOT NULL,
+    `user_agent` varchar(255)                      NOT NULL,
+    `created_at` timestamp                         NULL DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_cities`
+-- Table structure for table `ci_city`
 --
 
-CREATE TABLE `ci_cities` (
-                             `id` int(11) NOT NULL,
-                             `name` varchar(30) NOT NULL,
-                             `slug` varchar(255) NOT NULL,
-                             `state_id` int(11) NOT NULL,
-                             `status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_city`
+(
+    `id`       int(11)      NOT NULL,
+    `name`     varchar(30)  NOT NULL,
+    `slug`     varchar(255) NOT NULL,
+    `state_id` int(11)      NOT NULL,
+    `status`   tinyint(4)   NOT NULL DEFAULT 1
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_companies`
+-- Table structure for table `ci_company`
 --
 
-CREATE TABLE `ci_companies` (
-                                `id` int(11) NOT NULL,
-                                `name` varchar(100) NOT NULL,
-                                `email` varchar(50) NOT NULL,
-                                `mobile_no` varchar(50) NOT NULL,
-                                `address1` varchar(255) NOT NULL,
-                                `address2` varchar(255) NOT NULL,
-                                `created_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_company`
+(
+    `id`           int(11)      NOT NULL,
+    `name`         varchar(100) NOT NULL,
+    `email`        varchar(50)  NOT NULL,
+    `mobile_no`    varchar(50)  NOT NULL,
+    `address1`     varchar(255) NOT NULL,
+    `address2`     varchar(255) NOT NULL,
+    `created_date` datetime     NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_countries`
+-- Table structure for table `ci_country`
 --
 
-CREATE TABLE `ci_countries` (
-                                `id` int(11) NOT NULL,
-                                `sortname` varchar(3) NOT NULL,
-                                `name` varchar(150) NOT NULL,
-                                `slug` varchar(255) NOT NULL,
-                                `phonecode` int(11) NOT NULL,
-                                `status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_country`
+(
+    `id`        int(11)      NOT NULL,
+    `sortname`  varchar(3)   NOT NULL,
+    `name`      varchar(150) NOT NULL,
+    `slug`      varchar(255) NOT NULL,
+    `phonecode` int(11)      NOT NULL,
+    `status`    tinyint(4)   NOT NULL DEFAULT 1
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -213,11 +224,6 @@ CREATE TABLE `ci_currency`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_currency`
---
-
-TRUNCATE TABLE `ci_currency`;
---
 -- Dumping data for table `ci_currency`
 --
 
@@ -227,122 +233,122 @@ VALUES ('Leke', 'ALL', 'Lek'),
        ('Afghanis', 'AFN', '؋'),
        ('Pesos', 'ARS', '$'),
        ('Guilders', 'AWG', 'ƒ'),
-('Dollars', 'AUD', '$'),
-('New Manats', 'AZN', 'ман'),
-('Dollars', 'BSD', '$'),
-('Dollars', 'BBD', '$'),
-('Rubles', 'BYR', 'p.'),
-('Euro', 'EUR', '€'),
-('Dollars', 'BZD', 'BZ$'),
-('Dollars', 'BMD', '$'),
-('Bolivianos', 'BOB', '$b'),
-('Convertible Marka', 'BAM', 'KM'),
-('Pula', 'BWP', 'P'),
-('Leva', 'BGN', 'лв'),
-('Reais', 'BRL', 'R$'),
-('Pounds', 'GBP', '£'),
-('Dollars', 'BND', '$'),
-('Riels', 'KHR', '៛'),
-('Dollars', 'CAD', '$'),
-('Dollars', 'KYD', '$'),
-('Pesos', 'CLP', '$'),
-('Yuan Renminbi', 'CNY', '¥'),
-('Pesos', 'COP', '$'),
-('Colón', 'CRC', '₡'),
-('Kuna', 'HRK', 'kn'),
-('Pesos', 'CUP', '₱'),
-('Koruny', 'CZK', 'Kč'),
-('Kroner', 'DKK', 'kr'),
-('Pesos', 'DOP', 'RD$'),
-('Dollars', 'XCD', '$'),
-('Pounds', 'EGP', '£'),
-('Colones', 'SVC', '$'),
-('Pounds', 'FKP', '£'),
-('Dollars', 'FJD', '$'),
-('Cedis', 'GHC', '¢'),
-('Pounds', 'GIP', '£'),
-('Quetzales', 'GTQ', 'Q'),
-('Pounds', 'GGP', '£'),
-('Dollars', 'GYD', '$'),
-('Lempiras', 'HNL', 'L'),
-('Dollars', 'HKD', '$'),
-('Forint', 'HUF', 'Ft'),
-('Kronur', 'ISK', 'kr'),
-('Rupees', 'INR', 'Rp'),
-('Rupiahs', 'IDR', 'Rp'),
-('Rials', 'IRR', '﷼'),
-('Pounds', 'IMP', '£'),
-('New Shekels', 'ILS', '₪'),
-('Dollars', 'JMD', 'J$'),
-('Yen', 'JPY', '¥'),
-('Pounds', 'JEP', '£'),
-('Tenge', 'KZT', 'лв'),
-('Won', 'KPW', '₩'),
-('Won', 'KRW', '₩'),
-('Soms', 'KGS', 'лв'),
-('Kips', 'LAK', '₭'),
-('Lati', 'LVL', 'Ls'),
-('Pounds', 'LBP', '£'),
-('Dollars', 'LRD', '$'),
-('Switzerland Francs', 'CHF', 'CHF'),
-('Litai', 'LTL', 'Lt'),
-('Denars', 'MKD', 'ден'),
-('Ringgits', 'MYR', 'RM'),
-('Rupees', 'MUR', '₨'),
-('Pesos', 'MXN', '$'),
-('Tugriks', 'MNT', '₮'),
-('Meticais', 'MZN', 'MT'),
-('Dollars', 'NAD', '$'),
-('Rupees', 'NPR', '₨'),
-('Guilders', 'ANG', 'ƒ'),
-('Dollars', 'NZD', '$'),
-('Cordobas', 'NIO', 'C$'),
-('Nairas', 'NGN', '₦'),
-('Krone', 'NOK', 'kr'),
-('Rials', 'OMR', '﷼'),
-('Rupees', 'PKR', '₨'),
-('Balboa', 'PAB', 'B/.'),
-('Guarani', 'PYG', 'Gs'),
-('Nuevos Soles', 'PEN', 'S/.'),
-('Pesos', 'PHP', 'Php'),
-('Zlotych', 'PLN', 'zł'),
-('Rials', 'QAR', '﷼'),
-('New Lei', 'RON', 'lei'),
-('Rubles', 'RUB', 'руб'),
-('Pounds', 'SHP', '£'),
-('Riyals', 'SAR', '﷼'),
-('Dinars', 'RSD', 'Дин.'),
-('Rupees', 'SCR', '₨'),
-('Dollars', 'SGD', '$'),
-('Dollars', 'SBD', '$'),
-('Shillings', 'SOS', 'S'),
-('Rand', 'ZAR', 'R'),
-('Rupees', 'LKR', '₨'),
-('Kronor', 'SEK', 'kr'),
-('Dollars', 'SRD', '$'),
-('Pounds', 'SYP', '£'),
-('New Dollars', 'TWD', 'NT$'),
-('Baht', 'THB', '฿'),
-('Dollars', 'TTD', 'TT$'),
-('Lira', 'TRY', '₺'),
-('Liras', 'TRL', '£'),
-('Dollars', 'TVD', '$'),
-('Hryvnia', 'UAH', '₴'),
-('Pesos', 'UYU', '$U'),
-('Sums', 'UZS', 'лв'),
-('Bolivares Fuertes', 'VEF', 'Bs'),
-('Dong', 'VND', '₫'),
-('Rials', 'YER', '﷼'),
-('Zimbabwe Dollars', 'ZWD', 'Z$'),
-('Rupees', 'INR', '₹');
+       ('Dollars', 'AUD', '$'),
+       ('New Manats', 'AZN', 'ман'),
+       ('Dollars', 'BSD', '$'),
+       ('Dollars', 'BBD', '$'),
+       ('Rubles', 'BYR', 'p.'),
+       ('Euro', 'EUR', '€'),
+       ('Dollars', 'BZD', 'BZ$'),
+       ('Dollars', 'BMD', '$'),
+       ('Bolivianos', 'BOB', '$b'),
+       ('Convertible Marka', 'BAM', 'KM'),
+       ('Pula', 'BWP', 'P'),
+       ('Leva', 'BGN', 'лв'),
+       ('Reais', 'BRL', 'R$'),
+       ('Pounds', 'GBP', '£'),
+       ('Dollars', 'BND', '$'),
+       ('Riels', 'KHR', '៛'),
+       ('Dollars', 'CAD', '$'),
+       ('Dollars', 'KYD', '$'),
+       ('Pesos', 'CLP', '$'),
+       ('Yuan Renminbi', 'CNY', '¥'),
+       ('Pesos', 'COP', '$'),
+       ('Colón', 'CRC', '₡'),
+       ('Kuna', 'HRK', 'kn'),
+       ('Pesos', 'CUP', '₱'),
+       ('Koruny', 'CZK', 'Kč'),
+       ('Kroner', 'DKK', 'kr'),
+       ('Pesos', 'DOP', 'RD$'),
+       ('Dollars', 'XCD', '$'),
+       ('Pounds', 'EGP', '£'),
+       ('Colones', 'SVC', '$'),
+       ('Pounds', 'FKP', '£'),
+       ('Dollars', 'FJD', '$'),
+       ('Cedis', 'GHC', '¢'),
+       ('Pounds', 'GIP', '£'),
+       ('Quetzales', 'GTQ', 'Q'),
+       ('Pounds', 'GGP', '£'),
+       ('Dollars', 'GYD', '$'),
+       ('Lempiras', 'HNL', 'L'),
+       ('Dollars', 'HKD', '$'),
+       ('Forint', 'HUF', 'Ft'),
+       ('Kronur', 'ISK', 'kr'),
+       ('Rupees', 'INR', 'Rp'),
+       ('Rupiahs', 'IDR', 'Rp'),
+       ('Rials', 'IRR', '﷼'),
+       ('Pounds', 'IMP', '£'),
+       ('New Shekels', 'ILS', '₪'),
+       ('Dollars', 'JMD', 'J$'),
+       ('Yen', 'JPY', '¥'),
+       ('Pounds', 'JEP', '£'),
+       ('Tenge', 'KZT', 'лв'),
+       ('Won', 'KPW', '₩'),
+       ('Won', 'KRW', '₩'),
+       ('Soms', 'KGS', 'лв'),
+       ('Kips', 'LAK', '₭'),
+       ('Lati', 'LVL', 'Ls'),
+       ('Pounds', 'LBP', '£'),
+       ('Dollars', 'LRD', '$'),
+       ('Switzerland Francs', 'CHF', 'CHF'),
+       ('Litai', 'LTL', 'Lt'),
+       ('Denars', 'MKD', 'ден'),
+       ('Ringgits', 'MYR', 'RM'),
+       ('Rupees', 'MUR', '₨'),
+       ('Pesos', 'MXN', '$'),
+       ('Tugriks', 'MNT', '₮'),
+       ('Meticais', 'MZN', 'MT'),
+       ('Dollars', 'NAD', '$'),
+       ('Rupees', 'NPR', '₨'),
+       ('Guilders', 'ANG', 'ƒ'),
+       ('Dollars', 'NZD', '$'),
+       ('Cordobas', 'NIO', 'C$'),
+       ('Nairas', 'NGN', '₦'),
+       ('Krone', 'NOK', 'kr'),
+       ('Rials', 'OMR', '﷼'),
+       ('Rupees', 'PKR', '₨'),
+       ('Balboa', 'PAB', 'B/.'),
+       ('Guarani', 'PYG', 'Gs'),
+       ('Nuevos Soles', 'PEN', 'S/.'),
+       ('Pesos', 'PHP', 'Php'),
+       ('Zlotych', 'PLN', 'zł'),
+       ('Rials', 'QAR', '﷼'),
+       ('New Lei', 'RON', 'lei'),
+       ('Rubles', 'RUB', 'руб'),
+       ('Pounds', 'SHP', '£'),
+       ('Riyals', 'SAR', '﷼'),
+       ('Dinars', 'RSD', 'Дин.'),
+       ('Rupees', 'SCR', '₨'),
+       ('Dollars', 'SGD', '$'),
+       ('Dollars', 'SBD', '$'),
+       ('Shillings', 'SOS', 'S'),
+       ('Rand', 'ZAR', 'R'),
+       ('Rupees', 'LKR', '₨'),
+       ('Kronor', 'SEK', 'kr'),
+       ('Dollars', 'SRD', '$'),
+       ('Pounds', 'SYP', '£'),
+       ('New Dollars', 'TWD', 'NT$'),
+       ('Baht', 'THB', '฿'),
+       ('Dollars', 'TTD', 'TT$'),
+       ('Lira', 'TRY', '₺'),
+       ('Liras', 'TRL', '£'),
+       ('Dollars', 'TVD', '$'),
+       ('Hryvnia', 'UAH', '₴'),
+       ('Pesos', 'UYU', '$U'),
+       ('Sums', 'UZS', 'лв'),
+       ('Bolivares Fuertes', 'VEF', 'Bs'),
+       ('Dong', 'VND', '₫'),
+       ('Rials', 'YER', '﷼'),
+       ('Zimbabwe Dollars', 'ZWD', 'Z$'),
+       ('Rupees', 'INR', '₹');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_email_templates`
+-- Table structure for table `ci_email_template`
 --
 
-CREATE TABLE `ci_email_templates`
+CREATE TABLE `ci_email_template`
 (
     `id`          int(11)      NOT NULL,
     `name`        varchar(255) NOT NULL,
@@ -354,30 +360,25 @@ CREATE TABLE `ci_email_templates`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_email_templates`
+-- Dumping data for table `ci_email_template`
 --
 
-TRUNCATE TABLE `ci_email_templates`;
---
--- Dumping data for table `ci_email_templates`
---
-
-INSERT INTO `ci_email_templates` (`id`, `name`, `slug`, `subject`, `body`, `last_update`)
+INSERT INTO `ci_email_template` (`id`, `name`, `slug`, `subject`, `body`, `last_update`)
 VALUES (1, 'Email Verification', 'email-verification', 'Activate Your Account',
         '<p></p>\n\n<p>Hi  <b>{FULLNAME}</b>,<br><br></p><p>Welcome to LightAdmin!<br>Active your account with the link above and start your Career.</p><p>To verify your email, please click the link below:<br> {VERIFICATION_LINK}</p><p>\n\n</p><div><b>Regards,</b></div><div><b>Team</b></div>\n\n<p></p>',
         '2019-11-26 18:06:39'),
        (2, 'Forget Password', 'forget-password', 'Recover your password',
         '<p>\n\n</p><p>Hi  <b>{FULLNAME}</b>,<br><br></p><p>Welcome to LightAdmin!<br></p><p>We have received a request to reset your password. If you did not initiate this request, you can simply ignore this message and no action will be taken.</p><p><br>To reset your password, please click the link below:<br> {RESET_LINK}</p>\n\n<p></p>',
         '2019-11-26 17:44:41'),
-       (3, 'General Notification', '', 'aaaaa', '<p>asdfasdfasdfasd </p>', '2019-08-26 02:42:47');
+       (3, 'General Notification', '', 'aaaaa', '<p>pi</p>', '2021-05-14 12:23:01');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_email_template_variables`
+-- Table structure for table `ci_email_template_variable`
 --
 
-CREATE TABLE `ci_email_template_variables`
+CREATE TABLE `ci_email_template_variable`
 (
     `id`            int(11)      NOT NULL,
     `template_id`   int(11)      NOT NULL,
@@ -386,15 +387,10 @@ CREATE TABLE `ci_email_template_variables`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_email_template_variables`
+-- Dumping data for table `ci_email_template_variable`
 --
 
-TRUNCATE TABLE `ci_email_template_variables`;
---
--- Dumping data for table `ci_email_template_variables`
---
-
-INSERT INTO `ci_email_template_variables` (`id`, `template_id`, `variable_name`)
+INSERT INTO `ci_email_template_variable` (`id`, `template_id`, `variable_name`)
 VALUES (1, 1, '{FULLNAME}'),
        (2, 1, '{VERIFICATION_LINK}'),
        (3, 2, '{RESET_LINK}'),
@@ -403,10 +399,10 @@ VALUES (1, 1, '{FULLNAME}'),
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_general_settings`
+-- Table structure for table `ci_general_setting`
 --
 
-CREATE TABLE `ci_general_settings`
+CREATE TABLE `ci_general_setting`
 (
     `id`                      int(11)       NOT NULL,
     `system_id`               text                   DEFAULT NULL,
@@ -420,18 +416,18 @@ CREATE TABLE `ci_general_settings`
     `email_from`              varchar(100)  NOT NULL,
     `smtp_host`               varchar(255)           DEFAULT NULL,
     `smtp_port`               int(11)                DEFAULT NULL,
-    `smtp_user`               varchar(50) DEFAULT NULL,
-    `smtp_pass`               varchar(50) DEFAULT NULL,
-    `facebook_link`           varchar(255) DEFAULT NULL,
-    `twitter_link`            varchar(255) DEFAULT NULL,
-    `google_link`             varchar(255) DEFAULT NULL,
-    `youtube_link`            varchar(255) DEFAULT NULL,
-    `linkedin_link`           varchar(255) DEFAULT NULL,
-    `instagram_link`          varchar(255) DEFAULT NULL,
-    `recaptcha_secret_key`    varchar(255) DEFAULT NULL,
-    `recaptcha_site_key`      varchar(255) DEFAULT NULL,
-    `recaptcha_lang`          varchar(50) DEFAULT NULL,
-    `company_name`            varchar(128) DEFAULT NULL,
+    `smtp_user`               varchar(50)            DEFAULT NULL,
+    `smtp_pass`               varchar(50)            DEFAULT NULL,
+    `facebook_link`           varchar(255)           DEFAULT NULL,
+    `twitter_link`            varchar(255)           DEFAULT NULL,
+    `google_link`             varchar(255)           DEFAULT NULL,
+    `youtube_link`            varchar(255)           DEFAULT NULL,
+    `linkedin_link`           varchar(255)           DEFAULT NULL,
+    `instagram_link`          varchar(255)           DEFAULT NULL,
+    `recaptcha_secret_key`    varchar(255)           DEFAULT NULL,
+    `recaptcha_site_key`      varchar(255)           DEFAULT NULL,
+    `recaptcha_lang`          varchar(50)            DEFAULT NULL,
+    `company_name`            varchar(128)           DEFAULT NULL,
     `address_line_1`          varchar(255)  NOT NULL,
     `address_line_2`          varchar(255)  NOT NULL,
     `email_address`           varchar(128)  NOT NULL,
@@ -448,28 +444,23 @@ CREATE TABLE `ci_general_settings`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_general_settings`
+-- Dumping data for table `ci_general_setting`
 --
 
-TRUNCATE TABLE `ci_general_settings`;
---
--- Dumping data for table `ci_general_settings`
---
-
-INSERT INTO `ci_general_settings` (`id`, `system_id`, `favicon`, `logo`, `application_name`, `timezone`, `currency`,
-                                   `default_language`, `copyright`, `email_from`, `smtp_host`, `smtp_port`, `smtp_user`,
-                                   `smtp_pass`, `facebook_link`, `twitter_link`, `google_link`, `youtube_link`,
-                                   `linkedin_link`, `instagram_link`, `recaptcha_secret_key`, `recaptcha_site_key`,
-                                   `recaptcha_lang`, `company_name`, `address_line_1`, `address_line_2`,
-                                   `email_address`, `contact_number`, `terms`, `use_google_font`, `google_api_key`,
-                                   `google_places_is_active`, `radius_secret`, `realm_suffix`, `created_date`,
-                                   `updated_date`)
+INSERT INTO `ci_general_setting` (`id`, `system_id`, `favicon`, `logo`, `application_name`, `timezone`, `currency`,
+                                  `default_language`, `copyright`, `email_from`, `smtp_host`, `smtp_port`, `smtp_user`,
+                                  `smtp_pass`, `facebook_link`, `twitter_link`, `google_link`, `youtube_link`,
+                                  `linkedin_link`, `instagram_link`, `recaptcha_secret_key`, `recaptcha_site_key`,
+                                  `recaptcha_lang`, `company_name`, `address_line_1`, `address_line_2`, `email_address`,
+                                  `contact_number`, `terms`, `use_google_font`, `google_api_key`,
+                                  `google_places_is_active`, `radius_secret`, `realm_suffix`, `created_date`,
+                                  `updated_date`)
 VALUES (1, NULL, 'assets/img/pulseisp_fav.png', 'assets/img/pulseisp.png', 'Pulse<b>ISP</b>', 'Africa/Johannesburg',
         'ZAR', 1,
         'Powered by <strong><a href=\"http://www.unitechsol.co.za\">Unitech Solutions TTL</b></a> © 2020</strong> | All rights reserved.',
         '', 'smtp.gmail.com', 587, '', '', 'https://facebook.com', 'https://twitter.com', 'https://google.com',
-        'https://youtube.com', 'https://linkedin.com', 'https://instagram.com', '', '', 'en', 'Private Company', '', '',
-        '', '', '', 1, NULL, 1, '$FREERADIUS_SECRET', NULL, '2021-02-04 00:00:00', '2021-02-04 00:00:00');
+        'https://youtube.com', 'https://linkedin.com', 'https://instagram.com', '', '', 'en', '', '', '', '', '', '', 1,
+        '', 1, 'testing123', '', '2021-05-13 00:00:00', '2021-05-13 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -494,35 +485,13 @@ CREATE TABLE `ci_language`
 INSERT INTO `ci_language` (`id`, `name`, `short_name`, `status`, `created_at`)
 VALUES (1, 'English', 'en', 1, '2021-02-23 22:13:00');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `ci_language`
---
-ALTER TABLE `ci_language`
-    ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `ci_language`
---
-ALTER TABLE `ci_language`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
-    AUTO_INCREMENT = 2;
-COMMIT;
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_language_keys`
+-- Table structure for table `ci_language_key`
 --
 
-CREATE TABLE `ci_language_keys`
+CREATE TABLE `ci_language_key`
 (
     `key`      varchar(255) NOT NULL,
     `filename` varchar(255) NOT NULL,
@@ -530,11 +499,6 @@ CREATE TABLE `ci_language_keys`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
---
--- Truncate table before insert `ci_language_keys`
---
-
-TRUNCATE TABLE `ci_language_keys`;
 -- --------------------------------------------------------
 
 --
@@ -553,11 +517,6 @@ CREATE TABLE `ci_module`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_module`
---
-
-TRUNCATE TABLE `ci_module`;
---
 -- Dumping data for table `ci_module`
 --
 
@@ -567,25 +526,26 @@ VALUES (1, 'admin', 'admin', 'fad fa-chart-pie', 'view|add|edit|delete|change_st
        (3, 'users', 'users', 'fad fa-users', 'view|add|edit|delete|change_status|access', 4),
        (7, 'backup_and_export', 'export', 'fad fa-database', 'access', 12),
        (8, 'settings', 'general_settings', 'fad fa-cogs', 'view|add|edit|access', 13),
-(9, 'dashboard', 'dashboard', 'fad fa-tachometer-alt', 'view|index_2|index_3|access', 1),
-(10, 'codeigniter_examples', 'example', 'fad fa-snowflake', 'access', 6),
-(11, 'invoicing_system', 'invoices', 'fad fa-file-invoice-dollar', 'access', 9),
-(12, 'database_joins_example', 'joins', 'fad fa-external-link-square', 'access', 7),
-(13, 'language_setting', 'languages', 'fad fa-language', 'access|add', 14),
-(14, 'locations', 'location', 'fad fa-map-pin', 'access', 11),
-(15, 'widgets', 'widgets', 'fad fa-th', 'access', 19),
-(16, 'charts', 'charts', 'fad fa-chart-line', 'access', 17),
-(17, 'ui_elements', 'ui', 'fad fa-tree', 'access', 18),
-(18, 'forms', 'forms', 'fad fa-edit', 'access', 20),
-(19, 'tables', 'tables', 'fad fa-table', 'access', 21),
-(21, 'mailbox', 'mailbox', 'fad fa-envelope-open', 'access', 23),
-(22, 'pages', 'pages', 'fad fa-book', 'access', 24),
-(23, 'extras', 'extras', 'fad fa-plus-square', 'access', 25),
-(25, 'profile', 'profile', 'fad fa-user', 'access', 20),
-(26, 'activity_log', 'activity', 'fad fa-flag-alt', 'access', 11),
-(27, 'nas_devices', 'nas', 'fad fa-server', 'access|add|delete', 2),
-(28, 'ip_pool', 'ip_pool', 'fad fa-dice-d12', 'access|add|edit|view|delete', 6),
-(29, 'profiles_components', 'profiles_components', 'fad fa-eye', 'add|view|access', 0);
+       (9, 'dashboard', 'dashboard', 'fad fa-tachometer-alt', 'view|index_1|index_2|index_3|access', 1),
+       (10, 'codeigniter_examples', 'example', 'fad fa-snowflake', 'access', 6),
+       (11, 'invoicing_system', 'invoices', 'fad fa-file-invoice-dollar', 'access', 9),
+       (12, 'database_joins_example', 'joins', 'fad fa-external-link-square', 'access', 7),
+       (13, 'language_setting', 'languages', 'fad fa-language', 'access|add', 14),
+       (14, 'locations', 'location', 'fad fa-map-pin', 'access', 11),
+       (15, 'widgets', 'widgets', 'fad fa-th', 'access', 19),
+       (16, 'charts', 'charts', 'fad fa-chart-line', 'access', 17),
+       (17, 'ui_elements', 'ui', 'fad fa-tree', 'access', 18),
+       (18, 'forms', 'forms', 'fad fa-edit', 'access', 20),
+       (19, 'tables', 'tables', 'fad fa-table', 'access', 21),
+       (21, 'mailbox', 'mailbox', 'fad fa-envelope-open', 'access', 23),
+       (22, 'pages', 'pages', 'fad fa-book', 'access', 24),
+       (23, 'extras', 'extras', 'fad fa-plus-square', 'access', 25),
+       (25, 'profile', 'profile', 'fad fa-user', 'access', 20),
+       (26, 'activity_log', 'activity', 'fad fa-flag-alt', 'access', 11),
+       (27, 'nas_devices', 'nas', 'fad fa-server', 'access|view|add|edit|delete', 2),
+       (28, 'ip_pool', 'ip_pool', 'fad fa-dice-d12', 'access|add|edit|view|delete', 6),
+       (29, 'profiles_components', 'profiles_components', 'fad fa-eye',
+        'access|view|profile_add|component_add|edit|delete', 0);
 
 -- --------------------------------------------------------
 
@@ -603,154 +563,186 @@ CREATE TABLE `ci_module_access`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_module_access`
---
-
-TRUNCATE TABLE `ci_module_access`;
---
 -- Dumping data for table `ci_module_access`
 --
 
 INSERT INTO `ci_module_access` (`id`, `admin_role_id`, `module`, `operation`)
-VALUES (1, 1, 'users', 'view'),
-       (2, 1, 'users', 'add'),
-       (3, 1, 'users', 'edit'),
-       (5, 1, 'users', 'access'),
-       (6, 1, 'users', 'change_status'),
-(7, 1, 'export', 'access'),
-(8, 1, 'general_settings', 'view'),
-(9, 1, 'general_settings', 'add'),
-(10, 1, 'general_settings', 'edit'),
-(11, 1, 'general_settings', 'access'),
-(27, 2, 'dashboard', 'access'),
-(34, 2, 'tables', 'access'),
-(35, 2, 'forms', 'access'),
-(36, 2, 'calendar', 'access'),
-(37, 2, 'mailbox', 'access'),
-(38, 2, 'pages', 'access'),
-(39, 2, 'extras', 'access'),
-(40, 2, 'ui', 'access'),
-(41, 2, 'charts', 'access'),
-(42, 2, 'widgets', 'access'),
-(43, 2, 'users', 'view'),
-(44, 2, 'users', 'add'),
-(45, 2, 'users', 'edit'),
-(46, 2, 'users', 'change_status'),
-(47, 2, 'users', 'access'),
-(48, 2, 'example', 'access'),
-(49, 2, 'joins', 'access'),
-(50, 2, 'invoices', 'access'),
-(51, 2, 'location', 'access'),
-(52, 2, 'activity', 'access'),
-(53, 2, 'export', 'access'),
-(54, 1, 'languages', 'access'),
-(55, 1, 'dashboard', 'view'),
-(56, 1, 'dashboard', 'index_2'),
-(57, 1, 'dashboard', 'index_3'),
-(58, 1, 'dashboard', 'access'),
-(59, 1, 'profile', 'access'),
-(60, 1, 'admin', 'view'),
-(61, 1, 'admin', 'change_status'),
-(62, 1, 'admin', 'add'),
-(63, 1, 'admin', 'access'),
-(64, 1, 'admin', 'edit'),
-(65, 1, 'admin', 'delete'),
-(66, 1, 'admin_roles', 'delete'),
-(67, 1, 'admin_roles', 'edit'),
-(68, 1, 'admin_roles', 'view'),
-(69, 1, 'admin_roles', 'change_status'),
-(70, 1, 'admin_roles', 'access'),
-(71, 1, 'admin_roles', 'add'),
-(72, 1, 'joins', 'access'),
-(73, 1, 'example', 'access'),
-(74, 1, 'invoices', 'access'),
-(75, 1, 'location', 'access'),
-(76, 1, 'activity', 'access'),
-(77, 1, 'charts', 'access'),
-(78, 1, 'ui', 'access'),
-(79, 1, 'widgets', 'access'),
-(80, 1, 'forms', 'access'),
-(81, 1, 'tables', 'access'),
-(82, 1, 'mailbox', 'access'),
-(84, 1, 'pages', 'access'),
-(85, 1, 'users', 'delete'),
-(91, 1, 'languages', 'add'),
-(95, 2, 'nas', 'access'),
-(96, 2, 'profile', 'access'),
-(100, 1, 'nas', 'access'),
-(102, 1, 'nas', 'add'),
-(103, 1, 'nas', 'delete'),
-(104, 1, 'ip_pool', 'add'),
-(105, 1, 'extras', 'access'),
-(106, 1, 'profiles_components', 'add'),
-(107, 1, 'profiles_components', 'view'),
-(108, 1, 'profiles_components', 'access');
+VALUES (36, 2, 'calendar', 'access'),
+       (113, 1, 'admin_roles', 'access'),
+       (115, 1, 'admin_roles', 'view'),
+       (116, 1, 'admin_roles', 'edit'),
+       (117, 1, 'admin_roles', 'add'),
+       (118, 1, 'admin_roles', 'delete'),
+       (119, 1, 'nas', 'access'),
+       (120, 1, 'nas', 'add'),
+       (122, 1, 'nas', 'edit'),
+       (123, 1, 'nas', 'delete'),
+       (125, 1, 'nas', 'view'),
+       (129, 1, 'admin', 'change_status'),
+       (130, 1, 'general_settings', 'access'),
+       (131, 1, 'general_settings', 'edit'),
+       (132, 1, 'general_settings', 'add'),
+       (133, 1, 'general_settings', 'view'),
+       (134, 1, 'profiles_components', 'access'),
+       (135, 1, 'profiles_components', 'view'),
+       (136, 1, 'profiles_components', 'edit'),
+       (137, 1, 'profiles_components', 'delete'),
+       (138, 1, 'admin_roles', 'change_status'),
+       (139, 1, 'dashboard', 'access'),
+       (140, 1, 'dashboard', 'view'),
+       (143, 1, 'dashboard', 'index_1'),
+       (144, 1, 'profiles_components', 'add'),
+       (145, 1, 'profiles_components', 'add_profile'),
+       (148, 1, 'profiles_components', 'component_add'),
+       (150, 1, 'profiles_components', 'profile_add'),
+       (151, 1, 'users', 'view'),
+       (152, 1, 'users', 'add'),
+       (153, 1, 'users', 'access'),
+       (154, 1, 'users', 'delete'),
+       (155, 1, 'users', 'edit'),
+       (156, 1, 'users', 'change_status'),
+       (160, 1, 'dashboard', 'index_3'),
+       (161, 1, 'dashboard', 'index_2'),
+       (162, 1, 'activity', 'access'),
+       (164, 1, 'admin', 'access'),
+       (165, 1, 'admin', 'add'),
+       (166, 1, 'admin', 'edit'),
+       (167, 1, 'admin', 'delete'),
+       (168, 1, 'admin', 'view');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_payments`
+-- Table structure for table `ci_payment`
 --
 
-CREATE TABLE `ci_payments` (
-                               `id` int(11) NOT NULL,
-                               `admin_id` int(11) NOT NULL,
-                               `user_id` int(11) NOT NULL,
-                               `company_id` int(11) NOT NULL,
-                               `invoice_no` varchar(30) NOT NULL,
-                               `txn_id` varchar(255) NOT NULL,
-                               `items_detail` longtext NOT NULL,
-                               `sub_total` decimal(10,2) NOT NULL,
-                               `total_tax` decimal(10,2) NOT NULL,
-                               `discount` decimal(10,2) NOT NULL,
-                               `grand_total` decimal(10,2) NOT NULL,
-                               `currency` varchar(20) NOT NULL,
-                               `payment_method` varchar(50) NOT NULL,
-                               `payment_status` varchar(30) NOT NULL,
-                               `client_note` longtext NOT NULL,
-                               `termsncondition` longtext NOT NULL,
-                               `due_date` date NOT NULL,
-                               `created_date` date NOT NULL,
-                               `updated_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_payment`
+(
+    `id`              int(11)        NOT NULL,
+    `admin_id`        int(11)        NOT NULL,
+    `user_id`         int(11)        NOT NULL,
+    `company_id`      int(11)        NOT NULL,
+    `invoice_no`      varchar(30)    NOT NULL,
+    `txn_id`          varchar(255)   NOT NULL,
+    `items_detail`    longtext       NOT NULL,
+    `sub_total`       decimal(10, 2) NOT NULL,
+    `total_tax`       decimal(10, 2) NOT NULL,
+    `discount`        decimal(10, 2) NOT NULL,
+    `grand_total`     decimal(10, 2) NOT NULL,
+    `currency`        varchar(20)    NOT NULL,
+    `payment_method`  varchar(50)    NOT NULL,
+    `payment_status`  varchar(30)    NOT NULL,
+    `client_note`     longtext       NOT NULL,
+    `termsncondition` longtext       NOT NULL,
+    `due_date`        date           NOT NULL,
+    `created_date`    date           NOT NULL,
+    `updated_date`    date DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_profiles`
+-- Table structure for table `ci_profile`
 --
 
-CREATE TABLE `ci_profiles` (
-                               `id` int(11) NOT NULL,
-                               `name` varchar(255) NOT NULL,
-                               `is_active` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `ci_profile`
+(
+    `id`        int(11)      NOT NULL,
+    `name`      varchar(255) NOT NULL,
+    `user_id`   int(11)               DEFAULT NULL,
+    `created`   datetime              DEFAULT NULL,
+    `modified`  datetime              DEFAULT NULL,
+    `is_active` tinyint(1)   NOT NULL DEFAULT 1
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+--
+-- Dumping data for table `ci_profile`
+--
+
+INSERT INTO `ci_profile` (`id`, `name`, `user_id`, `created`, `modified`, `is_active`)
+VALUES (1, 'Data Package 1M/1M', NULL, NULL, NULL, 1),
+       (3, 'Data Package 2M/2M', NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_profile_components`
+-- Table structure for table `ci_profile_component`
 --
 
-CREATE TABLE `ci_profile_components` (
-                                         `id` int(11) NOT NULL,
-                                         `name` varchar(255) NOT NULL,
-                                         `is_active` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `ci_profile_component`
+(
+    `id`        int(11)      NOT NULL,
+    `name`      varchar(255) NOT NULL,
+    `is_active` tinyint(1)   NOT NULL DEFAULT 1
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+--
+-- Dumping data for table `ci_profile_component`
+--
+
+INSERT INTO `ci_profile_component` (`id`, `name`, `is_active`)
+VALUES (5, 'BW-1MU-1MD', 1),
+       (6, 'BW-2MU-2MD', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_states`
+-- Table structure for table `ci_realm`
 --
 
-CREATE TABLE `ci_states` (
-                             `id` int(11) NOT NULL,
-                             `name` varchar(30) NOT NULL,
-                             `slug` varchar(255) NOT NULL,
-                             `country_id` int(11) NOT NULL DEFAULT 1,
-                             `status` tinyint(4) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_realm`
+(
+    `id`                     int(11)      NOT NULL,
+    `name`                   varchar(64)  NOT NULL DEFAULT '',
+    `available_to_siblings`  tinyint(1)   NOT NULL DEFAULT 1,
+    `icon_file_name`         varchar(128) NOT NULL DEFAULT 'logo.jpg',
+    `phone`                  varchar(14)  NOT NULL DEFAULT '',
+    `fax`                    varchar(14)  NOT NULL DEFAULT '',
+    `cell`                   varchar(14)  NOT NULL DEFAULT '',
+    `email`                  varchar(128) NOT NULL DEFAULT '',
+    `url`                    varchar(128) NOT NULL DEFAULT '',
+    `street_no`              char(10)     NOT NULL DEFAULT '',
+    `street`                 char(50)     NOT NULL DEFAULT '',
+    `town_suburb`            char(50)     NOT NULL DEFAULT '',
+    `city`                   char(50)     NOT NULL DEFAULT '',
+    `country`                char(50)     NOT NULL DEFAULT '',
+    `lat`                    double                DEFAULT NULL,
+    `lon`                    double                DEFAULT NULL,
+    `user_id`                int(11)               DEFAULT NULL,
+    `created`                datetime     NOT NULL,
+    `modified`               datetime     NOT NULL,
+    `twitter`                varchar(255) NOT NULL DEFAULT '',
+    `facebook`               varchar(255) NOT NULL DEFAULT '',
+    `youtube`                varchar(255) NOT NULL DEFAULT '',
+    `google_plus`            varchar(255) NOT NULL DEFAULT '',
+    `linkedin`               varchar(255) NOT NULL DEFAULT '',
+    `t_c_title`              varchar(255) NOT NULL DEFAULT '',
+    `t_c_content`            text         NOT NULL,
+    `suffix`                 char(200)    NOT NULL DEFAULT '',
+    `suffix_permanent_users` tinyint(1)   NOT NULL DEFAULT 0,
+    `suffix_vouchers`        tinyint(1)   NOT NULL DEFAULT 0,
+    `suffix_devices`         tinyint(1)   NOT NULL DEFAULT 0
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ci_state`
+--
+
+CREATE TABLE `ci_state`
+(
+    `id`         int(11)      NOT NULL,
+    `name`       varchar(30)  NOT NULL,
+    `slug`       varchar(255) NOT NULL,
+    `country_id` int(11)      NOT NULL DEFAULT 1,
+    `status`     tinyint(4)   NOT NULL DEFAULT 1
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -769,11 +761,6 @@ CREATE TABLE `ci_sub_module`
   DEFAULT CHARSET = utf8;
 
 --
--- Truncate table before insert `ci_sub_module`
---
-
-TRUNCATE TABLE `ci_sub_module`;
---
 -- Dumping data for table `ci_sub_module`
 --
 
@@ -783,161 +770,196 @@ VALUES (2, 2, 'module_setting', 'module', 1),
        (4, 1, 'add_new_admin', 'add', 2),
        (6, 1, 'admin_list', '', 1),
        (26, 9, 'dashboard_v1', '', 1),
-(27, 9, 'dashboard_v2', 'index_2', 2),
-(28, 9, 'dashboard_v3', 'index_3', 3),
-(30, 3, 'users_list', '', 1),
-(31, 3, 'add_new_user', 'add', 2),
-(32, 10, 'simple_datatable', 'simple_datatable', 1),
-(33, 10, 'ajax_datatable', 'ajax_datatable', 2),
-(34, 10, 'pagination', 'pagination', 3),
-(35, 10, 'advance_search', 'advance_search', 4),
-(36, 10, 'file_upload', 'file_upload', 5),
-(37, 11, 'invoice_list', '', 1),
-(38, 11, 'add_new_invoice', 'add', 2),
-(39, 12, 'serverside_join', '', 1),
-(40, 12, 'simple_join', 'simple', 2),
-(41, 14, 'country', '', 1),
-(42, 14, 'state', 'state', 2),
-(43, 14, 'city', 'city', 3),
-(44, 16, 'charts_js', 'chartjs', 1),
-(45, 16, 'charts_flot', 'flot', 2),
-(46, 16, 'charts_inline', 'inline', 3),
-(47, 17, 'general', 'general', 1),
-(48, 17, 'icons', 'icons', 2),
-(49, 17, 'buttons', 'buttons', 3),
-(50, 18, 'general_elements', 'general', 1),
-(51, 18, 'advanced_elements', 'advanced', 2),
-(52, 18, 'editors', 'editors', 3),
-(53, 19, 'simple_tables', 'simple', 1),
-(54, 19, 'data_tables', 'data', 2),
-(55, 21, 'inbox', 'inbox', 1),
-(56, 21, 'compose', 'compose', 2),
-(57, 21, 'read', 'read_mail', 3),
-(58, 22, 'invoice', 'invoice', 1),
-(59, 22, 'profile', 'profile', 2),
-(60, 22, 'login', 'login', 3),
-(61, 22, 'register', 'register', 4),
-(62, 22, 'lock_screen', 'Lockscreen', 4),
-(63, 23, 'error_404', 'error404', 1),
-(64, 23, 'error_500', 'error500', 2),
-(65, 23, 'blank_page', 'blank', 3),
-(66, 23, 'starter_page', 'starter', 4),
-(67, 8, 'general_settings', '', 1),
-(68, 8, 'email_template_settings', 'email_templates', 2),
-(69, 25, 'view_profile', '', 1),
-(70, 25, 'change_password', 'change_pwd', 2),
-(71, 10, 'multiple_files_upload', 'multi_file_upload', 6),
-(72, 10, 'dynamic_charts', 'charts', 7),
-(73, 10, 'locations', 'locations', 8),
-(76, 9, 'dashboard_test', 'index_1', 4),
-(77, 8, 'system_status', 'system_status', 0);
+       (27, 9, 'dashboard_v2', 'index_2', 2),
+       (28, 9, 'dashboard_v3', 'index_3', 3),
+       (30, 3, 'users_list', '', 1),
+       (31, 3, 'add_new_user', 'add', 2),
+       (32, 10, 'simple_datatable', 'simple_datatable', 1),
+       (33, 10, 'ajax_datatable', 'ajax_datatable', 2),
+       (34, 10, 'pagination', 'pagination', 3),
+       (35, 10, 'advance_search', 'advance_search', 4),
+       (36, 10, 'file_upload', 'file_upload', 5),
+       (37, 11, 'invoice_list', '', 1),
+       (38, 11, 'add_new_invoice', 'add', 2),
+       (39, 12, 'serverside_join', '', 1),
+       (40, 12, 'simple_join', 'simple', 2),
+       (41, 14, 'country', '', 1),
+       (42, 14, 'state', 'state', 2),
+       (43, 14, 'city', 'city', 3),
+       (44, 16, 'charts_js', 'chartjs', 1),
+       (45, 16, 'charts_flot', 'flot', 2),
+       (46, 16, 'charts_inline', 'inline', 3),
+       (47, 17, 'general', 'general', 1),
+       (48, 17, 'icons', 'icons', 2),
+       (49, 17, 'buttons', 'buttons', 3),
+       (50, 18, 'general_elements', 'general', 1),
+       (51, 18, 'advanced_elements', 'advanced', 2),
+       (52, 18, 'editors', 'editors', 3),
+       (53, 19, 'simple_tables', 'simple', 1),
+       (54, 19, 'data_tables', 'data', 2),
+       (55, 21, 'inbox', 'inbox', 1),
+       (56, 21, 'compose', 'compose', 2),
+       (57, 21, 'read', 'read_mail', 3),
+       (58, 22, 'invoice', 'invoice', 1),
+       (59, 22, 'profile', 'profile', 2),
+       (60, 22, 'login', 'login', 3),
+       (61, 22, 'register', 'register', 4),
+       (62, 22, 'lock_screen', 'Lockscreen', 4),
+       (63, 23, 'error_404', 'error404', 1),
+       (64, 23, 'error_500', 'error500', 2),
+       (65, 23, 'blank_page', 'blank', 3),
+       (66, 23, 'starter_page', 'starter', 4),
+       (67, 8, 'general_settings', '', 1),
+       (68, 8, 'email_template_settings', 'email_templates', 2),
+       (69, 25, 'view_profile', '', 1),
+       (70, 25, 'change_password', 'change_pwd', 2),
+       (71, 10, 'multiple_files_upload', 'multi_file_upload', 6),
+       (72, 10, 'dynamic_charts', 'charts', 7),
+       (73, 10, 'locations', 'locations', 8),
+       (76, 9, 'dashboard_test', 'index_1', 4),
+       (77, 8, 'system_status', 'system_status', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_uploaded_files`
+-- Table structure for table `ci_uploaded_file`
 --
 
-CREATE TABLE `ci_uploaded_files` (
-                                     `id` int(11) NOT NULL,
-                                     `name` varchar(225) NOT NULL,
-                                     `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_uploaded_file`
+(
+    `id`         int(11)      NOT NULL,
+    `name`       varchar(225) NOT NULL,
+    `created_at` datetime     NOT NULL DEFAULT current_timestamp()
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_users`
+-- Table structure for table `ci_user`
 --
 
-CREATE TABLE `ci_users` (
-                            `id` int(11) NOT NULL,
-                            `username` varchar(50) NOT NULL,
-                            `account_code` varchar(255) DEFAULT NULL,
-                            `firstname` varchar(30) NOT NULL,
-                            `lastname` varchar(30) NOT NULL,
-                            `email` varchar(50) NOT NULL,
-                            `mobile_no` varchar(30) NOT NULL,
-                            `password` varchar(255) NOT NULL,
-                            `address` varchar(255) NOT NULL,
-                            `role` tinyint(4) NOT NULL DEFAULT 1,
-                            `is_active` tinyint(4) NOT NULL DEFAULT 1,
-                            `is_verify` tinyint(4) NOT NULL DEFAULT 0,
-                            `is_admin` tinyint(4) NOT NULL DEFAULT 0,
-                            `token` varchar(255) NOT NULL,
-                            `password_reset_code` varchar(255) NOT NULL,
-                            `last_ip` varchar(30) NOT NULL,
-                            `created_at` datetime NOT NULL,
-                            `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `ci_user`
+(
+    `id`                  int(11)      NOT NULL,
+    `username`            varchar(255) NOT NULL,
+    `password`            varchar(50)  NOT NULL,
+    `token`               char(36)              DEFAULT NULL,
+    `name`                varchar(50)  NOT NULL,
+    `surname`             varchar(50)  NOT NULL,
+    `address`             varchar(255) NOT NULL,
+    `phone`               varchar(50)  NOT NULL,
+    `email`               varchar(100) NOT NULL,
+    `auth_type`           varchar(128) NOT NULL DEFAULT 'sql',
+    `active`              tinyint(1)   NOT NULL DEFAULT 0,
+    `last_accept_time`    datetime              DEFAULT NULL,
+    `last_reject_time`    datetime              DEFAULT NULL,
+    `last_accept_nas`     varchar(128)          DEFAULT NULL,
+    `last_reject_nas`     varchar(128)          DEFAULT NULL,
+    `last_reject_message` varchar(255)          DEFAULT NULL,
+    `perc_time_used`      int(6)                DEFAULT NULL,
+    `perc_data_used`      int(6)                DEFAULT NULL,
+    `data_used`           bigint(20)            DEFAULT NULL,
+    `data_cap`            bigint(20)            DEFAULT NULL,
+    `time_used`           int(12)               DEFAULT NULL,
+    `time_cap`            int(12)               DEFAULT NULL,
+    `time_cap_type`       enum ('hard','soft')  DEFAULT 'soft',
+    `data_cap_type`       enum ('hard','soft')  DEFAULT 'soft',
+    `realm`               varchar(50)  NOT NULL DEFAULT '',
+    `realm_id`            int(11)               DEFAULT NULL,
+    `profile`             varchar(50)  NOT NULL DEFAULT '',
+    `profile_id`          int(11)               DEFAULT NULL,
+    `from_date`           datetime              DEFAULT NULL,
+    `to_date`             datetime              DEFAULT NULL,
+    `track_auth`          tinyint(1)   NOT NULL DEFAULT 0,
+    `track_acct`          tinyint(1)   NOT NULL DEFAULT 1,
+    `static_ip`           varchar(50)  NOT NULL DEFAULT '',
+    `extra_name`          varchar(100) NOT NULL DEFAULT '',
+    `extra_value`         varchar(100) NOT NULL DEFAULT '',
+    `country_id`          int(11)               DEFAULT NULL,
+    `language_id`         int(11)               DEFAULT NULL,
+    `user_id`             int(11)               DEFAULT NULL,
+    `created`             datetime     NOT NULL,
+    `modified`            datetime     NOT NULL,
+    `account_code`        varchar(255)          DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `data_accounts`
+-- Table structure for table `data_account`
 --
 
-CREATE TABLE `data_accounts` (
-                                 `id` int(11) NOT NULL,
-                                 `profileid` int(11) DEFAULT NULL,
-                                 `username` varchar(128) NOT NULL,
-                                 `password` varchar(128) NOT NULL,
-                                 `staticip` varchar(24) DEFAULT NULL,
-                                 `startdate` datetime DEFAULT NULL,
-                                 `enddate` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `data_account`
+(
+    `id`        int(11)      NOT NULL,
+    `profileid` int(11)     DEFAULT NULL,
+    `username`  varchar(128) NOT NULL,
+    `password`  varchar(128) NOT NULL,
+    `staticip`  varchar(24) DEFAULT NULL,
+    `startdate` datetime    DEFAULT NULL,
+    `enddate`   datetime    DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `data_accounts_stats`
+-- Table structure for table `data_account_stat`
 --
 
-CREATE TABLE `data_accounts_stats` (
-                                       `id` int(11) NOT NULL,
-                                       `radacct_id` int(11) NOT NULL,
-                                       `username` varchar(64) NOT NULL DEFAULT '',
-                                       `realmid` int(11) DEFAULT NULL,
-                                       `nasipaddress` varchar(15) NOT NULL DEFAULT '',
-                                       `nasidentifier` varchar(64) DEFAULT NULL,
-                                       `framedipaddress` varchar(15) NOT NULL DEFAULT '',
-                                       `calledstationid` varchar(64) DEFAULT NULL,
-                                       `callingstationid` varchar(50) NOT NULL DEFAULT '',
-                                       `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-                                       `acctinputoctets` bigint(20) NOT NULL,
-                                       `acctoutputoctets` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `data_account_stat`
+(
+    `id`               int(11)     NOT NULL,
+    `radacct_id`       int(11)     NOT NULL,
+    `realm_id`         int(11)              DEFAULT NULL,
+    `username`         varchar(64) NOT NULL DEFAULT '',
+    `nasipaddress`     varchar(15) NOT NULL DEFAULT '',
+    `nasidentifier`    varchar(64)          DEFAULT NULL,
+    `framedipaddress`  varchar(15) NOT NULL DEFAULT '',
+    `calledstationid`  varchar(64)          DEFAULT NULL,
+    `callingstationid` varchar(50) NOT NULL DEFAULT '',
+    `timestamp`        timestamp   NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+    `acctinputoctets`  bigint(20)  NOT NULL,
+    `acctoutputoctets` bigint(20)  NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_radippool_data_accounts`
+-- Table structure for table `link_radippool_data_account`
 --
 
-CREATE TABLE `link_radippool_data_accounts` (
-                                                `id` int(11) NOT NULL,
-                                                `ippool_id` int(11) DEFAULT NULL,
-                                                `ppp_id` int(11) DEFAULT NULL,
-                                                `type` enum('static','dynamic','','') NOT NULL DEFAULT 'dynamic',
-                                                `start_date` datetime NOT NULL DEFAULT current_timestamp(),
-                                                `end_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `link_radippool_data_account`
+(
+    `id`         int(11)                         NOT NULL,
+    `ippool_id`  int(11)                                  DEFAULT NULL,
+    `ppp_id`     int(11)                                  DEFAULT NULL,
+    `type`       enum ('static','dynamic','','') NOT NULL DEFAULT 'dynamic',
+    `start_date` datetime                        NOT NULL DEFAULT current_timestamp(),
+    `end_date`   datetime                                 DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `link_users_data_accounts`
+-- Table structure for table `link_user_data_account`
 --
 
-CREATE TABLE `link_users_data_accounts` (
-                                            `id` int(11) NOT NULL,
-                                            `user_id` int(11) DEFAULT NULL,
-                                            `ppp_id` int(11) DEFAULT NULL,
-                                            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-                                            `is_active` tinyint(1) NOT NULL DEFAULT 1,
-                                            `start_date` datetime DEFAULT current_timestamp(),
-                                            `end_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `link_user_data_account`
+(
+    `id`         int(11)    NOT NULL,
+    `user_id`    int(11)             DEFAULT NULL,
+    `ppp_id`     int(11)             DEFAULT NULL,
+    `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+    `is_active`  tinyint(1) NOT NULL DEFAULT 1,
+    `start_date` datetime            DEFAULT current_timestamp(),
+    `end_date`   datetime            DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -945,58 +967,67 @@ CREATE TABLE `link_users_data_accounts` (
 -- Table structure for table `radacct`
 --
 
-CREATE TABLE `radacct` (
-                           `radacctid` bigint(21) NOT NULL,
-                           `acctsessionid` varchar(64) NOT NULL DEFAULT '',
-                           `acctuniqueid` varchar(32) NOT NULL DEFAULT '',
-                           `username` varchar(64) NOT NULL DEFAULT '',
-                           `groupname` varchar(64) NOT NULL DEFAULT '',
-                           `realm` varchar(64) DEFAULT '',
-                           `nasipaddress` varchar(15) NOT NULL DEFAULT '',
-                           `nasportid` varchar(100) DEFAULT NULL,
-                           `nasporttype` varchar(32) DEFAULT NULL,
-                           `acctstarttime` datetime DEFAULT NULL,
-                           `acctupdatetime` datetime DEFAULT NULL,
-                           `acctstoptime` datetime DEFAULT NULL,
-                           `acctinterval` int(12) DEFAULT NULL,
-                           `acctsessiontime` int(12) UNSIGNED DEFAULT NULL,
-                           `acctauthentic` varchar(32) DEFAULT NULL,
-                           `connectinfo_start` varchar(50) DEFAULT NULL,
-                           `connectinfo_stop` varchar(50) DEFAULT NULL,
-                           `acctinputoctets` bigint(20) DEFAULT NULL,
-                           `acctoutputoctets` bigint(20) DEFAULT NULL,
-                           `calledstationid` varchar(50) NOT NULL DEFAULT '',
-                           `callingstationid` varchar(50) NOT NULL DEFAULT '',
-                           `acctterminatecause` varchar(32) NOT NULL DEFAULT '',
-                           `servicetype` varchar(32) DEFAULT NULL,
-                           `framedprotocol` varchar(32) DEFAULT NULL,
-                           `framedipaddress` varchar(15) NOT NULL DEFAULT '',
-                           `framedipv6address` varchar(45) NOT NULL DEFAULT '',
-                           `framedipv6prefix` varchar(45) NOT NULL DEFAULT '',
-                           `framedinterfaceid` varchar(44) NOT NULL DEFAULT '',
-                           `delegatedipv6prefix` varchar(45) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radacct`
+(
+    `radacctid`           bigint(21)  NOT NULL,
+    `acctsessionid`       varchar(64) NOT NULL DEFAULT '',
+    `acctuniqueid`        varchar(32) NOT NULL DEFAULT '',
+    `username`            varchar(64) NOT NULL DEFAULT '',
+    `groupname`           varchar(64) NOT NULL DEFAULT '',
+    `realm`               varchar(64)          DEFAULT '',
+    `nasipaddress`        varchar(15) NOT NULL DEFAULT '',
+    `nasportid`           varchar(100)         DEFAULT NULL,
+    `nasporttype`         varchar(32)          DEFAULT NULL,
+    `acctstarttime`       datetime             DEFAULT NULL,
+    `acctupdatetime`      datetime             DEFAULT NULL,
+    `acctstoptime`        datetime             DEFAULT NULL,
+    `acctinterval`        int(12)              DEFAULT NULL,
+    `acctsessiontime`     int(12) UNSIGNED     DEFAULT NULL,
+    `acctauthentic`       varchar(32)          DEFAULT NULL,
+    `connectinfo_start`   varchar(50)          DEFAULT NULL,
+    `connectinfo_stop`    varchar(50)          DEFAULT NULL,
+    `acctinputoctets`     bigint(20)           DEFAULT NULL,
+    `acctoutputoctets`    bigint(20)           DEFAULT NULL,
+    `calledstationid`     varchar(50) NOT NULL DEFAULT '',
+    `callingstationid`    varchar(50) NOT NULL DEFAULT '',
+    `acctterminatecause`  varchar(32) NOT NULL DEFAULT '',
+    `servicetype`         varchar(32)          DEFAULT NULL,
+    `framedprotocol`      varchar(32)          DEFAULT NULL,
+    `framedipaddress`     varchar(15) NOT NULL DEFAULT '',
+    `framedipv6address`   varchar(45) NOT NULL DEFAULT '',
+    `framedipv6prefix`    varchar(45) NOT NULL DEFAULT '',
+    `framedinterfaceid`   varchar(44) NOT NULL DEFAULT '',
+    `delegatedipv6prefix` varchar(45) NOT NULL DEFAULT ''
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 --
 -- Triggers `radacct`
 --
 DELIMITER $$
-CREATE TRIGGER `radacct_after_update_add_data_accounts_stats` AFTER UPDATE ON `radacct` FOR EACH ROW BEGIN
+CREATE TRIGGER `radacct_after_update_add_data_accounts_stats`
+    AFTER UPDATE
+    ON `radacct`
+    FOR EACH ROW
+BEGIN
     INSERT INTO data_accounts_stats
-    SET
-        radacct_id        = OLD.radacctid,
-        username          = OLD.username,
-        realmid           = OLD.realm,
-        nasipaddress      = OLD.nasipaddress,
-        framedipaddress   = OLD.framedipaddress,
-        callingstationid  = OLD.callingstationid,
-        acctinputoctets   = (NEW.acctinputoctets - OLD.acctinputoctets),
-        acctoutputoctets  = (NEW.acctoutputoctets - OLD.acctoutputoctets);
+    SET radacct_id       = OLD.radacctid,
+        username         = OLD.username,
+        realmid          = OLD.realm,
+        nasipaddress     = OLD.nasipaddress,
+        framedipaddress  = OLD.framedipaddress,
+        callingstationid = OLD.callingstationid,
+        acctinputoctets  = (NEW.acctinputoctets - OLD.acctinputoctets),
+        acctoutputoctets = (NEW.acctoutputoctets - OLD.acctoutputoctets);
 END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `radacct_before_insert_check_username_exists` BEFORE INSERT ON `radacct` FOR EACH ROW BEGIN
+CREATE TRIGGER `radacct_before_insert_check_username_exists`
+    BEFORE INSERT
+    ON `radacct`
+    FOR EACH ROW
+BEGIN
     IF NEW.username NOT IN (
         SELECT A.username
         FROM data_accounts A
@@ -1008,7 +1039,11 @@ END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `radacct_clean_string` BEFORE INSERT ON `radacct` FOR EACH ROW BEGIN
+CREATE TRIGGER `radacct_clean_string`
+    BEFORE INSERT
+    ON `radacct`
+    FOR EACH ROW
+BEGIN
     SET NEW.nasportid = REPLACE(NEW.nasportid, "=3D28", "[");
     SET NEW.nasportid = REPLACE(NEW.nasportid, "=3D29", "]");
 END
@@ -1021,13 +1056,15 @@ DELIMITER ;
 -- Table structure for table `radcheck`
 --
 
-CREATE TABLE `radcheck` (
-                            `id` int(11) UNSIGNED NOT NULL,
-                            `username` varchar(64) NOT NULL DEFAULT '',
-                            `attribute` varchar(64) NOT NULL DEFAULT '',
-                            `op` char(2) NOT NULL DEFAULT '==',
-                            `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radcheck`
+(
+    `id`        int(11) UNSIGNED NOT NULL,
+    `username`  varchar(64)      NOT NULL DEFAULT '',
+    `attribute` varchar(64)      NOT NULL DEFAULT '',
+    `op`        char(2)          NOT NULL DEFAULT '==',
+    `value`     varchar(253)     NOT NULL DEFAULT ''
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -1035,25 +1072,21 @@ CREATE TABLE `radcheck` (
 -- Table structure for table `raddictionary`
 --
 
-CREATE TABLE `raddictionary` (
-                                 `id`                  int(10) NOT NULL,
-                                 `type`                varchar(30)  DEFAULT NULL,
-                                 `attribute`           varchar(64)  DEFAULT NULL,
-                                 `value`               varchar(64)  DEFAULT NULL,
-                                 `format`              varchar(20)  DEFAULT NULL,
-                                 `vendor`              varchar(32)  DEFAULT NULL,
-                                 `recommended_op`      varchar(32)  DEFAULT NULL,
-                                 `recommended_table`   varchar(32)  DEFAULT NULL,
-                                 `recommended_helper`  varchar(32)  DEFAULT NULL,
-                                 `recommended_tooltip` varchar(512) DEFAULT NULL
+CREATE TABLE `raddictionary`
+(
+    `id`                  int(10) NOT NULL,
+    `type`                varchar(30)  DEFAULT NULL,
+    `attribute`           varchar(64)  DEFAULT NULL,
+    `value`               varchar(64)  DEFAULT NULL,
+    `format`              varchar(20)  DEFAULT NULL,
+    `vendor`              varchar(32)  DEFAULT NULL,
+    `recommended_op`      varchar(32)  DEFAULT NULL,
+    `recommended_table`   varchar(32)  DEFAULT NULL,
+    `recommended_helper`  varchar(32)  DEFAULT NULL,
+    `recommended_tooltip` varchar(512) DEFAULT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
---
--- Truncate table before insert `raddictionary`
---
-
-TRUNCATE TABLE `raddictionary`;
 --
 -- Dumping data for table `raddictionary`
 --
@@ -10873,12 +10906,13 @@ VALUES (9655, 'tlv', 'WiMAX-PPAQ', NULL, NULL, 'dictionary.wimax.wichorus', NULL
 
 CREATE TABLE `radgroupcheck`
 (
-    `id`                                     int(11) UNSIGNED NOT NULL,
-    `groupname`                              varchar(64)      NOT NULL DEFAULT '',
-                                 `attribute` varchar(64) NOT NULL DEFAULT '',
-                                 `op` char(2) NOT NULL DEFAULT '==',
-                                 `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    `id`        int(11) UNSIGNED NOT NULL,
+    `groupname` varchar(64)      NOT NULL DEFAULT '',
+    `attribute` varchar(64)      NOT NULL DEFAULT '',
+    `op`        char(2)          NOT NULL DEFAULT '==',
+    `value`     varchar(253)     NOT NULL DEFAULT ''
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -10886,13 +10920,25 @@ CREATE TABLE `radgroupcheck`
 -- Table structure for table `radgroupreply`
 --
 
-CREATE TABLE `radgroupreply` (
-                                 `id` int(11) UNSIGNED NOT NULL,
-                                 `groupname` varchar(64) NOT NULL DEFAULT '',
-                                 `attribute` varchar(64) NOT NULL DEFAULT '',
-                                 `op` char(2) NOT NULL DEFAULT '=',
-                                 `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radgroupreply`
+(
+    `id`        int(11) UNSIGNED NOT NULL,
+    `groupname` varchar(64)      NOT NULL DEFAULT '',
+    `attribute` varchar(64)      NOT NULL DEFAULT '',
+    `op`        char(2)          NOT NULL DEFAULT '=',
+    `value`     varchar(253)     NOT NULL DEFAULT ''
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+--
+-- Dumping data for table `radgroupreply`
+--
+
+INSERT INTO `radgroupreply` (`id`, `groupname`, `attribute`, `op`, `value`)
+VALUES (3, 'BW-1MU-1MD', 'Mikrotik-Rate-Limit', ':=', '1M/1M'),
+       (4, 'BW-1MU-1MD', 'Fall-Through', ':=', 'yes'),
+       (5, 'BW-2MU-2MD', 'Mikrotik-Rate-Limit', ':=', '2M/2M'),
+       (6, 'BW-2MU-2MD', 'Fall-Through', ':=', 'yes');
 
 -- --------------------------------------------------------
 
@@ -10900,23 +10946,50 @@ CREATE TABLE `radgroupreply` (
 -- Table structure for table `radippool`
 --
 
-CREATE TABLE `radippool` (
-                             `id` int(11) UNSIGNED NOT NULL,
-                             `pool_name` varchar(30) NOT NULL,
-                             `framedipaddress` varchar(15) NOT NULL DEFAULT '',
-                             `nasipaddress` varchar(15) NOT NULL DEFAULT '',
-                             `calledstationid` varchar(30) NOT NULL,
-                             `callingstationid` varchar(30) NOT NULL,
-                             `expiry_time` datetime DEFAULT NULL,
-                             `username` varchar(64) DEFAULT NULL,
-                             `pool_key` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radippool`
+(
+    `id`               int(11) UNSIGNED NOT NULL,
+    `pool_name`        varchar(30)      NOT NULL,
+    `framedipaddress`  varchar(15)      NOT NULL DEFAULT '',
+    `nasipaddress`     varchar(15)      NOT NULL DEFAULT '',
+    `calledstationid`  varchar(30)      NOT NULL,
+    `callingstationid` varchar(30)      NOT NULL,
+    `expiry_time`      datetime                  DEFAULT NULL,
+    `username`         varchar(64)               DEFAULT NULL,
+    `pool_key`         varchar(30)      NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+--
+-- Dumping data for table `radippool`
+--
+
+INSERT INTO `radippool` (`id`, `pool_name`, `framedipaddress`, `nasipaddress`, `calledstationid`, `callingstationid`,
+                         `expiry_time`, `username`, `pool_key`)
+VALUES (1, 'Main Pool', '172.20.11.1', '', '', '', NULL, NULL, ''),
+       (2, 'Main Pool', '172.20.11.2', '', '', '', NULL, NULL, ''),
+       (3, 'Main Pool', '172.20.11.3', '', '', '', NULL, NULL, ''),
+       (4, 'Main Pool', '172.20.11.4', '', '', '', NULL, NULL, ''),
+       (5, 'Main Pool', '172.20.11.5', '', '', '', NULL, NULL, ''),
+       (6, 'Main Pool', '172.20.11.6', '', '', '', NULL, NULL, ''),
+       (7, 'Main Pool', '172.20.11.7', '', '', '', NULL, NULL, ''),
+       (8, 'Main Pool', '172.20.11.8', '', '', '', NULL, NULL, ''),
+       (9, 'Main Pool', '172.20.11.9', '', '', '', NULL, NULL, ''),
+       (10, 'Main Pool', '172.20.11.10', '', '', '', NULL, NULL, ''),
+       (11, 'Main Pool', '172.20.11.11', '', '', '', NULL, NULL, ''),
+       (12, 'Main Pool', '172.20.11.12', '', '', '', NULL, NULL, ''),
+       (13, 'Main Pool', '172.20.11.13', '', '', '', NULL, NULL, ''),
+       (14, 'Main Pool', '172.20.11.14', '', '', '', NULL, NULL, '');
 
 --
 -- Triggers `radippool`
 --
 DELIMITER $$
-CREATE TRIGGER `link_radippool_data_accounts` AFTER UPDATE ON `radippool` FOR EACH ROW BEGIN
+CREATE TRIGGER `link_radippool_data_accounts`
+    AFTER UPDATE
+    ON `radippool`
+    FOR EACH ROW
+BEGIN
     DECLARE type VARCHAR(10);
 
 /* CHECK TYPE */
@@ -10926,9 +10999,14 @@ CREATE TRIGGER `link_radippool_data_accounts` AFTER UPDATE ON `radippool` FOR EA
         SET type = 'dynamic';
     END IF;
 
-    IF (SELECT count(*) FROM link_radippool_data_accounts WHERE link_radippool_data_accounts.ippool_id= OLD.id AND link_radippool_data_accounts.end_date IS NULL) = 1
+    IF (SELECT count(*)
+        FROM link_radippool_data_accounts
+        WHERE link_radippool_data_accounts.ippool_id = OLD.id
+          AND link_radippool_data_accounts.end_date IS NULL) = 1
     THEN
-        UPDATE link_radippool_data_accounts SET link_radippool_data_accounts.end_date= CURRENT_TIMESTAMP WHERE link_radippool_data_accounts.ippool_id=OLD.id;
+        UPDATE link_radippool_data_accounts
+        SET link_radippool_data_accounts.end_date= CURRENT_TIMESTAMP
+        WHERE link_radippool_data_accounts.ippool_id = OLD.id;
         /*ELSE
         INSERT INTO tbl2 (stn) VALUES (NEW.stn);*/
     END IF;
@@ -10942,12 +11020,11 @@ CREATE TRIGGER `link_radippool_data_accounts` AFTER UPDATE ON `radippool` FOR EA
 /* INSERT NEW RECORD */
     IF (SELECT A.id FROM data_accounts A WHERE (NEW.username = A.username)) IS NOT NULL THEN
         INSERT INTO link_radippool_data_accounts
-        SET
-            link_radippool_data_accounts.ippool_id = OLD.id,
-            link_radippool_data_accounts.ppp_id = (SELECT A.id
-                                                   FROM data_accounts A
-                                                   WHERE (NEW.username = A.username)),
-            link_radippool_data_accounts.type = type;
+        SET link_radippool_data_accounts.ippool_id = OLD.id,
+            link_radippool_data_accounts.ppp_id    = (SELECT A.id
+                                                      FROM data_accounts A
+                                                      WHERE (NEW.username = A.username)),
+            link_radippool_data_accounts.type      = type;
     END IF;
 END
 $$
@@ -10959,44 +11036,70 @@ DELIMITER ;
 -- Table structure for table `radnas`
 --
 
-CREATE TABLE `radnas` (
-                          `id` int(10) NOT NULL,
-                          `nasname` varchar(128) DEFAULT NULL,
-                          `shortname` varchar(32) DEFAULT NULL,
-                          `nasidentifier` varchar(64) DEFAULT NULL,
-                          `type` varchar(30) DEFAULT 'other',
-                          `ports` int(5) DEFAULT 3799,
-                          `secret` varchar(60) NOT NULL DEFAULT 'secret',
-                          `server` varchar(64) DEFAULT NULL,
-                          `community` varchar(50) DEFAULT NULL,
-                          `description` varchar(200) DEFAULT 'RADIUS Client',
-                          `connection_type` enum('direct','openvpn','pptp','dynamic') NOT NULL DEFAULT 'direct',
-                          `record_auth` tinyint(1) NOT NULL DEFAULT 0,
-                          `ignore_acct` tinyint(1) NOT NULL DEFAULT 0,
-                          `monitor` tinyint(1) NOT NULL DEFAULT 0,
-                          `last_contact` datetime DEFAULT NULL,
-                          `session_auto_close` tinyint(1) NOT NULL DEFAULT 0,
-                          `session_dead_time` int(5) NOT NULL DEFAULT 3600,
-                          `on_public_maps` tinyint(1) NOT NULL DEFAULT 0,
-                          `lat` double DEFAULT NULL,
-                          `lon` double DEFAULT NULL,
-                          `photo_file_name` varchar(128) DEFAULT NULL,
-                          `user_id` int(11) DEFAULT NULL,
-                          `created` datetime DEFAULT NULL,
-                          `modified` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radnas`
+(
+    `id`                 int(10)                                    NOT NULL,
+    `nasname`            varchar(128)                                        DEFAULT NULL,
+    `shortname`          varchar(32)                                         DEFAULT NULL,
+    `nasidentifier`      varchar(64)                                         DEFAULT NULL,
+    `type`               varchar(30)                                         DEFAULT 'other',
+    `ports`              int(5)                                              DEFAULT 3799,
+    `secret`             varchar(60)                                NOT NULL DEFAULT 'secret',
+    `server`             varchar(64)                                         DEFAULT NULL,
+    `community`          varchar(50)                                         DEFAULT NULL,
+    `description`        varchar(200)                                        DEFAULT 'RADIUS Client',
+    `connection_type`    enum ('direct','openvpn','pptp','dynamic') NOT NULL DEFAULT 'direct',
+    `record_auth`        tinyint(1)                                 NOT NULL DEFAULT 0,
+    `ignore_acct`        tinyint(1)                                 NOT NULL DEFAULT 0,
+    `monitor`            tinyint(1)                                 NOT NULL DEFAULT 0,
+    `last_contact`       datetime                                            DEFAULT NULL,
+    `session_auto_close` tinyint(1)                                 NOT NULL DEFAULT 0,
+    `session_dead_time`  int(5)                                     NOT NULL DEFAULT 3600,
+    `on_public_maps`     tinyint(1)                                 NOT NULL DEFAULT 0,
+    `lat`                double                                              DEFAULT NULL,
+    `lon`                double                                              DEFAULT NULL,
+    `photo_file_name`    varchar(128)                                        DEFAULT NULL,
+    `user_id`            int(11)                                             DEFAULT NULL,
+    `created`            datetime                                            DEFAULT NULL,
+    `modified`           datetime                                            DEFAULT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+--
+-- Dumping data for table `radnas`
+--
+
+INSERT INTO `radnas` (`id`, `nasname`, `shortname`, `nasidentifier`, `type`, `ports`, `secret`, `server`, `community`,
+                      `description`, `connection_type`, `record_auth`, `ignore_acct`, `monitor`, `last_contact`,
+                      `session_auto_close`, `session_dead_time`, `on_public_maps`, `lat`, `lon`, `photo_file_name`,
+                      `user_id`, `created`, `modified`)
+VALUES (1, '100.99.1.255', 'Core 1', 'CORE ONE', 'Mikrotik', 3799, '$FREERADIUS_SECRET', NULL, 'public',
+        'RADIUS Client', 'direct', 0, 0, 0, NULL, 0, 3600, 0, NULL, NULL, NULL, NULL, '2021-02-23 21:48:21', NULL),
+       (3, '100.99.2.255', 'Core 2', 'CORE TWO', 'mikrotik', 3799, 'testing123', NULL, 'public',
+        'RADIUS Client', 'direct', 0, 0, 0, NULL, 0, 3600, 0, NULL, NULL, NULL, NULL, '2021-05-14 12:20:27', NULL),
+       (4, '100.99.3.255', 'Core 3', 'CORE THREE', 'mikrotik', 3799, 'testing123', NULL, 'public',
+        'RADIUS Client', 'direct', 0, 0, 0, NULL, 0, 3600, 0, NULL, NULL, NULL, NULL, '2021-05-14 12:20:54', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `radnas_pool_names`
+-- Table structure for table `radnas_pool_name`
 --
 
-CREATE TABLE `radnas_pool_names` (
-                                     `id` int(11) UNSIGNED NOT NULL,
-                                     `nas_ip_address` varchar(128) NOT NULL DEFAULT '',
-                                     `pool_name` varchar(64) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radnas_pool_name`
+(
+    `id`             int(11) UNSIGNED NOT NULL,
+    `nas_ip_address` varchar(128)     NOT NULL DEFAULT '',
+    `pool_name`      varchar(64)      NOT NULL DEFAULT ''
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+--
+-- Dumping data for table `radnas_pool_name`
+--
+
+INSERT INTO `radnas_pool_name` (`id`, `nas_ip_address`, `pool_name`)
+VALUES (1, '100.99.1.255', 'Main Pool');
 
 -- --------------------------------------------------------
 
@@ -11004,16 +11107,18 @@ CREATE TABLE `radnas_pool_names` (
 -- Table structure for table `radpostauth`
 --
 
-CREATE TABLE `radpostauth` (
-                               `id` int(11) NOT NULL,
-                               `username` varchar(64) NOT NULL DEFAULT '',
-                               `pass` varchar(64) NOT NULL DEFAULT '',
-                               `reply` varchar(32) NOT NULL DEFAULT '',
-                               `reply_msg` varchar(256) DEFAULT NULL,
-                               `authdate` timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
-                               `nasipaddress` varchar(100) DEFAULT NULL,
-                               `callingstationid` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radpostauth`
+(
+    `id`               int(11)      NOT NULL,
+    `username`         varchar(64)  NOT NULL DEFAULT '',
+    `pass`             varchar(64)  NOT NULL DEFAULT '',
+    `reply`            varchar(32)  NOT NULL DEFAULT '',
+    `reply_msg`        varchar(256)          DEFAULT NULL,
+    `authdate`         timestamp(6) NOT NULL DEFAULT current_timestamp(6) ON UPDATE current_timestamp(6),
+    `nasipaddress`     varchar(100)          DEFAULT NULL,
+    `callingstationid` text         NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -11021,13 +11126,15 @@ CREATE TABLE `radpostauth` (
 -- Table structure for table `radreply`
 --
 
-CREATE TABLE `radreply` (
-                            `id` int(11) UNSIGNED NOT NULL,
-                            `username` varchar(64) NOT NULL DEFAULT '',
-                            `attribute` varchar(64) NOT NULL DEFAULT '',
-                            `op` char(2) NOT NULL DEFAULT '=',
-                            `value` varchar(253) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radreply`
+(
+    `id`        int(11) UNSIGNED NOT NULL,
+    `username`  varchar(64)      NOT NULL DEFAULT '',
+    `attribute` varchar(64)      NOT NULL DEFAULT '',
+    `op`        char(2)          NOT NULL DEFAULT '=',
+    `value`     varchar(253)     NOT NULL DEFAULT ''
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
 
 -- --------------------------------------------------------
 
@@ -11035,12 +11142,22 @@ CREATE TABLE `radreply` (
 -- Table structure for table `radusergroup`
 --
 
-CREATE TABLE `radusergroup` (
-                                `id` int(11) UNSIGNED NOT NULL,
-                                `username` varchar(64) NOT NULL DEFAULT '',
-                                `groupname` varchar(64) NOT NULL DEFAULT '',
-                                `priority` int(11) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `radusergroup`
+(
+    `id`        int(11) UNSIGNED NOT NULL,
+    `username`  varchar(64)      NOT NULL DEFAULT '',
+    `groupname` varchar(64)      NOT NULL DEFAULT '',
+    `priority`  int(11)          NOT NULL DEFAULT 1
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+--
+-- Dumping data for table `radusergroup`
+--
+
+INSERT INTO `radusergroup` (`id`, `username`, `groupname`, `priority`)
+VALUES (1, 'Data Package 1M/1M', 'BW-1MU-1MD', 5),
+       (3, 'Data Package 2M/2M', 'BW-1MU-1MD', 5);
 
 --
 -- Indexes for dumped tables
@@ -11065,51 +11182,51 @@ ALTER TABLE `ci_admin`
     ADD PRIMARY KEY (`admin_id`);
 
 --
--- Indexes for table `ci_admin_roles`
+-- Indexes for table `ci_admin_role`
 --
-ALTER TABLE `ci_admin_roles`
+ALTER TABLE `ci_admin_role`
     ADD PRIMARY KEY (`admin_role_id`);
 
 --
--- Indexes for table `ci_audit_trails`
+-- Indexes for table `ci_audit_trail`
 --
-ALTER TABLE `ci_audit_trails`
+ALTER TABLE `ci_audit_trail`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_cities`
+-- Indexes for table `ci_city`
 --
-ALTER TABLE `ci_cities`
+ALTER TABLE `ci_city`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_companies`
+-- Indexes for table `ci_company`
 --
-ALTER TABLE `ci_companies`
+ALTER TABLE `ci_company`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_countries`
+-- Indexes for table `ci_country`
 --
-ALTER TABLE `ci_countries`
+ALTER TABLE `ci_country`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_email_templates`
+-- Indexes for table `ci_email_template`
 --
-ALTER TABLE `ci_email_templates`
+ALTER TABLE `ci_email_template`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_email_template_variables`
+-- Indexes for table `ci_email_template_variable`
 --
-ALTER TABLE `ci_email_template_variables`
+ALTER TABLE `ci_email_template_variable`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_general_settings`
+-- Indexes for table `ci_general_setting`
 --
-ALTER TABLE `ci_general_settings`
+ALTER TABLE `ci_general_setting`
     ADD PRIMARY KEY (`id`);
 
 --
@@ -11132,27 +11249,33 @@ ALTER TABLE `ci_module_access`
     ADD KEY `RoleId` (`admin_role_id`);
 
 --
--- Indexes for table `ci_payments`
+-- Indexes for table `ci_payment`
 --
-ALTER TABLE `ci_payments`
+ALTER TABLE `ci_payment`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_profiles`
+-- Indexes for table `ci_profile`
 --
-ALTER TABLE `ci_profiles`
+ALTER TABLE `ci_profile`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_profile_components`
+-- Indexes for table `ci_profile_component`
 --
-ALTER TABLE `ci_profile_components`
+ALTER TABLE `ci_profile_component`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_states`
+-- Indexes for table `ci_realm`
 --
-ALTER TABLE `ci_states`
+ALTER TABLE `ci_realm`
+    ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ci_state`
+--
+ALTER TABLE `ci_state`
     ADD PRIMARY KEY (`id`);
 
 --
@@ -11163,40 +11286,41 @@ ALTER TABLE `ci_sub_module`
     ADD KEY `Parent Module ID` (`parent`);
 
 --
--- Indexes for table `ci_uploaded_files`
+-- Indexes for table `ci_uploaded_file`
 --
-ALTER TABLE `ci_uploaded_files`
+ALTER TABLE `ci_uploaded_file`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ci_users`
+-- Indexes for table `ci_user`
 --
-ALTER TABLE `ci_users`
+ALTER TABLE `ci_user`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `data_accounts`
+-- Indexes for table `data_account`
 --
-ALTER TABLE `data_accounts`
+ALTER TABLE `data_account`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `data_accounts_stats`
+-- Indexes for table `data_account_stat`
 --
-ALTER TABLE `data_accounts_stats`
+ALTER TABLE `data_account_stat`
     ADD PRIMARY KEY (`id`),
-    ADD KEY `user_stats_index` (`radacct_id`,`username`,`realmid`,`nasipaddress`,`nasidentifier`,`callingstationid`);
+    ADD KEY `user_stats_index` (`radacct_id`, `username`, `realm_id`, `nasipaddress`, `nasidentifier`,
+                                `callingstationid`);
 
 --
--- Indexes for table `link_radippool_data_accounts`
+-- Indexes for table `link_radippool_data_account`
 --
-ALTER TABLE `link_radippool_data_accounts`
+ALTER TABLE `link_radippool_data_account`
     ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `link_users_data_accounts`
+-- Indexes for table `link_user_data_account`
 --
-ALTER TABLE `link_users_data_accounts`
+ALTER TABLE `link_user_data_account`
     ADD PRIMARY KEY (`id`);
 
 --
@@ -11217,7 +11341,7 @@ ALTER TABLE `radacct`
     ADD KEY `acctinterval` (`acctinterval`),
     ADD KEY `acctstoptime` (`acctstoptime`),
     ADD KEY `nasipaddress` (`nasipaddress`),
-    ADD KEY `bulk_close` (`acctstoptime`,`nasipaddress`,`acctstarttime`);
+    ADD KEY `bulk_close` (`acctstoptime`, `nasipaddress`, `acctstarttime`);
 
 --
 -- Indexes for table `radcheck`
@@ -11251,9 +11375,9 @@ ALTER TABLE `radgroupreply`
 --
 ALTER TABLE `radippool`
     ADD PRIMARY KEY (`id`),
-    ADD KEY `radippool_poolname_expire` (`pool_name`,`expiry_time`),
+    ADD KEY `radippool_poolname_expire` (`pool_name`, `expiry_time`),
     ADD KEY `framedipaddress` (`framedipaddress`),
-    ADD KEY `radippool_nasip_poolkey_ipaddress` (`nasipaddress`,`pool_key`,`framedipaddress`);
+    ADD KEY `radippool_nasip_poolkey_ipaddress` (`nasipaddress`, `pool_key`, `framedipaddress`);
 
 --
 -- Indexes for table `radnas`
@@ -11263,11 +11387,11 @@ ALTER TABLE `radnas`
     ADD KEY `nasname` (`nasname`);
 
 --
--- Indexes for table `radnas_pool_names`
+-- Indexes for table `radnas_pool_name`
 --
-ALTER TABLE `radnas_pool_names`
+ALTER TABLE `radnas_pool_name`
     ADD PRIMARY KEY (`id`),
-    ADD UNIQUE KEY `nas_ip_address_pool_name` (`nas_ip_address`,`pool_name`);
+    ADD UNIQUE KEY `nas_ip_address_pool_name` (`nas_ip_address`, `pool_name`);
 
 --
 -- Indexes for table `radpostauth`
@@ -11309,138 +11433,155 @@ ALTER TABLE `ci_activity_status`
 -- AUTO_INCREMENT for table `ci_admin`
 --
 ALTER TABLE `ci_admin`
-    MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+    MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 38;
 
 --
--- AUTO_INCREMENT for table `ci_admin_roles`
+-- AUTO_INCREMENT for table `ci_admin_role`
 --
-ALTER TABLE `ci_admin_roles`
-    MODIFY `admin_role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `ci_admin_role`
+    MODIFY `admin_role_id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `ci_audit_trails`
+-- AUTO_INCREMENT for table `ci_audit_trail`
 --
-ALTER TABLE `ci_audit_trails`
+ALTER TABLE `ci_audit_trail`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ci_cities`
+-- AUTO_INCREMENT for table `ci_city`
 --
-ALTER TABLE `ci_cities`
+ALTER TABLE `ci_city`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ci_companies`
+-- AUTO_INCREMENT for table `ci_company`
 --
-ALTER TABLE `ci_companies`
+ALTER TABLE `ci_company`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ci_countries`
+-- AUTO_INCREMENT for table `ci_country`
 --
-ALTER TABLE `ci_countries`
+ALTER TABLE `ci_country`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ci_email_templates`
+-- AUTO_INCREMENT for table `ci_email_template`
 --
-ALTER TABLE `ci_email_templates`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `ci_email_template`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `ci_email_template_variables`
+-- AUTO_INCREMENT for table `ci_email_template_variable`
 --
-ALTER TABLE `ci_email_template_variables`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `ci_email_template_variable`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `ci_general_settings`
+-- AUTO_INCREMENT for table `ci_general_setting`
 --
-ALTER TABLE `ci_general_settings`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+ALTER TABLE `ci_general_setting`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 2;
 
 --
 -- AUTO_INCREMENT for table `ci_language`
 --
 ALTER TABLE `ci_language`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 2;
 
 --
 -- AUTO_INCREMENT for table `ci_module`
 --
 ALTER TABLE `ci_module`
-    MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+    MODIFY `module_id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 30;
 
 --
 -- AUTO_INCREMENT for table `ci_module_access`
 --
 ALTER TABLE `ci_module_access`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 169;
 
 --
--- AUTO_INCREMENT for table `ci_payments`
+-- AUTO_INCREMENT for table `ci_payment`
 --
-ALTER TABLE `ci_payments`
+ALTER TABLE `ci_payment`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ci_profiles`
+-- AUTO_INCREMENT for table `ci_profile`
 --
-ALTER TABLE `ci_profiles`
+ALTER TABLE `ci_profile`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 4;
+
+--
+-- AUTO_INCREMENT for table `ci_profile_component`
+--
+ALTER TABLE `ci_profile_component`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 7;
+
+--
+-- AUTO_INCREMENT for table `ci_realm`
+--
+ALTER TABLE `ci_realm`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ci_profile_components`
+-- AUTO_INCREMENT for table `ci_state`
 --
-ALTER TABLE `ci_profile_components`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ci_states`
---
-ALTER TABLE `ci_states`
+ALTER TABLE `ci_state`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ci_sub_module`
 --
 ALTER TABLE `ci_sub_module`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 78;
 
 --
--- AUTO_INCREMENT for table `ci_uploaded_files`
+-- AUTO_INCREMENT for table `ci_uploaded_file`
 --
-ALTER TABLE `ci_uploaded_files`
+ALTER TABLE `ci_uploaded_file`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `ci_users`
+-- AUTO_INCREMENT for table `ci_user`
 --
-ALTER TABLE `ci_users`
+ALTER TABLE `ci_user`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `data_accounts`
+-- AUTO_INCREMENT for table `data_account`
 --
-ALTER TABLE `data_accounts`
+ALTER TABLE `data_account`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `data_accounts_stats`
+-- AUTO_INCREMENT for table `data_account_stat`
 --
-ALTER TABLE `data_accounts_stats`
+ALTER TABLE `data_account_stat`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `link_radippool_data_accounts`
+-- AUTO_INCREMENT for table `link_radippool_data_account`
 --
-ALTER TABLE `link_radippool_data_accounts`
+ALTER TABLE `link_radippool_data_account`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `link_users_data_accounts`
+-- AUTO_INCREMENT for table `link_user_data_account`
 --
-ALTER TABLE `link_users_data_accounts`
+ALTER TABLE `link_user_data_account`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -11472,30 +11613,29 @@ ALTER TABLE `radgroupcheck`
 -- AUTO_INCREMENT for table `radgroupreply`
 --
 ALTER TABLE `radgroupreply`
-    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 7;
 
 --
 -- AUTO_INCREMENT for table `radippool`
 --
 ALTER TABLE `radippool`
-    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 15;
 
 --
 -- AUTO_INCREMENT for table `radnas`
 --
 ALTER TABLE `radnas`
-    MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
-
-/*
- * Copyright (c) 2021.
- * Last Modified : 2021/05/17, 18:14
- */
+    MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `radnas_pool_names`
+-- AUTO_INCREMENT for table `radnas_pool_name`
 --
-ALTER TABLE `radnas_pool_names`
-    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `radnas_pool_name`
+    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 2;
 
 --
 -- AUTO_INCREMENT for table `radpostauth`
@@ -11513,19 +11653,20 @@ ALTER TABLE `radreply`
 -- AUTO_INCREMENT for table `radusergroup`
 --
 ALTER TABLE `radusergroup`
-    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    AUTO_INCREMENT = 4;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `radnas_pool_names`
+-- Constraints for table `radnas_pool_name`
 --
-ALTER TABLE `radnas_pool_names`
-    ADD CONSTRAINT `radnas_pool_names_ibfk_1` FOREIGN KEY (`nas_ip_address`) REFERENCES `radnas` (`nasname`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `radnas_pool_name`
+    ADD CONSTRAINT `radnas_pool_name_ibfk_1` FOREIGN KEY (`nas_ip_address`) REFERENCES `radnas` (`nasname`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;

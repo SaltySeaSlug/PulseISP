@@ -2,7 +2,7 @@
 
 #
 # Copyright (c) 2021.
-# Last Modified : 2021/05/17, 16:01
+# Last Modified : 2021/05/17, 18:34
 #
 
 clear
@@ -94,7 +94,6 @@ else
 fi
 
 ######################################################################################################################## Set timezone
-timedatectl set-timezone Africa/Johannesburg
 
 #croncmd="/usr/bin/php ${WWW_PATH:?}/crons/cron.freeradius_cleansession.php 2>&1 >/dev/null"
 #cronjob="* * * * * $croncmd"
@@ -134,15 +133,7 @@ else
 fi
 rm -fr "${TEMP_DIR:?}/".gitignore
 
-######################################################################################################################## Verify GIT
-echo -e "$COL_YELLOW Checking if GIT is installed. $COL_RESET"
-if ! [ -x "$(command -v git)" ]; then
-	echo -e "$COL_RED Error: git is not installed. $COL_RESET" >&2
-	sudo apt-get install git
-else
-    echo -e "$COL_GREEN OK. $COL_RESET"
-fi
-echo
+
 
 echo -e "$COL_GREEN Pre-system check completed. $COL_RESET"
 sleep 1
@@ -186,12 +177,27 @@ echo -e "$COL_CYAN ########################################################## $C
 echo
 
 ######################################################################################################################## Update System
+timedatectl set-timezone Africa/Johannesburg
+#sudo apt update --fix-missing
+
 echo -e "$COL_YELLOW Update System $COL_RESET"
 
 if [ $DEBUG ]; then apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y;
 else apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y "$APT_LOG"; fi
 
+
+
 #apt update -y && apt upgrade -y && apt autoremove -y && apt clean -y && apt autoclean -y
+
+######################################################################################################################## Verify GIT
+echo -e "$COL_YELLOW Checking if GIT is installed. $COL_RESET"
+if ! [ -x "$(command -v git)" ]; then
+	echo -e "$COL_RED Error: git is not installed. $COL_RESET" >&2
+	sudo apt-get install git
+else
+    echo -e "$COL_GREEN OK. $COL_RESET"
+fi
+echo
 
 ######################################################################################################################## Install base packages
 echo -e "$COL_YELLOW Install base packages $COL_RESET"

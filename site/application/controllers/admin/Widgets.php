@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Copyright (c) 2021.
- * Last Modified : 2021/05/17, 17:23
+ * Last Modified : 2021/05/17, 18:05
  */
 
 class Widgets extends MY_Controller
@@ -12,7 +12,6 @@ class Widgets extends MY_Controller
 		parent::__construct();
 		// CHECK IF USER IS AUTHENTICATED
 		auth_check();
-
 		// CHECK IF USER IS ALLOWED TO ACCESS MODULE
 		$this->rbac->check_module_access();
 	}

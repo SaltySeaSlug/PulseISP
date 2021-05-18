@@ -1,5 +1,10 @@
 /*
  * Copyright (c) 2021.
+ * Last Modified : 2021/05/18, 09:23
+ */
+
+/*
+ * Copyright (c) 2021.
  * Last Modified : 2021/05/17, 17:14
  */
 
@@ -94,10 +99,10 @@ CREATE TABLE `ci_admin`
 INSERT INTO `ci_admin` (`admin_id`, `admin_role_id`, `username`, `firstname`, `lastname`, `email`, `mobile_no`, `image`,
                         `password`, `last_login`, `is_verify`, `is_admin`, `is_active`, `is_supper`, `token`,
                         `password_reset_code`, `last_ip`, `created_at`, `updated_at`)
-VALUES (25, 2, 'admin', 'Admin', 'User', 'admin@gmail.com', '544354353', '',
+VALUES (2, 2, 'admin', 'Admin', 'User', 'admin@gmail.com', '544354353', '',
         '$2y$10$KyH0L.rMhaXWkMh/ZoN1.e44FOzEak.KzZoUjQdIGiuVJtuKa9z0y', '2019-01-09 00:00:00', 1, 1, 1, 0, '', '',
         '::1', '2018-03-19 00:00:00', '2019-11-24 00:00:00'),
-       (31, 1, 'superadmin', 'Super', 'Admin', 'test@test.com', '', '',
+       (1, 1, 'superadmin', 'Super', 'Admin', 'test@test.com', '', '',
         '$2y$12$2kPx54.2xX4GyxjPovhFHOJdVthJQBcy.mBR3ig/aPVnOC0a3E2tK', '0000-00-00 00:00:00', 1, 1, 1, 1, '',
         'e620a99414d5ebf5c61d6a43a4ac94a2', '::1', '2019-01-16 06:01:58', '2020-12-22 00:00:00');
 
@@ -11068,11 +11073,11 @@ INSERT INTO `radnas` (`id`, `nasname`, `shortname`, `nasidentifier`, `type`, `po
                       `description`, `connection_type`, `record_auth`, `ignore_acct`, `monitor`, `last_contact`,
                       `session_auto_close`, `session_dead_time`, `on_public_maps`, `lat`, `lon`, `photo_file_name`,
                       `user_id`, `created`, `modified`)
-VALUES (1, '100.99.1.255', 'Helderberg Core', 'HDV_CORE', 'Mikrotik', 3799, '$FREERADIUS_SECRET', NULL, 'public',
+VALUES (1, '100.99.1.255', 'Core 1', 'CORE ONE', 'Mikrotik', 3799, '$FREERADIUS_SECRET', NULL, 'public',
         'RADIUS Client', 'direct', 0, 0, 0, NULL, 0, 3600, 0, NULL, NULL, NULL, NULL, '2021-02-23 21:48:21', NULL),
-       (3, '100.99.2.255', 'Unitech Core KRA', 'HNET-KRA_CORE', 'mikrotik', 3799, 'testing123', NULL, 'public',
+       (3, '100.99.2.255', 'Core 2', 'CORE TWO', 'mikrotik', 3799, 'testing123', NULL, 'public',
         'RADIUS Client', 'direct', 0, 0, 0, NULL, 0, 3600, 0, NULL, NULL, NULL, NULL, '2021-05-14 12:20:27', NULL),
-       (4, '100.99.3.255', 'Unitech Core PDV', 'UNI-PDV_CORE', 'mikrotik', 3799, 'testing123', NULL, 'public',
+       (4, '100.99.3.255', 'Core 3', 'CORE THREE', 'mikrotik', 3799, 'testing123', NULL, 'public',
         'RADIUS Client', 'direct', 0, 0, 0, NULL, 0, 3600, 0, NULL, NULL, NULL, NULL, '2021-05-14 12:20:54', NULL);
 
 -- --------------------------------------------------------
