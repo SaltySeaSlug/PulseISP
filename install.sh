@@ -2,7 +2,7 @@
 
 #
 # Copyright (c) 2021.
-# Last Modified : 2021/05/17, 18:34
+# Last Modified : 2021/05/18, 11:40
 #
 
 clear
@@ -52,6 +52,7 @@ OS_VER=$(cat < /etc/issue | awk '{print $1}')
 # Global variables
 TEMP_DIR="/temp"
 INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP.git"
+BASE_INSTALL_URL="https://github.com/SaltySeaSlug/PulseISP"
 BACKUP_DIR="/backup"
 
 
@@ -746,7 +747,11 @@ systemctl restart apache2
 
 echo
 ;;
+3 ) echo "Clone latest"
 
+git clone -b $(basename $(curl -Ls -o /dev/null -w %{url_effective} $BASE_INSTALL_URL/releases/latest)) $INSTALL_URL
+
+;;
 * ) echo "Invalid selection. Installation aborted."
 echo
 exit
