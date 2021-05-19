@@ -21,7 +21,8 @@
 	  "markrogoyski/ipv4-subnet-calculator": "3.*",
 	  "ivantcholakov/codeigniter-phpmailer": "^1.4",
 	  "opensolutions/oss-snmp": "^v1.0.2",
-	  "guzzlehttp/guzzle": "^7.0"
+	  "guzzlehttp/guzzle": "^7.0",
+	  "": ""
 	},
   "suggest": {
 	"paragonie/random_compat": "Provides better randomness in PHP 5.x"

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021.
- * Last Modified : 2021/05/17, 17:14
+ * Last Modified : 2021/05/19, 15:08
  */
 
 $(document).ready(function () {
@@ -514,9 +514,9 @@ function buildAuthChartConfig(data) {
 						var dataPoint = item.yLabel;
 						var label = data.labels[item.index];
 
-						if (localStorage.getItem('remember.chart.usage.period') === 'T') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " @ " + label;
-						if (localStorage.getItem('remember.chart.usage.period') === 'W') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on " + label;
-						if (localStorage.getItem('remember.chart.usage.period') === 'M') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on the " + label;
+						if (localStorage.getItem('remember.chart.auth.period') === 'T') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " @ " + label;
+						if (localStorage.getItem('remember.chart.auth.period') === 'W') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on " + label;
+						if (localStorage.getItem('remember.chart.auth.period') === 'M') return " " + datasetLabel + ": " + bytes(dataPoint, true) + " on the " + label;
 					}
 				},
 				itemSort: function(a, b) {

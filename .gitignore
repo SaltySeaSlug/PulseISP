@@ -106,3 +106,4 @@ fabric.properties
 /site/install/
 /site/application/config/production/
 /site/application/config/development/
+/site_isp/
