@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /*
  * Copyright (c) 2021.
- * Last Modified : 2021/05/17, 17:14
+ * Last Modified : 2021/05/19, 14:48
  */
 
 class Data extends MY_Controller
@@ -292,8 +292,8 @@ class Data extends MY_Controller
 		{
 			case 'T':
 				{
-					$today = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`timestamp`) as hour FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE DATE(`timestamp`) = CURDATE() GROUP BY HOUR(`timestamp`) ORDER BY HOUR(`timestamp`) ASC")->result_array();
-					$todayCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE DATE(timestamp) = CURDATE()")->row();
+					$today = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, HOUR(`acctstarttime`) as hour FROM " . $this->config->item('CONFIG_DB_TBL_RADACCT') . " WHERE DATE(`acctstarttime`) = CURDATE() GROUP BY HOUR(`acctstarttime`) ORDER BY HOUR(`acctstarttime`) ASC")->result_array();
+					$todayCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_RADACCT') . " WHERE DATE(acctstarttime) = CURDATE()")->row();
 
 					$data = range(0, 23);
 
@@ -313,8 +313,8 @@ class Data extends MY_Controller
 			} break;
 			case 'W':
 				{
-					$thisweek = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAYNAME(`timestamp`) as day FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0) GROUP BY DAYNAME(`timestamp`) ORDER BY DAYOFWEEK(day)")->result_array();
-					$thisweekCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE WEEK(timestamp, 0) = WEEK(CURDATE(), 0)")->row();
+					$thisweek = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAYNAME(`acctstarttime`) as day FROM " . $this->config->item('CONFIG_DB_TBL_RADACCT') . " WHERE WEEK(acctstarttime, 0) = WEEK(CURDATE(), 0) GROUP BY DAYNAME(`acctstarttime`) ORDER BY DAYOFWEEK(day)")->result_array();
+					$thisweekCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_RADACCT') . " WHERE WEEK(acctstarttime, 0) = WEEK(CURDATE(), 0)")->row();
 
 					$data = range(0, 6);
 					foreach ($thisweek as $row) {
@@ -332,8 +332,8 @@ class Data extends MY_Controller
 			} break;
 			case 'M':
 				{
-					$thismonth = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAY(`timestamp`) as day FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`timestamp`) ORDER BY DAY(`timestamp`) ASC")->result_array();
-					$thismonthCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_DATA_ACCOUNT_STAT') . " WHERE YEAR(`timestamp`) = YEAR(CURRENT_DATE()) AND MONTH(`timestamp`) = MONTH(CURRENT_DATE())")->row();
+					$thismonth = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download, DAY(`acctstarttime`) as day FROM " . $this->config->item('CONFIG_DB_TBL_RADACCT') . " WHERE YEAR(`acctstarttime`) = YEAR(CURRENT_DATE()) AND MONTH(`acctstarttime`) = MONTH(CURRENT_DATE()) GROUP BY DAY(`acctstarttime`) ORDER BY DAY(`acctstarttime`) ASC")->result_array();
+					$thismonthCount = $this->db->query("SELECT SUM(IFNULL(`acctinputoctets`,0)) as upload, SUM(IFNULL(`acctoutputoctets`,0)) as download FROM " . $this->config->item('CONFIG_DB_TBL_RADACCT') . " WHERE YEAR(`acctstarttime`) = YEAR(CURRENT_DATE()) AND MONTH(`acctstarttime`) = MONTH(CURRENT_DATE())")->row();
 
 					$data = range(1, date('t') + 1);
 					foreach ($thismonth as $row) {
